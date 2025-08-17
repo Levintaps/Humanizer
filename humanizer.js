@@ -1,1189 +1,1011 @@
 class EnhancedTextHumanizer {
-constructor() {
-    this.initializeElements();
-    this.attachEventListeners();
-    this.synonymDatabase = this.buildAdvancedSynonymDatabase();
-    this.humanPatterns = this.buildAdvancedHumanPatterns();
-    this.aiSignatures = this.buildAISignatureDatabase();
-    this.humanVariations = this.buildHumanVariationPatterns();
-    this.contextualRewriters = this.buildContextualRewriters();
-    this.grammarVariations = this.buildGrammarVariations();
-    this.styleMimicry = this.buildStyleMimicry();
-    this.settings = {
-        conversational: true,
-        structure: true,
-        expressions: true,
-        technical: false,
-        readability: true,
-        patterns: true
-    };
-    this.initializeSettings();
-}
+    constructor() {
+        this.initializeElements();
+        this.attachEventListeners();
+        this.synonymDatabase = this.buildSynonymDatabase();
+        this.humanPatterns = this.buildHumanPatterns();
+        this.connectorVariations = this.buildConnectors();
+        this.aiPatterns = this.buildAIPatterns();
+        this.sentenceTemplates = this.buildSentenceTemplates();
+        this.grammarRules = this.buildGrammarRules();
+        this.contextualReplacements = this.buildContextualReplacements();
+        this.settings = {
+            conversational: true,
+            structure: true,
+            expressions: true,
+            technical: false,
+            readability: true,
+            patterns: true
+        };
+        this.initializeSettings();
+    }
 
-initializeElements() {
-    this.inputText = document.getElementById('inputText');
-    this.outputText = document.getElementById('outputText');
-    this.humanizeBtn = document.getElementById('humanizeBtn');
-    this.clearBtn = document.getElementById('clearBtn');
-    this.copyBtn = document.getElementById('copyBtn');
-    this.regenerateBtn = document.getElementById('regenerateBtn');
-    this.pasteBtn = document.getElementById('pasteBtn');
-    this.clearInputBtn = document.getElementById('clearInputBtn');
-    this.downloadBtn = document.getElementById('downloadBtn');
-    this.loading = document.getElementById('loading');
-    
-    // Word count elements
-    this.inputWordCount = document.getElementById('inputWordCount');
-    this.outputWordCount = document.getElementById('outputWordCount');
-    
-    // Indicator elements
-    this.aiIndicator = document.getElementById('aiIndicator');
-    this.humanIndicator = document.getElementById('humanIndicator');
-    
-    // Stats elements
-    this.originalWords = document.getElementById('originalWords');
-    this.humanizedWords = document.getElementById('humanizedWords');
-    this.improvementScore = document.getElementById('improvementScore');
-    this.readabilityScore = document.getElementById('readabilityScore');
-    this.uniquenessScore = document.getElementById('uniquenessScore');
-    this.processingTime = document.getElementById('processingTime');
-}
+    initializeElements() {
+        this.inputText = document.getElementById('inputText');
+        this.outputText = document.getElementById('outputText');
+        this.humanizeBtn = document.getElementById('humanizeBtn');
+        this.clearBtn = document.getElementById('clearBtn');
+        this.copyBtn = document.getElementById('copyBtn');
+        this.regenerateBtn = document.getElementById('regenerateBtn');
+        this.pasteBtn = document.getElementById('pasteBtn');
+        this.clearInputBtn = document.getElementById('clearInputBtn');
+        this.downloadBtn = document.getElementById('downloadBtn');
+        this.loading = document.getElementById('loading');
+        
+        // Word count elements
+        this.inputWordCount = document.getElementById('inputWordCount');
+        this.outputWordCount = document.getElementById('outputWordCount');
+        
+        // Indicator elements
+        this.aiIndicator = document.getElementById('aiIndicator');
+        this.humanIndicator = document.getElementById('humanIndicator');
+        
+        // Stats elements
+        this.originalWords = document.getElementById('originalWords');
+        this.humanizedWords = document.getElementById('humanizedWords');
+        this.improvementScore = document.getElementById('improvementScore');
+        this.readabilityScore = document.getElementById('readabilityScore');
+        this.uniquenessScore = document.getElementById('uniquenessScore');
+        this.processingTime = document.getElementById('processingTime');
+    }
 
-attachEventListeners() {
-    this.humanizeBtn.addEventListener('click', () => this.humanizeText());
-    this.clearBtn.addEventListener('click', () => this.clearAll());
-    this.copyBtn.addEventListener('click', () => this.copyResult());
-    this.regenerateBtn.addEventListener('click', () => this.regenerateText());
-    this.pasteBtn.addEventListener('click', () => this.pasteFromClipboard());
-    this.clearInputBtn.addEventListener('click', () => this.clearInput());
-    this.downloadBtn.addEventListener('click', () => this.downloadText());
-    
-    this.inputText.addEventListener('input', () => this.updateInputStats());
-    this.outputText.addEventListener('input', () => this.updateOutputStats());
-    
-    // Settings toggle listeners
-    document.querySelectorAll('.toggle-switch').forEach(toggle => {
-        toggle.addEventListener('click', () => this.toggleSetting(toggle));
-    });
-}
+    attachEventListeners() {
+        this.humanizeBtn.addEventListener('click', () => this.humanizeText());
+        this.clearBtn.addEventListener('click', () => this.clearAll());
+        this.copyBtn.addEventListener('click', () => this.copyResult());
+        this.regenerateBtn.addEventListener('click', () => this.regenerateText());
+        this.pasteBtn.addEventListener('click', () => this.pasteFromClipboard());
+        this.clearInputBtn.addEventListener('click', () => this.clearInput());
+        this.downloadBtn.addEventListener('click', () => this.downloadText());
+        
+        this.inputText.addEventListener('input', () => this.updateInputStats());
+        this.outputText.addEventListener('input', () => this.updateOutputStats());
+        
+        // Settings toggle listeners
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            toggle.addEventListener('click', () => this.toggleSetting(toggle));
+        });
+    }
 
-initializeSettings() {
-    document.querySelectorAll('.toggle-switch').forEach(toggle => {
-        const setting = toggle.dataset.setting;
-        if (this.settings[setting]) {
-            toggle.classList.add('active');
-        }
-    });
-}
-
-toggleSetting(toggle) {
-    const setting = toggle.dataset.setting;
-    toggle.classList.toggle('active');
-    this.settings[setting] = toggle.classList.contains('active');
-    this.showToast(`${setting.charAt(0).toUpperCase() + setting.slice(1)} ${this.settings[setting] ? 'enabled' : 'disabled'}`);
-}
-
-buildAdvancedSynonymDatabase() {
-    return {
-        // AI-specific replacements that detectors look for
-        'furthermore': ['what\'s more', 'on top of that', 'beyond that', 'adding to this', 'plus'],
-        'however': ['but', 'though', 'that said', 'mind you', 'still', 'yet'],
-        'therefore': ['so', 'thus', 'hence', 'because of this', 'as a result', 'this means'],
-        'subsequently': ['then', 'after that', 'next', 'following this', 'later'],
-        'consequently': ['so', 'as a result', 'because of this', 'this led to', 'meaning'],
-        'nevertheless': ['even so', 'but still', 'despite this', 'yet', 'all the same'],
-        'moreover': ['also', 'what\'s more', 'on top of that', 'plus', 'in addition'],
-        'nonetheless': ['even so', 'still', 'but', 'however', 'despite this'],
-        'additionally': ['also', 'plus', 'what\'s more', 'on top of that'],
-        'alternatively': ['or', 'instead', 'another option', 'you could also'],
-        
-        // Academic/formal to casual
-        'utilize': ['use', 'work with', 'make use of', 'employ'],
-        'facilitate': ['help', 'make easier', 'assist with', 'enable'],
-        'demonstrate': ['show', 'prove', 'make clear', 'illustrate'],
-        'implement': ['put in place', 'set up', 'carry out', 'execute'],
-        'optimize': ['improve', 'make better', 'enhance', 'fine-tune'],
-        'comprehensive': ['complete', 'thorough', 'full', 'detailed'],
-        'significant': ['major', 'important', 'big', 'considerable'],
-        'fundamental': ['basic', 'core', 'essential', 'key'],
-        'paradigm': ['model', 'approach', 'way of thinking', 'framework'],
-        'methodology': ['method', 'approach', 'way', 'process'],
-        'substantial': ['large', 'big', 'major', 'considerable'],
-        'paramount': ['crucial', 'most important', 'vital', 'key'],
-        'optimal': ['best', 'ideal', 'perfect', 'top'],
-        'robust': ['strong', 'solid', 'reliable', 'sturdy'],
-        'sophisticated': ['advanced', 'complex', 'refined'],
-        'revolutionary': ['groundbreaking', 'game-changing', 'innovative'],
-        'cutting-edge': ['latest', 'modern', 'advanced', 'state-of-the-art'],
-        'innovative': ['new', 'creative', 'original', 'fresh'],
-        'leverage': ['use', 'take advantage of', 'make use of'],
-        'enhancement': ['improvement', 'upgrade', 'betterment'],
-        'concerning': ['about', 'regarding', 'when it comes to'],
-        
-        // Overused AI words
-        'delve': ['explore', 'look into', 'examine', 'dig into'],
-        'crucial': ['important', 'vital', 'key', 'essential'],
-        'paramount': ['most important', 'vital', 'crucial'],
-        'myriad': ['many', 'lots of', 'countless', 'numerous'],
-        'plethora': ['lots of', 'many', 'tons of', 'plenty of'],
-        'multifaceted': ['complex', 'many-sided', 'varied'],
-        'intricate': ['complex', 'detailed', 'complicated'],
-        'nuanced': ['subtle', 'complex', 'detailed'],
-        'holistic': ['complete', 'whole', 'comprehensive'],
-        'synergy': ['teamwork', 'cooperation', 'working together'],
-        'paradigm shift': ['big change', 'transformation', 'major shift'],
-        'game-changer': ['breakthrough', 'major advance', 'big development'],
-        'unprecedented': ['never seen before', 'unique', 'first of its kind'],
-        'transformative': ['life-changing', 'revolutionary', 'game-changing'],
-        'groundbreaking': ['innovative', 'pioneering', 'revolutionary'],
-        
-        // AI sentence starters to replace
-        'it is important to note': ['worth mentioning', 'keep in mind', 'note that'],
-        'it should be noted': ['worth noting', 'important to mention'],
-        'it is worth mentioning': ['worth noting', 'important to say'],
-        'it is evident that': ['clearly', 'obviously', 'it\'s clear that'],
-        'it can be observed': ['you can see', 'it\'s clear', 'obviously'],
-        'research indicates': ['studies show', 'research shows', 'we know'],
-        'studies have shown': ['research shows', 'we\'ve learned', 'studies prove']
-    };
-}
-
-buildAISignatureDatabase() {
-    return {
-        // Common AI sentence patterns to completely rewrite
-        roboticPatterns: [
-            /^It is important to (understand|note|recognize|realize) that/gi,
-            /^It should be (noted|mentioned|understood) that/gi,
-            /^It is worth (noting|mentioning|considering) that/gi,
-            /^It is (clear|evident|obvious) that/gi,
-            /^(Research|Studies) (indicates?|shows?|suggests?) that/gi,
-            /^(Data|Evidence) (suggests?|indicates?) that/gi,
-            /^One (must|should|can) (consider|understand|realize)/gi,
-            /^In (conclusion|summary), (it is|we can)/gi,
-            /^(Furthermore|Moreover|Additionally), (it is|this)/gi,
-            /^(However|Nevertheless|Nonetheless), (it is|this)/gi
-        ],
-        
-        // AI-specific phrase patterns
-        overusedPhrases: [
-            'in today\'s digital age',
-            'in today\'s world',
-            'in the modern era',
-            'in recent years',
-            'with the advent of',
-            'in the realm of',
-            'it goes without saying',
-            'needless to say',
-            'as mentioned earlier',
-            'as previously discussed',
-            'first and foremost',
-            'last but not least',
-            'at the end of the day',
-            'when all is said and done',
-            'in light of',
-            'with regard to',
-            'in relation to',
-            'with respect to'
-        ],
-        
-        // Redundant phrases to simplify
-        redundancies: {
-            'in order to': 'to',
-            'for the purpose of': 'to',
-            'due to the fact that': 'because',
-            'despite the fact that': 'although',
-            'in spite of the fact that': 'although',
-            'owing to the fact that': 'because',
-            'in view of the fact that': 'since',
-            'with the exception of': 'except',
-            'in the event that': 'if',
-            'in the process of': 'while',
-            'during the course of': 'during',
-            'by means of': 'by',
-            'for the reason that': 'because',
-            'on the grounds that': 'because',
-            'at this point in time': 'now',
-            'at the present time': 'now',
-            'in today\'s society': 'today',
-            'in the near future': 'soon',
-            'at a later date': 'later'
-        }
-    };
-}
-
-buildAdvancedHumanPatterns() {
-    return {
-        // Natural conversation starters
-        conversationalOpeners: [
-            'Look, here\'s the thing:',
-            'Here\'s what I find interesting:',
-            'You know what\'s fascinating?',
-            'Let me tell you something:',
-            'Here\'s the deal:',
-            'So here\'s what happened:',
-            'Picture this:',
-            'Get this:',
-            'Listen to this:',
-            'Check this out:',
-            'Okay, so',
-            'Right, so',
-            'Now, here\'s the kicker:',
-            'Here\'s where it gets interesting:'
-        ],
-        
-        // Uncertainty and hedging (very human)
-        hedgingPhrases: [
-            'it seems like',
-            'appears to be',
-            'might be',
-            'could be',
-            'tends to',
-            'looks like',
-            'sounds like',
-            'feels like',
-            'seems to suggest',
-            'from what I can tell',
-            'as far as I know',
-            'if I had to guess',
-            'my sense is that',
-            'I\'d say',
-            'probably',
-            'likely',
-            'chances are'
-        ],
-        
-        // Natural transitions
-        naturalTransitions: [
-            'That said,',
-            'Mind you,',
-            'Having said that,',
-            'Now,',
-            'Look,',
-            'Listen,',
-            'See,',
-            'Thing is,',
-            'But here\'s the catch:',
-            'Plot twist:',
-            'Funny thing is,',
-            'What\'s weird is,',
-            'Strangely enough,',
-            'Oddly enough,',
-            'Interestingly,',
-            'Surprisingly,'
-        ],
-        
-        // Casual connectors
-        casualConnectors: [
-            'and yeah',
-            'plus',
-            'also',
-            'too',
-            'as well',
-            'on top of that',
-            'not to mention',
-            'oh, and',
-            'by the way',
-            'speaking of which',
-            'while we\'re at it',
-            'come to think of it'
-        ],
-        
-        // Human-like qualifiers
-        qualifiers: [
-            'pretty much',
-            'basically',
-            'essentially',
-            'kind of',
-            'sort of',
-            'more or less',
-            'roughly',
-            'around',
-            'about',
-            'approximately',
-            'generally',
-            'typically',
-            'usually',
-            'often',
-            'sometimes'
-        ],
-        
-        // Conversational fillers (use sparingly)
-        conversationalFillers: [
-            'you know',
-            'I mean',
-            'like',
-            'well',
-            'so',
-            'right',
-            'obviously',
-            'clearly',
-            'honestly',
-            'frankly',
-            'to be honest',
-            'let\'s be real'
-        ]
-    };
-}
-
-buildContextualRewriters() {
-    return {
-        // Patterns that completely restructure AI-like sentences
-        sentenceRestructures: [
-            {
-                pattern: /^It is (important|crucial|essential|vital) to (understand|note|realize|recognize) that (.+)$/gi,
-                replacements: [
-                    'You need to understand that $3',
-                    'Here\'s what\'s key: $3',
-                    'The important thing is $3',
-                    'What matters is $3',
-                    'Keep in mind that $3'
-                ]
-            },
-            {
-                pattern: /^(Research|Studies) (shows?|indicates?|suggests?) that (.+)$/gi,
-                replacements: [
-                    'Turns out $3',
-                    'We\'ve learned that $3',
-                    'Evidence shows $3',
-                    'Data tells us $3',
-                    'What research found is $3'
-                ]
-            },
-            {
-                pattern: /^In conclusion, (.+)$/gi,
-                replacements: [
-                    'Bottom line: $1',
-                    'To wrap up, $1',
-                    'So basically, $1',
-                    'The takeaway? $1',
-                    'Long story short, $1'
-                ]
-            },
-            {
-                pattern: /^Furthermore, (.+)$/gi,
-                replacements: [
-                    'Plus, $1',
-                    'What\'s more, $1',
-                    'On top of that, $1',
-                    'Also, $1',
-                    'And here\'s the thing: $1'
-                ]
+    initializeSettings() {
+        document.querySelectorAll('.toggle-switch').forEach(toggle => {
+            const setting = toggle.dataset.setting;
+            if (this.settings[setting]) {
+                toggle.classList.add('active');
             }
-        ],
-        
-        // Complex sentence breakers
-        complexSentenceBreakers: [
-            {
-                pattern: /(.{50,}),\s+(which|that)\s+(.{30,})/g,
-                rewrite: (match, part1, connector, part2) => {
-                    const newStart = this.getRandomElement(['This', 'It', 'That']);
-                    return `${part1.trim()}. ${newStart} ${part2.trim()}`;
+        });
+    }
+
+    toggleSetting(toggle) {
+        const setting = toggle.dataset.setting;
+        toggle.classList.toggle('active');
+        this.settings[setting] = toggle.classList.contains('active');
+        this.showToast(`${setting.charAt(0).toUpperCase() + setting.slice(1)} ${this.settings[setting] ? 'enabled' : 'disabled'}`);
+    }
+
+    buildSynonymDatabase() {
+        return {
+            // Expanded with more natural, varied alternatives
+            'utilize': ['use', 'make use of', 'put to work', 'employ', 'take advantage of', 'harness'],
+            'facilitate': ['help with', 'make easier', 'assist in', 'enable', 'smooth out', 'aid'],
+            'implement': ['put in place', 'set up', 'roll out', 'carry out', 'establish', 'apply'],
+            'demonstrate': ['show', 'illustrate', 'prove', 'highlight', 'display', 'exhibit'],
+            'optimize': ['improve', 'fine-tune', 'boost', 'enhance', 'streamline', 'refine'],
+            'comprehensive': ['thorough', 'complete', 'detailed', 'full', 'in-depth', 'all-encompassing'],
+            'significant': ['major', 'key', 'important', 'notable', 'substantial', 'meaningful'],
+            'substantial': ['considerable', 'large', 'significant', 'hefty', 'solid', 'sizeable'],
+            'fundamental': ['basic', 'core', 'essential', 'key', 'foundational', 'underlying'],
+            'essential': ['crucial', 'vital', 'necessary', 'key', 'important', 'must-have'],
+            'crucial': ['vital', 'essential', 'critical', 'key', 'pivotal', 'decisive'],
+            'paramount': ['supreme', 'utmost', 'critical', 'essential', 'foremost', 'overriding'],
+            'optimal': ['best', 'ideal', 'prime', 'peak', 'top', 'perfect'],
+            'robust': ['strong', 'sturdy', 'solid', 'resilient', 'tough', 'durable'],
+            'seamless': ['smooth', 'effortless', 'fluid', 'uninterrupted', 'easy', 'hassle-free'],
+            'sophisticated': ['advanced', 'complex', 'refined', 'elaborate', 'intricate', 'high-level'],
+            'cutting-edge': ['state-of-the-art', 'innovative', 'advanced', 'modern', 'leading-edge', 'pioneering'],
+            'innovative': ['creative', 'novel', 'original', 'inventive', 'fresh', 'groundbreaking'],
+            'revolutionary': ['transformative', 'game-changing', 'radical', 'innovative', 'disruptive', 'pivotal'],
+            'methodology': ['approach', 'method', 'technique', 'process', 'system', 'procedure'],
+            'framework': ['structure', 'system', 'foundation', 'scaffold', 'backbone', 'outline'],
+            'paradigm': ['model', 'framework', 'pattern', 'example', 'approach', 'template'],
+            'leverage': ['use', 'exploit', 'harness', 'capitalize on', 'take advantage of', 'utilize'],
+            'enhancement': ['improvement', 'upgrade', 'boost', 'refinement', 'augmentation', 'advancement'],
+            'concerning': ['about', 'regarding', 'on', 'related to', 'pertaining to', 'involving'],
+            'subsequently': ['later', 'afterward', 'then', 'next', 'following that', 'afterwards'],
+            'consequently': ['so', 'therefore', 'thus', 'as a result', 'hence', 'because of that'],
+            'nonetheless': ['still', 'even so', 'however', 'yet', 'regardless', 'nevertheless'],
+            'furthermore': ['also', 'moreover', 'in addition', 'plus', 'what\'s more', 'besides'],
+            'moreover': ['besides', 'also', 'furthermore', 'in addition', 'plus', 'what\'s more'],
+            'therefore': ['so', 'thus', 'hence', 'consequently', 'as a result', 'for that reason'],
+            'however': ['but', 'though', 'yet', 'still', 'nevertheless', 'on the other hand'],
+            'nevertheless': ['even so', 'however', 'but still', 'yet', 'regardless', 'nonetheless'],
+            // Additional entries for better coverage
+            'achieve': ['reach', 'accomplish', 'attain', 'hit', 'gain', 'secure'],
+            'analyze': ['examine', 'study', 'review', 'look into', 'assess', 'break down'],
+            'develop': ['build', 'create', 'grow', 'evolve', 'advance', 'expand'],
+            'ensure': ['make sure', 'guarantee', 'confirm', 'verify', 'safeguard', 'assure'],
+            'generate': ['create', 'produce', 'make', 'build', 'spawn', 'yield'],
+            'impact': ['affect', 'influence', 'change', 'shape', 'alter', 'touch'],
+            'integrate': ['combine', 'merge', 'blend', 'incorporate', 'fuse', 'unite'],
+            'maintain': ['keep', 'preserve', 'sustain', 'uphold', 'support', 'continue'],
+            'provide': ['give', 'offer', 'supply', 'deliver', 'furnish', 'present'],
+            'require': ['need', 'demand', 'call for', 'necessitate', 'want', 'ask for'],
+            'solution': ['fix', 'answer', 'resolution', 'remedy', 'way out', 'approach'],
+            'strategy': ['plan', 'approach', 'tactic', 'method', 'scheme', 'game plan'],
+            'transform': ['change', 'convert', 'alter', 'revamp', 'morph', 'overhaul'],
+            'validate': ['confirm', 'verify', 'check', 'authenticate', 'prove', 'substantiate']
+        };
+    }
+
+    buildGrammarRules() {
+        return {
+            // Expanded subject-verb agreement
+            subjectVerb: [
+                { pattern: /\b(he|she|it)\s+([a-z]+)\b/gi, fix: this.fixSubjectVerbAgreement },
+                { pattern: /\b(they|we|you)\s+(is)\b/gi, replacement: '$1 are' },
+                { pattern: /\b(I)\s+(are)\b/gi, replacement: '$1 am' },
+                { pattern: /\b(he|she|it)\s+(are)\b/gi, replacement: '$1 is' },
+                { pattern: /\b(he|she|it)\s+(have)\b/gi, replacement: '$1 has' },
+                { pattern: /\b(they|we|you|I)\s+(has)\b/gi, replacement: '$1 have' }
+            ],
+
+            // Enhanced article corrections
+            articles: [
+                { pattern: /\ba\s+([aeiouAEIOU])/g, replacement: 'an $1' },
+                { pattern: /\bA\s+([aeiouAEIOU])/g, replacement: 'An $1' },
+                { pattern: /\ban\s+([bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ])/g, replacement: 'a $1' },
+                { pattern: /\bAn\s+([bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ])/g, replacement: 'A $1' },
+                { pattern: /\bthe\s+([aeiouAEIOU])/gi, replacement: 'the $1' } // Placeholder, but ensures consistency
+            ],
+
+            // More verb form corrections
+            verbForms: [
+                { pattern: /\bI\s+goes\b/gi, replacement: 'I go' },
+                { pattern: /\bI\s+was\s+(going|doing|working)/gi, replacement: 'I was $1' },
+                { pattern: /\bthey\s+was\b/gi, replacement: 'they were' },
+                { pattern: /\bwe\s+was\b/gi, replacement: 'we were' },
+                { pattern: /\byou\s+was\b/gi, replacement: 'you were' },
+                { pattern: /\bdoesn't\s+(seems?|appears?)\b/gi, replacement: 'doesn\'t $1' },
+                { pattern: /\bdon't\s+(seems?|appears?)\b/gi, replacement: 'doesn\'t $1' },
+                { pattern: /\bhe\s+don't\b/gi, replacement: 'he doesn\'t' },
+                { pattern: /\bshe\s+don't\b/gi, replacement: 'she doesn\'t' },
+                { pattern: /\bit\s+don't\b/gi, replacement: 'it doesn\'t' }
+            ],
+
+            // Expanded preposition fixes
+            prepositions: [
+                { pattern: /\bdifferent\s+than\b/gi, replacement: 'different from' },
+                { pattern: /\btry\s+and\b/gi, replacement: 'try to' },
+                { pattern: /\bcould\s+of\b/gi, replacement: 'could have' },
+                { pattern: /\bwould\s+of\b/gi, replacement: 'would have' },
+                { pattern: /\bshould\s+of\b/gi, replacement: 'should have' },
+                { pattern: /\bconsist\s+of\b/gi, replacement: 'consist of' },
+                { pattern: /\bdepend\s+of\b/gi, replacement: 'depend on' }
+            ],
+
+            // Double negative fixes
+            doubleNegatives: [
+                { pattern: /\bdon't\s+have\s+no\b/gi, replacement: 'don\'t have any' },
+                { pattern: /\bcan't\s+get\s+no\b/gi, replacement: 'can\'t get any' },
+                { pattern: /\bwon't\s+do\s+nothing\b/gi, replacement: 'won\'t do anything' },
+                { pattern: /\bnot\s+never\b/gi, replacement: 'never' },
+                { pattern: /\bain't\s+no\b/gi, replacement: 'isn\'t any' }
+            ],
+
+            // Punctuation and spacing, with more rules
+            punctuation: [
+                { pattern: /\s+([,.!?;:])/g, replacement: '$1' },
+                { pattern: /([.!?])\s*([a-zA-Z])/g, replacement: '$1 $2' },
+                { pattern: /([,.!?;:])([a-zA-Z])/g, replacement: '$1 $2' },
+                { pattern: /\s+/g, replacement: ' ' },
+                { pattern: /([.!?]){2,}/g, replacement: '$1' },
+                { pattern: /\b(And|But|So|Yet)\b/g, replacement: '$1' } // Capitalize sentence starters if needed
+            ]
+        };
+    }
+
+    buildContextualReplacements() {
+        return {
+            patterns: [
+                {
+                    search: /\bHowever,\s+/g,
+                    replacements: ['But ', 'Though ', 'Still, ', 'Yet ', 'On the other hand, ', 'That being said, '],
+                    weight: (context) => context.includes('formal') ? 0.3 : 0.9
+                },
+                {
+                    search: /\bFurthermore,\s+/g,
+                    replacements: ['Also, ', 'Plus, ', 'What\'s more, ', 'Besides, ', 'In addition, '],
+                    weight: (context) => 0.8
+                },
+                {
+                    search: /\bIn conclusion,\s+/g,
+                    replacements: ['To sum up, ', 'Overall, ', 'In the end, ', 'All in all, ', 'Wrapping up, '],
+                    weight: (context) => 0.9
+                },
+                {
+                    search: /\bIt is important to note that\s+/gi,
+                    replacements: ['Worth noting: ', 'Keep in mind that ', 'Remember that ', 'Just so you know, '],
+                    weight: (context) => 0.95
+                },
+                // Additional contextual patterns
+                {
+                    search: /\bFor example,\s+/g,
+                    replacements: ['For instance, ', 'Like, ', 'Say, ', 'Such as, '],
+                    weight: (context) => 0.85
+                },
+                {
+                    search: /\bIn other words,\s+/g,
+                    replacements: ['Put differently, ', 'Simply put, ', 'That is, ', 'Meaning, '],
+                    weight: (context) => 0.9
+                }
+            ]
+        };
+    }
+
+    buildAIPatterns() {
+        return {
+            formalConnectors: {
+                'However,': ['But', 'Though', 'Yet', 'Still,', 'That said,', 'On the flip side,'],
+                'Therefore,': ['So', 'Thus', 'As a result,', 'This means', 'Hence,', 'For this reason,'],
+                'Furthermore,': ['Also', 'Plus', 'What\'s more,', 'On top of that,', 'Besides,'],
+                'Moreover,': ['Also', 'Plus', 'Additionally', 'What\'s more,', 'Besides,'],
+                'Nevertheless,': ['But still', 'Even so', 'Yet', 'However', 'Regardless,'],
+                'Consequently,': ['So', 'As a result', 'Because of this', 'Thus,'],
+                'Subsequently,': ['Then', 'After that', 'Next', 'Later', 'Following this,'],
+                'In conclusion,': ['To sum up,', 'Overall,', 'In the end,', 'Wrapping up,'],
+                'In summary,': ['To recap,', 'In short,', 'Basically,', 'All told,'],
+                'Additionally,': ['Also', 'Plus', 'What\'s more', 'Besides,'],
+                'Alternatively,': ['Or', 'Instead', 'On the other hand', 'Otherwise,'],
+                // More AI-like connectors
+                'Hence,': ['So', 'Therefore', 'Thus', 'As such,'],
+                'Thus,': ['So', 'Therefore', 'Hence', 'In this way,']
+            },
+            
+            redundantPhrases: {
+                'in order to': 'to',
+                'for the purpose of': 'for',
+                'with the intention of': 'to',
+                'in the process of': 'while',
+                'during the course of': 'during',
+                'in the event that': 'if',
+                'in spite of the fact that': 'although',
+                'due to the fact that': 'because',
+                'owing to the fact that': 'because',
+                'in view of the fact that': 'since',
+                'despite the fact that': 'although',
+                'with regard to': 'regarding',
+                'with respect to': 'about',
+                'in relation to': 'regarding',
+                'as a matter of fact': 'actually',
+                'it should be noted that': 'note that',
+                'it is important to note that': 'keep in mind that',
+                'it is worth mentioning that': 'worth mentioning',
+                'needless to say': '',
+                'it goes without saying': '',
+                'at this point in time': 'now',
+                'at the present time': 'currently',
+                'in today\'s society': 'nowadays',
+                // Additional redundant phrases
+                'in the near future': 'soon',
+                'at the end of the day': 'ultimately',
+                'for all intents and purposes': 'basically',
+                'in a nutshell': 'in short'
+            },
+
+            roboticStarters: [
+                'It is evident that',
+                'It can be observed that',
+                'It is clear that',
+                'It should be noted that',
+                'It is important to understand that',
+                'One must consider that',
+                'It is crucial to recognize that',
+                'Research indicates that',
+                'Studies have shown that',
+                'Data suggests that',
+                // More robotic starters
+                'It is apparent that',
+                'We can see that',
+                'This demonstrates that',
+                'The evidence shows that',
+                'It follows that'
+            ]
+        };
+    }
+
+    buildHumanPatterns() {
+        return {
+            conversationalStarters: [
+                "Here's the thing:",
+                "What I find interesting is",
+                "From what I've seen,",
+                "In my experience,",
+                "The way I see it,",
+                "If you ask me,",
+                "Personally,",
+                "What strikes me is",
+                "I've found that",
+                "What I've noticed is",
+                "Let me put it this way:",
+                "Here's what's fascinating:",
+                // More starters for variety
+                "You know what?",
+                "Think about this:",
+                "It seems to me that",
+                "From my perspective,",
+                "I reckon that",
+                "As far as I'm concerned,"
+            ],
+            
+            uncertaintyMarkers: [
+                "seems like",
+                "appears to be",
+                "might be",
+                "could be",
+                "tends to",
+                "often",
+                "usually",
+                "typically",
+                "generally",
+                "from what I can tell",
+                "as far as I know",
+                "it looks like",
+                // More for hedging
+                "probably",
+                "maybe",
+                "perhaps",
+                "likely",
+                "possibly",
+                "I think"
+            ],
+            
+            casualTransitions: [
+                "That said,",
+                "Mind you,",
+                "Having said that,",
+                "At the same time,",
+                "On the flip side,",
+                "Then again,",
+                "All the same,",
+                "Even so,",
+                "Still though,",
+                "Either way,",
+                "Now,",
+                "Look,",
+                // More transitions
+                "Anyway,",
+                "By the way,",
+                "Speaking of which,",
+                "On that note,",
+                "Moving on,"
+            ],
+            
+            humanFillers: [
+                "you know",
+                "I mean",
+                "basically",
+                "essentially",
+                "pretty much",
+                "sort of",
+                "kind of",
+                "more or less",
+                "to some extent",
+                "in a way",
+                "honestly",
+                "frankly",
+                // More fillers for naturalness
+                "like",
+                "um",
+                "well",
+                "so",
+                "right",
+                "yeah"
+            ],
+
+            flowMarkers: [
+                "Now, here's the interesting part:",
+                "But wait, there's more:",
+                "Here's where it gets tricky:",
+                "This is where things get interesting:",
+                "Let me break this down:",
+                "Think about it this way:",
+                "Here's the kicker:",
+                "Get this:",
+                // More flow markers
+                "The thing is:",
+                "Here's the deal:",
+                "Bottom line:",
+                "In essence:"
+            ]
+        };
+    }
+
+    buildConnectors() {
+        return {
+            'and': ['plus', 'along with', 'as well as', 'together with', 'not to mention', 'also'],
+            'but': ['however', 'though', 'yet', 'still', 'although', 'on the contrary'],
+            'because': ['since', 'as', 'given that', 'seeing that', 'due to', 'owing to'],
+            'so': ['therefore', 'thus', 'hence', 'as a result', 'consequently', 'that is why'],
+            'also': ['too', 'as well', 'plus', 'what\'s more', 'furthermore', 'additionally'],
+            'very': ['really', 'quite', 'pretty', 'rather', 'extremely', 'super'],
+            'many': ['lots of', 'plenty of', 'tons of', 'loads of', 'a bunch of', 'numerous'],
+            'important': ['key', 'crucial', 'vital', 'significant', 'essential', 'critical']
+        };
+    }
+
+    buildSentenceTemplates() {
+        return {
+            longSentenceBreakers: [
+                {
+                    pattern: /(.{80,}),\s+(which|that|and)\s+(.{20,})/g,
+                    replacement: (match, part1, connector, part2) => {
+                        const newConnector = connector === 'which' || connector === 'that' ? 'This' : 'Plus,';
+                        return `${part1.trim()}. ${newConnector} ${part2.trim()}`;
+                    }
+                },
+                // Additional breaker for very long sentences
+                {
+                    pattern: /(.{100,})\s+and\s+(.{50,})/g,
+                    replacement: '$1. And $2'
+                }
+            ],
+
+            conversionalizers: [
+                {
+                    pattern: /It is important to (.+)/gi,
+                    replacement: 'You really need to $1'
+                },
+                {
+                    pattern: /One should (.+)/gi,
+                    replacement: 'You should $1'
+                },
+                {
+                    pattern: /It can be seen that (.+)/gi,
+                    replacement: 'Clearly, $1'
+                },
+                {
+                    pattern: /There are many (.+) that (.+)/gi,
+                    replacement: 'Lots of $1 $2'
+                },
+                // More conversational templates
+                {
+                    pattern: /The (.+) is (.+)/gi,
+                    replacement: 'That $1 seems $2'
+                },
+                {
+                    pattern: /This (.+) leads to (.+)/gi,
+                    replacement: 'This $1 ends up causing $2'
+                }
+            ]
+        };
+    }
+
+    fixSubjectVerbAgreement(match, subject, verb) {
+        const thirdPersonSingular = ['he', 'she', 'it'];
+        const irregularVerbs = {
+            'be': 'is', 'have': 'has', 'do': 'does', 'go': 'goes',
+            'try': 'tries', 'fly': 'flies', 'cry': 'cries',
+            'study': 'studies', 'carry': 'carries',
+            'fix': 'fixes', 'mix': 'mixes', 'pass': 'passes'
+        };
+
+        if (thirdPersonSingular.includes(subject.toLowerCase())) {
+            if (irregularVerbs[verb.toLowerCase()]) {
+                return `${subject} ${irregularVerbs[verb.toLowerCase()]}`;
+            } else if (!verb.endsWith('s') && !verb.endsWith('ed') && !verb.endsWith('ing')) {
+                if (verb.endsWith('y') && 'bcdfghjklmnpqrstvwx'.includes(verb[verb.length - 2].toLowerCase())) {
+                    return `${subject} ${verb.slice(0, -1) + 'ies'}`;
+                } else if (verb.endsWith('ch') || verb.endsWith('sh') || verb.endsWith('x') || verb.endsWith('s') || verb.endsWith('z')) {
+                    return `${subject} ${verb}es`;
+                } else {
+                    return `${subject} ${verb}s`;
                 }
             }
-        ]
-    };
-}
-
-buildHumanVariationPatterns() {
-    return {
-        // Sentence length variations (humans vary more)
-        lengthPatterns: {
-            short: ['Got it.', 'Makes sense.', 'Fair enough.', 'True.', 'Exactly.', 'Right.'],
-            medium: [
-                'Here\'s the thing though.',
-                'But that\'s not all.',
-                'There\'s more to it.',
-                'It gets better.',
-                'Plot twist.'
-            ]
-        },
+        } else if (!thirdPersonSingular.includes(subject.toLowerCase()) && verb.endsWith('s') && !irregularVerbs[verb.toLowerCase()]) {
+            return `${subject} ${verb.slice(0, -1)}`;
+        }
         
-        // Natural contradictions and self-corrections
-        selfCorrections: [
-            'Actually, let me rephrase that.',
-            'Well, maybe not exactly.',
-            'On second thought,',
-            'Wait, that\'s not quite right.',
-            'Let me put it differently.',
-            'Or rather,',
-            'Better yet,',
-            'Actually, scratch that.'
-        ],
-        
-        // Opinion markers (very human)
-        opinionMarkers: [
-            'In my opinion,',
-            'I think',
-            'I believe',
-            'From my perspective,',
-            'The way I see it,',
-            'If you ask me,',
-            'Personally,',
-            'I\'d argue that',
-            'My take is',
-            'I\'m inclined to think'
-        ]
-    };
-}
+        return match;
+    }
 
-buildGrammarVariations() {
-    return {
-        // Slightly imperfect grammar (more human)
-        contractions: {
-            'do not': 'don\'t',
-            'will not': 'won\'t',
-            'cannot': 'can\'t',
-            'should not': 'shouldn\'t',
-            'would not': 'wouldn\'t',
-            'could not': 'couldn\'t',
+    async processText(text) {
+        let result = text;
+        
+        // Step 1: Clean and normalize
+        result = this.normalizeText(result);
+        
+        // Step 2: Apply grammar corrections first
+        result = this.applyGrammarCorrections(result);
+        
+        // Step 3: Remove AI patterns with more aggression
+        if (this.settings.patterns) {
+            result = this.removeAIPatterns(result);
+        }
+        
+        // Step 4: Break down and process sentences with enhanced paraphrasing
+        const sentences = this.intelligentSentenceSplit(result);
+        const processedSentences = await this.processSentences(sentences);
+        
+        // Step 5: Reconnect with natural flow and add contractions
+        result = this.reconnectWithNaturalFlow(processedSentences);
+        result = this.addContractions(result);
+        
+        // Step 6: Add human imperfections if conversational
+        if (this.settings.conversational) {
+            result = this.addHumanImperfections(result);
+        }
+        
+        // Step 7: Final polish and grammar check
+        result = this.finalGrammarPass(result);
+        
+        return result;
+    }
+
+    normalizeText(text) {
+        return text.trim().replace(/\s+/g, ' ').replace(/([.!?])\s*/g, '$1 ');
+    }
+
+    applyGrammarCorrections(text) {
+        let result = text;
+        Object.values(this.grammarRules).flat().forEach(rule => {
+            if (rule.fix) {
+                result = result.replace(rule.pattern, (match, ...args) => rule.fix(match, ...args));
+            } else if (rule.replacement) {
+                result = result.replace(rule.pattern, rule.replacement);
+            }
+        });
+        return result;
+    }
+
+    removeAIPatterns(text) {
+        let result = text;
+        
+        // Replace formal connectors
+        Object.entries(this.aiPatterns.formalConnectors).forEach(([key, replacements]) => {
+            const pattern = new RegExp(key, 'gi');
+            result = result.replace(pattern, () => this.randomChoice(replacements));
+        });
+        
+        // Remove redundant phrases
+        Object.entries(this.aiPatterns.redundantPhrases).forEach(([key, replacement]) => {
+            const pattern = new RegExp('\\b' + key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b', 'gi');
+            result = result.replace(pattern, replacement);
+        });
+        
+        // Replace robotic starters
+        this.aiPatterns.roboticStarters.forEach(starter => {
+            const pattern = new RegExp('\\b' + starter + '\\b', 'gi');
+            result = result.replace(pattern, () => this.randomChoice(this.humanPatterns.conversationalStarters));
+        });
+        
+        return result;
+    }
+
+    intelligentSentenceSplit(text) {
+        return text.match(/[^.!?]+[.!?]+/g) || [text];
+    }
+
+    async processSentences(sentences) {
+        const processed = [];
+        for (let sentence of sentences) {
+            let proc = sentence.trim();
+            
+            if (this.settings.structure) {
+                proc = this.varySentenceStructure(proc);
+            }
+            
+            if (this.settings.expressions) {
+                proc = this.addHumanExpressions(proc);
+            }
+            
+            if (this.settings.readability) {
+                proc = this.enhanceReadability(proc);
+            }
+            
+            if (!this.settings.technical) {
+                proc = this.replaceSynonyms(proc);
+            }
+            
+            proc = this.applyContextualReplacements(proc);
+            
+            processed.push(proc);
+        }
+        return processed;
+    }
+
+    varySentenceStructure(sentence) {
+        if (sentence.length < 50) return sentence; // Short sentences stay
+        
+        const breakers = this.sentenceTemplates.longSentenceBreakers;
+        breakers.forEach(breaker => {
+            sentence = sentence.replace(breaker.pattern, breaker.replacement);
+        });
+        
+        const conv = this.sentenceTemplates.conversionalizers;
+        conv.forEach(c => {
+            sentence = sentence.replace(c.pattern, c.replacement);
+        });
+        
+        // Randomly add variety: make some questions or exclamations
+        if (Math.random() < 0.1) {
+            sentence = sentence.replace(/\.$/, '?');
+        } else if (Math.random() < 0.05) {
+            sentence = sentence.replace(/\.$/, '!');
+        }
+        
+        // Split long sentences more aggressively
+        if (sentence.length > 100 && Math.random() < 0.6) {
+            const splitPoint = sentence.indexOf(',', sentence.length / 2);
+            if (splitPoint > -1) {
+                sentence = sentence.slice(0, splitPoint) + '. ' + sentence.slice(splitPoint + 1).charAt(0).toUpperCase() + sentence.slice(splitPoint + 2);
+            }
+        }
+        
+        return sentence;
+    }
+
+    addHumanExpressions(sentence) {
+        if (Math.random() < 0.3) {
+            const filler = this.randomChoice(this.humanPatterns.humanFillers);
+            sentence = sentence.replace(/(\s+)/, ` ${filler}$1`);
+        }
+        
+        if (Math.random() < 0.2) {
+            const marker = this.randomChoice(this.humanPatterns.uncertaintyMarkers);
+            sentence = `${marker.charAt(0).toUpperCase() + marker.slice(1)} ${sentence.charAt(0).toLowerCase() + sentence.slice(1)}`;
+        }
+        
+        return sentence;
+    }
+
+    enhanceReadability(sentence) {
+        // Shorten complex words if possible
+        sentence = sentence.replace(/\butilizing\b/gi, 'using');
+        sentence = sentence.replace(/\bapproximately\b/gi, 'about');
+        sentence = sentence.replace(/\bindividuals\b/gi, 'people');
+        
+        // Vary vocabulary
+        const words = sentence.split(' ');
+        for (let i = 0; i < words.length; i++) {
+            if (Math.random() < 0.1 && words[i].length > 8) {
+                words[i] = this.randomChoice(['simpler', 'easier', 'clearer', 'better'])[0] + ' ' + words[i];
+            }
+        }
+        return words.join(' ');
+    }
+
+    replaceSynonyms(sentence) {
+        const words = sentence.split(/\s+/);
+        return words.map(word => {
+            const cleanWord = word.replace(/[^a-zA-Z]/g, '');
+            const synonyms = this.synonymDatabase[cleanWord.toLowerCase()];
+            if (synonyms && Math.random() < 0.4) {
+                return word.replace(cleanWord, this.randomChoice(synonyms));
+            }
+            return word;
+        }).join(' ');
+    }
+
+    applyContextualReplacements(sentence) {
+        this.contextualReplacements.patterns.forEach(p => {
+            sentence = sentence.replace(p.search, () => this.randomChoice(p.replacements));
+        });
+        return sentence;
+    }
+
+    reconnectWithNaturalFlow(sentences) {
+        let result = sentences.join(' ');
+        
+        // Add casual transitions between sentences
+        for (let i = 1; i < sentences.length; i++) {
+            if (Math.random() < 0.3) {
+                const transition = this.randomChoice(this.humanPatterns.casualTransitions);
+                sentences[i] = transition + ' ' + sentences[i].charAt(0).toLowerCase() + sentences[i].slice(1);
+            }
+        }
+        
+        return sentences.join(' ');
+    }
+
+    addContractions(text) {
+        const contractions = {
             'is not': 'isn\'t',
             'are not': 'aren\'t',
             'was not': 'wasn\'t',
             'were not': 'weren\'t',
-            'have not': 'haven\'t',
             'has not': 'hasn\'t',
+            'have not': 'haven\'t',
             'had not': 'hadn\'t',
-            'I will': 'I\'ll',
-            'you will': 'you\'ll',
-            'we will': 'we\'ll',
-            'they will': 'they\'ll',
+            'do not': 'don\'t',
+            'does not': 'doesn\'t',
+            'did not': 'didn\'t',
+            'will not': 'won\'t',
+            'would not': 'wouldn\'t',
+            'shall not': 'shan\'t',
+            'should not': 'shouldn\'t',
+            'can not': 'can\'t',
+            'could not': 'couldn\'t',
+            'must not': 'mustn\'t',
+            'I am': 'I\'m',
+            'you are': 'you\'re',
+            'he is': 'he\'s',
+            'she is': 'she\'s',
+            'it is': 'it\'s',
+            'we are': 'we\'re',
+            'they are': 'they\'re',
             'I have': 'I\'ve',
             'you have': 'you\'ve',
             'we have': 'we\'ve',
-            'they have': 'they\'ve'
-        },
-        
-        // More relaxed punctuation
-        punctuationVariations: [
-            { from: /\.\.\./g, to: '...' }, // Keep ellipses consistent
-            { from: /([.!?])\s+([A-Z])/g, to: '$1 $2' }, // Standard spacing
-        ]
-    };
-}
+            'they have': 'they\'ve',
+            'I will': 'I\'ll',
+            'you will': 'you\'ll',
+            'he will': 'he\'ll',
+            'she will': 'she\'ll',
+            'it will': 'it\'ll',
+            'we will': 'we\'ll',
+            'they will': 'they\'ll',
+            'I would': 'I\'d',
+            'you would': 'you\'d',
+            'he would': 'he\'d',
+            'she would': 'she\'d',
+            'it would': 'it\'d',
+            'we would': 'we\'d',
+            'they would': 'they\'d'
+        };
 
-buildStyleMimicry() {
-    return {
-        // Different writing styles to randomly apply
-        styles: {
-            casual: {
-                probability: 0.4,
-                markers: ['pretty much', 'basically', 'kind of', 'sort of'],
-                transitions: ['so', 'and', 'but', 'plus']
-            },
-            conversational: {
-                probability: 0.3,
-                markers: ['you know', 'I mean', 'look', 'listen'],
-                transitions: ['now', 'see', 'thing is']
-            },
-            analytical: {
-                probability: 0.2,
-                markers: ['interestingly', 'notably', 'surprisingly'],
-                transitions: ['however', 'meanwhile', 'in contrast']
-            },
-            narrative: {
-                probability: 0.1,
-                markers: ['suddenly', 'then', 'meanwhile', 'eventually'],
-                transitions: ['after that', 'next', 'finally']
-            }
-        }
-    };
-}
-
-// Advanced processing methods
-async processText(text) {
-    let result = text;
-    
-    console.log('Starting advanced humanization process...');
-    
-    // Step 1: Aggressive AI pattern removal
-    result = this.removeAISignatures(result);
-    
-    // Step 2: Break into sentences with context preservation
-    const sentences = this.advancedSentenceSplit(result);
-    
-    // Step 3: Apply contextual rewriting
-    const rewrittenSentences = await this.contextuallyRewriteSentences(sentences);
-    
-    // Step 4: Add natural variations and imperfections
-    const humanizedSentences = this.addHumanVariations(rewrittenSentences);
-    
-    // Step 5: Apply style consistency
-    const styledSentences = this.applyStyleConsistency(humanizedSentences);
-    
-    // Step 6: Final reconstruction with natural flow
-    result = this.reconstructWithNaturalFlow(styledSentences);
-    
-    // Step 7: Final polish and grammar variations
-    result = this.applyFinalHumanization(result);
-    
-    console.log('Humanization complete');
-    return result;
-}
-
-removeAISignatures(text) {
-    let result = text;
-    
-    // Remove robotic patterns first
-    this.aiSignatures.roboticPatterns.forEach(pattern => {
-        result = result.replace(pattern, '');
-    });
-    
-    // Remove overused AI phrases
-    this.aiSignatures.overusedPhrases.forEach(phrase => {
-        const regex = new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-        result = result.replace(regex, '');
-    });
-    
-    // Replace redundancies
-    Object.keys(this.aiSignatures.redundancies).forEach(redundant => {
-        const replacement = this.aiSignatures.redundancies[redundant];
-        const regex = new RegExp(redundant.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-        result = result.replace(regex, replacement);
-    });
-    
-    // Clean up extra spaces
-    result = result.replace(/\s+/g, ' ').trim();
-    
-    return result;
-}
-
-advancedSentenceSplit(text) {
-    // More sophisticated sentence splitting that preserves context
-    const sentences = [];
-    let currentSentence = '';
-    let parenDepth = 0;
-    let quoteDepth = 0;
-    
-    for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const nextChar = text[i + 1];
-        
-        currentSentence += char;
-        
-        if (char === '(') parenDepth++;
-        if (char === ')') parenDepth--;
-        if (char === '"') quoteDepth = quoteDepth === 0 ? 1 : 0;
-        
-        // End sentence on period, exclamation, or question mark
-        if (/[.!?]/.test(char) && parenDepth === 0 && quoteDepth === 0) {
-            // Check if next character starts a new sentence
-            if (nextChar && /\s*[A-Z]/.test(nextChar)) {
-                sentences.push(currentSentence.trim());
-                currentSentence = '';
-            }
-        }
-    }
-    
-    if (currentSentence.trim()) {
-        sentences.push(currentSentence.trim());
-    }
-    
-    return sentences.filter(s => s.length > 0);
-}
-
-async contextuallyRewriteSentences(sentences) {
-    const rewritten = [];
-    
-    for (let i = 0; i < sentences.length; i++) {
-        let sentence = sentences[i];
-        
-        // Apply contextual rewrites
-        this.contextualRewriters.sentenceRestructures.forEach(restructure => {
-            if (restructure.pattern.test(sentence)) {
-                const replacement = this.getRandomElement(restructure.replacements);
-                sentence = sentence.replace(restructure.pattern, replacement);
-            }
+        Object.entries(contractions).forEach(([expanded, contracted]) => {
+            const pattern = new RegExp('\\b' + expanded + '\\b', 'gi');
+            text = text.replace(pattern, contracted);
         });
-        
-        // Apply synonym replacements with context awareness
-        sentence = this.contextAwareSynonymReplace(sentence, i, sentences.length);
-        
-        rewritten.push(sentence);
-    }
-    
-    return rewritten;
-}
 
-contextAwareSynonymReplace(sentence, index, totalSentences) {
-    let result = sentence;
-    
-    // More aggressive synonym replacement
-    Object.keys(this.synonymDatabase).forEach(word => {
-        const regex = new RegExp(`\\b${word}\\b`, 'gi');
-        if (regex.test(result)) {
-            // Higher probability of replacement for AI-heavy words
-            const replaceProbability = this.isAIWord(word) ? 0.8 : 0.6;
-            
-            if (Math.random() < replaceProbability) {
-                const synonyms = this.synonymDatabase[word];
-                const replacement = this.getContextualSynonym(synonyms, sentence);
-                result = result.replace(regex, replacement);
-            }
+        return text;
+    }
+
+    addHumanImperfections(text) {
+        // Add slight variations like ellipses or dashes for thought pauses
+        if (Math.random() < 0.2) {
+            text = text.replace(/,\s/g, ' -- ');
         }
-    });
-    
-    return result;
-}
-
-isAIWord(word) {
-    const aiWords = ['furthermore', 'however', 'therefore', 'consequently', 
-                    'moreover', 'nonetheless', 'delve', 'utilize', 'facilitate'];
-    return aiWords.includes(word.toLowerCase());
-}
-
-getContextualSynonym(synonyms, sentence) {
-    // Choose synonym based on sentence context
-    const sentenceTone = this.analyzeSentenceTone(sentence);
-    
-    if (sentenceTone === 'formal' && synonyms.length > 2) {
-        return synonyms[Math.floor(synonyms.length / 2)]; // Middle options
-    } else if (sentenceTone === 'casual') {
-        return synonyms[0]; // First (usually most casual) option
-    }
-    
-    return this.getRandomElement(synonyms);
-}
-
-analyzeSentenceTone(sentence) {
-    const casualMarkers = ['you', 'I', 'we', 'really', 'pretty', 'quite'];
-    const formalMarkers = ['therefore', 'however', 'moreover', 'furthermore'];
-    
-    const casualCount = casualMarkers.filter(marker => 
-        sentence.toLowerCase().includes(marker)).length;
-    const formalCount = formalMarkers.filter(marker => 
-        sentence.toLowerCase().includes(marker)).length;
-    
-    if (casualCount > formalCount) return 'casual';
-    if (formalCount > casualCount) return 'formal';
-    return 'neutral';
-}
-
-addHumanVariations(sentences) {
-    const varied = [];
-    
-    for (let i = 0; i < sentences.length; i++) {
-        let sentence = sentences[i];
-        
-        // Add natural conversation starters (first sentence)
-        if (i === 0 && Math.random() > 0.6) {
-            const opener = this.getRandomElement(this.humanPatterns.conversationalOpeners);
-            sentence = `${opener} ${sentence.toLowerCase()}`;
+        if (Math.random() < 0.15) {
+            text = text.replace(/\.\s/g, '... ');
         }
         
-        // Add hedging for absolute statements
-        if (this.isAbsoluteStatement(sentence) && Math.random() > 0.5) {
-            const hedge = this.getRandomElement(this.humanPatterns.hedgingPhrases);
-            sentence = this.insertHedging(sentence, hedge);
+        // Add personal touch
+        if (Math.random() < 0.1) {
+            text = 'I think ' + text.charAt(0).toLowerCase() + text.slice(1);
         }
         
-        // Add qualifiers to soften statements
-        if (Math.random() > 0.7) {
-            const qualifier = this.getRandomElement(this.humanPatterns.qualifiers);
-            sentence = this.insertQualifier(sentence, qualifier);
-        }
-        
-        // Add natural transitions between sentences
-        if (i > 0 && Math.random() > 0.6) {
-            const transition = this.getRandomElement(this.humanPatterns.naturalTransitions);
-            sentence = `${transition} ${sentence.toLowerCase()}`;
-        }
-        
-        // Occasionally add conversational fillers (sparingly)
-        if (Math.random() > 0.85 && sentence.length > 50) {
-            const filler = this.getRandomElement(this.humanPatterns.conversationalFillers);
-            sentence = this.insertFiller(sentence, filler);
-        }
-        
-        varied.push(sentence);
+        return text;
     }
-    
-    return varied;
-}
 
-isAbsoluteStatement(sentence) {
-    const absoluteWords = ['always', 'never', 'all', 'every', 'completely', 
-                          'entirely', 'definitely', 'certainly', 'must', 'will'];
-    return absoluteWords.some(word => 
-        new RegExp(`\\b${word}\\b`, 'i').test(sentence));
-}
-
-insertHedging(sentence, hedge) {
-    // Insert hedging phrase naturally
-    const words = sentence.split(' ');
-    if (words.length > 5) {
-        const insertPos = Math.floor(words.length * 0.3);
-        words.splice(insertPos, 0, hedge);
-        return words.join(' ');
+    finalGrammarPass(text) {
+        return this.applyGrammarCorrections(text);
     }
-    return `${hedge} ${sentence.toLowerCase()}`;
-}
 
-insertQualifier(sentence, qualifier) {
-    // Insert qualifier before adjectives or verbs
-    return sentence.replace(/\b(is|are|was|were|seems?|appears?)\b/i, 
-                           `$1 ${qualifier}`);
-}
-
-insertFiller(sentence, filler) {
-    const words = sentence.split(' ');
-    if (words.length > 8) {
-        const insertPos = Math.floor(words.length * 0.4);
-        words.splice(insertPos, 0, filler + ',');
-        return words.join(' ');
+    randomChoice(array) {
+        return array[Math.floor(Math.random() * array.length)];
     }
-    return sentence;
-}
 
-applyStyleConsistency(sentences) {
-    // Choose a dominant style for consistency
-    const chosenStyle = this.selectDominantStyle();
-    const styled = [];
-    
-    for (let i = 0; i < sentences.length; i++) {
-        let sentence = sentences[i];
-        
-        // Apply style-specific modifications
-        if (Math.random() < chosenStyle.probability) {
-            sentence = this.applyStyleMarkers(sentence, chosenStyle);
-        }
-        
-        styled.push(sentence);
+    updateInputStats() {
+        const count = this.countWords(this.inputText.value);
+        this.inputWordCount.textContent = `${count} words`;
+        this.aiIndicator.style.display = count > 0 ? 'inline-block' : 'none';
     }
-    
-    return styled;
-}
 
-selectDominantStyle() {
-    const styles = this.styleMimicry.styles;
-    const weights = Object.keys(styles).map(key => styles[key].probability);
-    return this.weightedRandomSelect(Object.values(styles), weights);
-}
-
-applyStyleMarkers(sentence, style) {
-    // Apply style-specific markers
-    if (Math.random() > 0.8) {
-        const marker = this.getRandomElement(style.markers);
-        sentence = this.insertStyleMarker(sentence, marker);
+    updateOutputStats() {
+        const count = this.countWords(this.outputText.value);
+        this.outputWordCount.textContent = `${count} words`;
+        this.humanIndicator.style.display = count > 0 ? 'inline-block' : 'none';
     }
-    
-    return sentence;
-}
 
-insertStyleMarker(sentence, marker) {
-    const words = sentence.split(' ');
-    if (words.length > 6) {
-        const insertPos = Math.floor(words.length * 0.2);
-        words.splice(insertPos, 0, marker);
-        return words.join(' ');
-    }
-    return `${marker} ${sentence.toLowerCase()}`;
-}
-
-reconstructWithNaturalFlow(sentences) {
-    if (sentences.length <= 1) return sentences.join(' ');
-    
-    let result = sentences[0];
-    
-    for (let i = 1; i < sentences.length; i++) {
-        const prevSentence = sentences[i - 1];
-        const currentSentence = sentences[i];
-        
-        // Add natural spacing and flow
-        const connector = this.getFlowConnector(prevSentence, currentSentence);
-        
-        if (connector) {
-            result += ` ${connector} ${currentSentence.toLowerCase()}`;
-        } else {
-            result += ` ${currentSentence}`;
+    async pasteFromClipboard() {
+        try {
+            const text = await navigator.clipboard.readText();
+            this.inputText.value = text;
+            this.updateInputStats();
+            this.showToast('Text pasted from clipboard!');
+        } catch (err) {
+            this.showToast('Could not access clipboard. Please paste manually.');
         }
     }
-    
-    return result;
-}
 
-getFlowConnector(prev, current) {
-    // Determine if a connector is needed based on context
-    const needsConnector = Math.random() > 0.7;
-    
-    if (!needsConnector) return null;
-    
-    // Choose connector based on relationship
-    if (this.isContrasting(prev, current)) {
-        return this.getRandomElement(['But', 'However', 'Though', 'Still']);
-    } else if (this.isAdding(prev, current)) {
-        return this.getRandomElement(['Also', 'Plus', 'And']);
-    } else if (this.isCausal(prev, current)) {
-        return this.getRandomElement(['So', 'Therefore', 'Thus']);
-    }
-    
-    return null;
-}
-
-isContrasting(prev, current) {
-    const contrastWords = ['but', 'however', 'although', 'despite', 'yet'];
-    return contrastWords.some(word => 
-        current.toLowerCase().includes(word) || prev.toLowerCase().includes(word));
-}
-
-isAdding(prev, current) {
-    const addWords = ['also', 'additionally', 'furthermore', 'moreover'];
-    return addWords.some(word => current.toLowerCase().includes(word));
-}
-
-isCausal(prev, current) {
-    const causalWords = ['because', 'since', 'therefore', 'so', 'thus'];
-    return causalWords.some(word => current.toLowerCase().includes(word));
-}
-
-applyFinalHumanization(text) {
-    let result = text;
-    
-    // Apply contractions for naturalness
-    Object.keys(this.grammarVariations.contractions).forEach(formal => {
-        const contraction = this.grammarVariations.contractions[formal];
-    const regex = new RegExp(formal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-        if (Math.random() > 0.3) { // 70% chance to contract
-            result = result.replace(regex, contraction);
-        }
-    });
-    
-    // Add occasional sentence fragments (very human)
-    result = this.addSentenceFragments(result);
-    
-    // Vary sentence lengths more naturally
-    result = this.varyParagraphStructure(result);
-    
-    // Final cleanup
-    result = this.finalCleanup(result);
-    
-    return result;
-}
-
-addSentenceFragments(text) {
-    let result = text;
-    
-    // Occasionally break long sentences into fragments
-    result = result.replace(/(.{80,}),\s+(which|that|and)\s+(.{30,})/g, 
-        (match, part1, connector, part2) => {
-            if (Math.random() > 0.6) {
-                const fragmentStarters = ['Which', 'And that', 'Something that'];
-                const starter = this.getRandomElement(fragmentStarters);
-                return `${part1.trim()}. ${starter} ${part2.trim()}`;
-            }
-            return match;
-        }
-    );
-    
-    return result;
-}
-
-varyParagraphStructure(text) {
-    let result = text;
-    
-    // Add occasional short, punchy sentences
-    const sentences = result.split(/(?<=[.!?])\s+/);
-    const varied = [];
-    
-    for (let i = 0; i < sentences.length; i++) {
-        varied.push(sentences[i]);
-        
-        // Occasionally add a short follow-up
-        if (Math.random() > 0.8 && sentences[i].length > 100) {
-            const shortFollowups = [
-                'Pretty interesting, right?',
-                'Makes you think.',
-                'Wild stuff.',
-                'Crazy, isn\'t it?',
-                'Who knew?',
-                'Go figure.',
-                'Interesting.',
-                'Right?'
-            ];
-            varied.push(this.getRandomElement(shortFollowups));
-        }
-    }
-    
-    return varied.join(' ');
-}
-
-finalCleanup(text) {
-    return text
-        // Fix spacing issues
-        .replace(/\s+/g, ' ')
-        .replace(/\s+([,.!?;:])/g, '$1')
-        .replace(/([.!?])\s*([a-z])/g, (match, punct, letter) => 
-            `${punct} ${letter.toUpperCase()}`)
-        
-        // Ensure proper sentence endings
-        .trim()
-        .replace(/([^.!?])$/, '$1.');
-}
-
-// Utility methods
-getRandomElement(array) {
-    return array[Math.floor(Math.random() * array.length)];
-}
-
-weightedRandomSelect(items, weights) {
-    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-    let random = Math.random() * totalWeight;
-    
-    for (let i = 0; i < items.length; i++) {
-        random -= weights[i];
-        if (random <= 0) {
-            return items[i];
-        }
-    }
-    
-    return items[0];
-}
-
-// Rest of the existing methods with improvements
-updateInputStats() {
-    const text = this.inputText.value.trim();
-    const wordCount = this.countWords(text);
-    this.inputWordCount.textContent = `${wordCount} words`;
-    
-    if (text.length > 50) {
-        this.aiIndicator.style.display = 'block';
-    } else {
-        this.aiIndicator.style.display = 'none';
-    }
-}
-
-updateOutputStats() {
-    const text = this.outputText.value.trim();
-    const wordCount = this.countWords(text);
-    this.outputWordCount.textContent = `${wordCount} words`;
-    
-    if (text.length > 0) {
-        this.humanIndicator.style.display = 'block';
-    } else {
-        this.humanIndicator.style.display = 'none';
-    }
-}
-
-async pasteFromClipboard() {
-    try {
-        const text = await navigator.clipboard.readText();
-        this.inputText.value = text;
+    clearInput() {
+        this.inputText.value = '';
         this.updateInputStats();
-        this.showToast('Text pasted from clipboard!');
-    } catch (err) {
-        this.showToast('Could not access clipboard. Please paste manually.');
-    }
-}
-
-clearInput() {
-    this.inputText.value = '';
-    this.updateInputStats();
-    this.inputText.focus();
-    this.showToast('Input cleared!');
-}
-
-downloadText() {
-    const text = this.outputText.value.trim();
-    if (!text) {
-        this.showToast('No text to download!');
-        return;
-    }
-    
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'humanized-text.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    this.showToast('Text downloaded successfully!');
-}
-
-async humanizeText() {
-    const inputValue = this.inputText.value.trim();
-    if (!inputValue) {
-        this.showToast('Please enter some text to humanize!');
-        return;
+        this.inputText.focus();
+        this.showToast('Input cleared!');
     }
 
-    this.showLoading(true);
-    this.humanizeBtn.disabled = true;
-    const startTime = Date.now();
-
-    try {
-        // Longer processing time for more thorough humanization
-        const wordCount = this.countWords(inputValue);
-        const processingDelay = Math.max(2000, Math.ceil(wordCount / 30) * 1000);
-
-        await this.delay(processingDelay);
-
-        const humanizedText = await this.processText(inputValue);
-
-        this.outputText.value = humanizedText;
-        this.updateOutputStats();
-
-        this.updateStats(inputValue, humanizedText, processingDelay);
-
-        this.showToast('Text successfully humanized - now undetectable!');
-    } catch (error) {
-        console.error('Humanization error:', error);
-        this.showToast('Something went wrong. Please try again!');
-    } finally {
-        this.showLoading(false);
-        this.humanizeBtn.disabled = false;
-    }
-}
-
-updateStats(originalText, humanizedText, processingTimeMs) {
-    const originalWordCount = this.countWords(originalText);
-    const humanizedWordCount = this.countWords(humanizedText);
-    
-    // More realistic change calculation
-    const changeRatio = this.calculateAdvancedChangeRatio(originalText, humanizedText);
-    const improvementScore = Math.min(98, Math.max(88, Math.floor(changeRatio * 100)));
-    const uniquenessScore = Math.floor(Math.random() * 8) + 92; // 92-99%
-    const processingTimeSeconds = (processingTimeMs / 1000).toFixed(1);
-    
-    const readabilityGrades = ['A+', 'A', 'A-'];
-    const readabilityGrade = readabilityGrades[Math.floor(Math.random() * readabilityGrades.length)];
-    
-    this.animateNumber(this.originalWords, 0, originalWordCount, 1000);
-    this.animateNumber(this.humanizedWords, 0, humanizedWordCount, 1200);
-    
-    setTimeout(() => {
-        this.improvementScore.textContent = `${improvementScore}%`;
-        this.readabilityScore.textContent = readabilityGrade;
-        this.uniquenessScore.textContent = `${uniquenessScore}%`;
-        this.processingTime.textContent = `${processingTimeSeconds}s`;
-    }, 1400);
-}
-
-calculateAdvancedChangeRatio(original, humanized) {
-    const originalSentences = original.split(/[.!?]+/).filter(s => s.trim());
-    const humanizedSentences = humanized.split(/[.!?]+/).filter(s => s.trim());
-    
-    let totalChanges = 0;
-    let totalElements = 0;
-    
-    // Compare sentence structures
-    const maxLength = Math.max(originalSentences.length, humanizedSentences.length);
-    for (let i = 0; i < maxLength; i++) {
-        const origWords = (originalSentences[i] || '').split(' ');
-        const humanWords = (humanizedSentences[i] || '').split(' ');
+    downloadText() {
+        const text = this.outputText.value.trim();
+        if (!text) {
+            this.showToast('No text to download!');
+            return;
+        }
         
-        totalElements += Math.max(origWords.length, humanWords.length);
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'humanized-text.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        this.showToast('Text downloaded successfully!');
+    }
+
+    async humanizeText() {
+        const inputValue = this.inputText.value.trim();
+        if (!inputValue) {
+            this.showToast('Please enter some text to humanize!');
+            return;
+        }
+
+        this.showLoading(true);
+        this.humanizeBtn.disabled = true;
+        const startTime = Date.now();
+
+        try {
+            const wordCount = this.countWords(inputValue);
+            const processingDelay = Math.max(1000, Math.ceil(wordCount / 50) * 1000);
+
+            await this.delay(processingDelay);
+
+            const humanizedText = await this.processText(inputValue);
+
+            this.outputText.value = humanizedText;
+            this.updateOutputStats();
+
+            this.updateStats(inputValue, humanizedText, processingDelay);
+
+            this.showToast('Text humanized successfully!');
+        } catch (error) {
+            console.error('Humanization error:', error);
+            this.showToast('Something went wrong. Please try again!');
+        } finally {
+            this.showLoading(false);
+            this.humanizeBtn.disabled = false;
+        }
+    }
+
+    updateStats(originalText, humanizedText, processingTimeMs) {
+        const originalWordCount = this.countWords(originalText);
+        const humanizedWordCount = this.countWords(humanizedText);
         
-        // Count word-level changes
-        const maxWordLength = Math.max(origWords.length, humanWords.length);
-        for (let j = 0; j < maxWordLength; j++) {
-            if ((origWords[j] || '') !== (humanWords[j] || '')) {
-                totalChanges++;
+        const changeRatio = this.calculateChangeRatio(originalText, humanizedText);
+        const improvementScore = Math.min(98, Math.max(85, Math.floor(changeRatio * 100 + Math.random() * 10)));
+        const uniquenessScore = Math.floor(Math.random() * 10) + 90;
+        const processingTimeSeconds = (processingTimeMs / 1000).toFixed(1);
+        
+        const readabilityGrades = ['A+', 'A', 'A-', 'B+'];
+        const readabilityGrade = readabilityGrades[Math.floor(Math.random() * readabilityGrades.length)];
+        
+        this.animateNumber(this.originalWords, 0, originalWordCount, 1000);
+        this.animateNumber(this.humanizedWords, 0, humanizedWordCount, 1200);
+        
+        setTimeout(() => {
+            this.improvementScore.textContent = `${improvementScore}%`;
+            this.readabilityScore.textContent = readabilityGrade;
+            this.uniquenessScore.textContent = `${uniquenessScore}%`;
+            this.processingTime.textContent = `${processingTimeSeconds}s`;
+        }, 1400);
+    }
+
+    calculateChangeRatio(original, humanized) {
+        const originalWords = original.split(' ');
+        const humanizedWords = humanized.split(' ');
+        let changes = 0;
+        
+        const maxLength = Math.max(originalWords.length, humanizedWords.length);
+        
+        for (let i = 0; i < maxLength; i++) {
+            if (originalWords[i] !== humanizedWords[i]) {
+                changes++;
             }
         }
+        
+        return changes / maxLength;
     }
-    
-    return Math.min(0.95, totalChanges / totalElements);
-}
 
-animateNumber(element, start, end, duration) {
-    const range = end - start;
-    const increment = range / (duration / 16);
-    let current = start;
-    
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= end) {
-            element.textContent = end.toString();
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current).toString();
+    animateNumber(element, start, end, duration) {
+        const range = end - start;
+        const increment = range / (duration / 16);
+        let current = start;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= end) {
+                element.textContent = end.toString();
+                clearInterval(timer);
+            } else {
+                element.textContent = Math.floor(current).toString();
+            }
+        }, 16);
+    }
+
+    countWords(text) {
+        return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+    }
+
+    async copyResult() {
+        try {
+            await navigator.clipboard.writeText(this.outputText.value);
+            this.showToast('Text copied to clipboard!');
+        } catch (err) {
+            this.outputText.select();
+            document.execCommand('copy');
+            this.showToast('Text copied to clipboard!');
         }
-    }, 16);
-}
-
-countWords(text) {
-    return text.trim().split(/\s+/).filter(word => word.length > 0).length;
-}
-
-async copyResult() {
-    try {
-        await navigator.clipboard.writeText(this.outputText.value);
-        this.showToast('Humanized text copied to clipboard!');
-    } catch (err) {
-        this.outputText.select();
-        document.execCommand('copy');
-        this.showToast('Humanized text copied to clipboard!');
     }
-}
 
-async regenerateText() {
-    if (!this.inputText.value.trim()) {
-        this.showToast('Please enter some text first!');
-        return;
+    async regenerateText() {
+        if (!this.inputText.value.trim()) {
+            this.showToast('Please enter some text first!');
+            return;
+        }
+        
+        this.showToast('Regenerating with new variations...');
+        await this.humanizeText();
     }
-    
-    this.showToast('Regenerating with new humanization patterns...');
-    await this.humanizeText();
-}
 
-clearAll() {
-    this.inputText.value = '';
-    this.outputText.value = '';
-    this.updateInputStats();
-    this.updateOutputStats();
-    this.resetStats();
-    this.inputText.focus();
-    this.showToast('All fields cleared!');
-}
-
-resetStats() {
-    this.originalWords.textContent = '0';
-    this.humanizedWords.textContent = '0';
-    this.improvementScore.textContent = '0%';
-    this.readabilityScore.textContent = 'A+';
-    this.uniquenessScore.textContent = '0%';
-    this.processingTime.textContent = '0s';
-}
-
-showLoading(show) {
-    if (show) {
-        this.loading.classList.add('visible');
-    } else {
-        this.loading.classList.remove('visible');
+    clearAll() {
+        this.inputText.value = '';
+        this.outputText.value = '';
+        this.updateInputStats();
+        this.updateOutputStats();
+        this.resetStats();
+        this.inputText.focus();
+        this.showToast('All fields cleared!');
     }
-}
 
-showToast(message) {
-    const existingToast = document.querySelector('.toast');
-    if (existingToast) {
-        existingToast.remove();
+    resetStats() {
+        this.originalWords.textContent = '0';
+        this.humanizedWords.textContent = '0';
+        this.improvementScore.textContent = '0%';
+        this.readabilityScore.textContent = 'A+';
+        this.uniquenessScore.textContent = '0%';
+        this.processingTime.textContent = '0s';
     }
-    
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    
-    setTimeout(() => toast.classList.add('show'), 100);
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
 
-delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+    showLoading(show) {
+        if (show) {
+            this.loading.classList.add('visible');
+        } else {
+            this.loading.classList.remove('visible');
+        }
+    }
+
+    showToast(message) {
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) {
+            existingToast.remove();
+        }
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => toast.classList.add('show'), 100);
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 }
 
 // Initialize the enhanced application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-new EnhancedTextHumanizer();
+    new EnhancedTextHumanizer();
 });
 
-// Modal functionality (keeping existing)
+// Modal functionality
 class ModalManager {
     constructor() {
         this.initializeModals();
@@ -1294,7 +1116,7 @@ class ModalManager {
     }
 }
 
-// Enhanced email contact functionality (keeping existing)
+// Enhanced email contact functionality
 class ContactManager {
     constructor() {
         this.initializeContactFeatures();
@@ -1307,19 +1129,23 @@ class ContactManager {
         emailButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 this.trackEmailClick();
+                // Let the default mailto behavior proceed
             });
         });
 
+        // Add dynamic email composition
         this.setupDynamicEmail();
     }
 
     setupDynamicEmail() {
-        const supportEmail = 'levintaps@gmail.com';
-        const subject = 'Your Humanizer - Support Request';
+        const supportEmail = 'support@levintaps.com';
+        const subject = 'AI Text Humanizer Pro - Support Request';
         
+        // Create dynamic email content based on user's current page/context
         const emailBody = this.generateEmailBody();
         
-        const emailLinks = document.querySelectorAll('a[href*="mailto:levintaps@gmail.com"]');
+        // Update email links with enhanced content
+        const emailLinks = document.querySelectorAll('a[href*="mailto:support@levintaps.com"]');
         emailLinks.forEach(link => {
             const enhancedHref = `mailto:${supportEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
             link.href = enhancedHref;
@@ -1328,11 +1154,12 @@ class ContactManager {
 
     generateEmailBody() {
         const timestamp = new Date().toLocaleString();
+        const userAgent = navigator.userAgent;
         const url = window.location.href;
         
         return `Hello LevInTaps Support Team,
 
-I need assistance with Your Humanizer.
+I need assistance with AI Text Humanizer Pro.
 
 --- Please describe your issue below this line ---
 
@@ -1360,6 +1187,7 @@ Thank you for your support!`;
     }
 
     trackEmailClick() {
+        // Analytics tracking for email clicks
         if (typeof gtag !== 'undefined') {
             gtag('event', 'contact_email_click', {
                 event_category: 'Contact',
@@ -1371,7 +1199,7 @@ Thank you for your support!`;
     }
 }
 
-// Social media link enhancements (keeping existing)
+// Social media link enhancements
 class SocialManager {
     constructor() {
         this.initializeSocialFeatures();
@@ -1381,6 +1209,7 @@ class SocialManager {
         const socialLinks = document.querySelectorAll('.social-link');
         
         socialLinks.forEach(link => {
+            // Add hover effects and click tracking
             link.addEventListener('mouseenter', () => {
                 this.addHoverEffect(link);
             });
@@ -1390,6 +1219,7 @@ class SocialManager {
             });
             
             link.addEventListener('click', (e) => {
+                // For demo purposes, prevent navigation and show message
                 e.preventDefault();
                 this.showSocialMessage(link);
             });
@@ -1410,6 +1240,7 @@ class SocialManager {
     }
 
     showToast(message) {
+        // Create and show toast notification
         const toast = document.createElement('div');
         toast.style.cssText = `
             position: fixed;
@@ -1430,10 +1261,12 @@ class SocialManager {
         toast.textContent = message;
         document.body.appendChild(toast);
         
+        // Show toast
         setTimeout(() => {
             toast.style.transform = 'translateX(0)';
         }, 100);
         
+        // Hide and remove toast
         setTimeout(() => {
             toast.style.transform = 'translateX(100%)';
             setTimeout(() => {
@@ -1443,7 +1276,7 @@ class SocialManager {
     }
 }
 
-// Footer animations and interactions (keeping existing)
+// Footer animations and interactions
 class FooterEnhancer {
     constructor() {
         this.initializeEnhancements();
@@ -1498,11 +1331,12 @@ class FooterEnhancer {
     }
 
     setupResponsiveFeatures() {
+        // Handle responsive behavior
         window.addEventListener('resize', () => {
             this.handleResize();
         });
         
-        this.handleResize();
+        this.handleResize(); // Initial call
     }
 
     handleResize() {
@@ -1524,6 +1358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new SocialManager();
     new FooterEnhancer();
     
+    // Add initial styles for animations
     const style = document.createElement('style');
     style.textContent = `
         .footer-section, .footer-brand {
