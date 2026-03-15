@@ -1,0 +1,7 @@
+{
+    "functions": {
+        "api/humanize.js": {
+        "maxDuration": 30
+        }
+    }
+}

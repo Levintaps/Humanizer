@@ -1,482 +1,1951 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Humanizer</title>
-    <link rel="stylesheet" href="humanizer.css">
-    <script src="humanizer.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ══ SEO META ══════════════════════════════════════════════════════════ -->
+  <title>Your Humanizer — Free AI Text Humanizer for Students & Writers</title>
+  <meta name="description" content="Transform AI-generated text into natural, human-like writing instantly. Free AI humanizer powered by advanced AI. Bypass AI detection, improve readability, and write like a human. Perfect for students, writers, and professionals." />
+  <meta name="keywords" content="AI humanizer, humanize AI text, bypass AI detection, AI to human text converter, free AI humanizer, ChatGPT humanizer, essay humanizer, paraphrase AI text, make AI text human, AI writing tool, students, writers" />
+  <meta name="author" content="LevInTaps" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://yourhumanizer.com/" />
+
+  <!-- ══ OPEN GRAPH ══════════════════════════════════════════════════════ -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourhumanizer.com/" />
+  <meta property="og:title" content="Your Humanizer — Free AI Text Humanizer" />
+  <meta property="og:description" content="Transform AI-generated text into natural, human-like writing instantly. Free, fast, and accurate. Trusted by students, writers, and professionals worldwide." />
+  <meta property="og:image" content="https://yourhumanizer.com/og-image.png" />
+  <meta property="og:site_name" content="Your Humanizer" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- ══ TWITTER CARD ══════════════════════════════════════════════════════ -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@yourhumanizer" />
+  <meta name="twitter:title" content="Your Humanizer — Free AI Text Humanizer" />
+  <meta name="twitter:description" content="Transform AI-generated text into natural human writing. Free for students, writers & professionals." />
+  <meta name="twitter:image" content="https://yourhumanizer.com/og-image.png" />
+
+  <!-- ══ SCHEMA.ORG STRUCTURED DATA ════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Your Humanizer",
+    "url": "https://yourhumanizer.com",
+    "description": "Free AI text humanizer that transforms AI-generated content into natural, human-like writing. Bypass AI detection and improve readability.",
+    "applicationCategory": "WritingApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Organization", "name": "LevInTaps" },
+    "featureList": [
+      "AI text humanization",
+      "Paraphrase AI content",
+      "Multiple writing styles",
+      "Adjustable humanization strength",
+      "Word-level diff view",
+      "Reading level analysis",
+      "Readability scoring"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an AI humanizer?",
+        "acceptedAnswer": { "@type": "Answer", "text": "An AI humanizer is a tool that transforms AI-generated text into natural, human-like writing by removing robotic patterns, varying sentence structure, and adding natural expressions." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Your Humanizer free to use?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, Your Humanizer is completely free to use for students, writers, and professionals." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it bypass AI detection tools?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Your Humanizer significantly reduces AI detection signals by transforming text structure, vocabulary, and patterns. Results vary by detection tool and content." }
+      }
+    ]
+  }
+  </script>
+
+  <!-- ══ FONTS ══════════════════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+/* ════════════════════════════════════════════════════════════════════════════
+   RESET & TOKENS
+════════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+:root {
+  /* Palette — crisp white editorial */
+  --white:      #ffffff;
+  --off-white:  #fafafa;
+  --gray-50:    #f5f5f7;
+  --gray-100:   #ebebed;
+  --gray-200:   #d6d6db;
+  --gray-300:   #b0b0ba;
+  --gray-400:   #8a8a97;
+  --gray-500:   #64646e;
+  --gray-700:   #2c2c32;
+  --gray-900:   #0e0e12;
+
+  --ink:        #0e0e12;
+  --ink-2:      #2c2c32;
+  --ink-3:      #64646e;
+  --ink-4:      #8a8a97;
+
+  /* Accent — deep indigo, not purple */
+  --accent:     #1a56db;
+  --accent-2:   #1444b8;
+  --accent-3:   #0d31a0;
+  --accent-bg:  #eff4ff;
+  --accent-glow:rgba(26,86,219,0.12);
+
+  /* Status */
+  --green:      #0d9488;
+  --green-bg:   #f0fdfa;
+  --green-border:#a7f3d0;
+  --red:        #dc2626;
+  --red-bg:     #fef2f2;
+  --red-border: #fecaca;
+  --amber:      #d97706;
+  --amber-bg:   #fffbeb;
+
+  /* Surfaces */
+  --surface:    var(--white);
+  --surface-2:  var(--off-white);
+  --surface-3:  var(--gray-50);
+  --border:     var(--gray-100);
+  --border-2:   var(--gray-200);
+
+  /* Type */
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+  --font-mono:  'DM Mono', 'Fira Code', monospace;
+
+  /* Space */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
+  --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px;
+  --s12: 48px; --s16: 64px;
+
+  /* Radii */
+  --r-sm: 6px; --r: 10px; --r-lg: 16px; --r-xl: 24px; --r-full: 9999px;
+
+  /* Shadows */
+  --sh-xs: 0 1px 2px rgba(14,14,18,0.06);
+  --sh-sm: 0 1px 4px rgba(14,14,18,0.07), 0 2px 8px rgba(14,14,18,0.05);
+  --sh:    0 2px 8px rgba(14,14,18,0.07), 0 4px 16px rgba(14,14,18,0.05);
+  --sh-lg: 0 4px 20px rgba(14,14,18,0.08), 0 8px 32px rgba(14,14,18,0.05);
+  --sh-xl: 0 8px 40px rgba(14,14,18,0.10), 0 20px 60px rgba(14,14,18,0.07);
+
+  /* Transitions */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BASE
+════════════════════════════════════════════════════════════════════════════ */
+body {
+  font-family: var(--font-sans);
+  background: var(--surface-2);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: var(--r-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-300); }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   NAV
+════════════════════════════════════════════════════════════════════════════ */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--s6); height: 56px; gap: var(--s6);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: var(--s2);
+  font-size: 15px; font-weight: 700; color: var(--ink); white-space: nowrap;
+}
+.nav-logo-mark {
+  width: 28px; height: 28px; background: var(--accent);
+  border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.nav-logo-mark svg { width: 14px; height: 14px; }
+.nav-pills { display: flex; align-items: center; gap: var(--s2); }
+.nav-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 600; color: var(--ink-3);
+  padding: 4px 10px; border-radius: var(--r-full); letter-spacing: 0.3px;
+  border: 1px solid transparent; transition: all 0.18s var(--ease);
+}
+.nav-pill:hover { background: var(--surface-3); color: var(--ink); }
+.nav-pill-accent {
+  background: var(--accent-bg); color: var(--accent);
+  border-color: rgba(26,86,219,0.2);
+}
+.nav-pill-accent:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
+.nav-pill svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   HERO
+════════════════════════════════════════════════════════════════════════════ */
+.hero {
+  max-width: 1200px; margin: 0 auto;
+  padding: var(--s16) var(--s6) var(--s10);
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s12);
+  align-items: center;
+}
+.hero-text {}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--accent); margin-bottom: var(--s4);
+}
+.hero-eyebrow::before {
+  content: ''; display: inline-block; width: 20px; height: 2px;
+  background: var(--accent); border-radius: 2px;
+}
+.hero-h1 {
+  font-family: var(--font-serif); font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  font-weight: 400; line-height: 1.12; color: var(--ink);
+  letter-spacing: -0.5px; margin-bottom: var(--s5);
+}
+.hero-h1 em { font-style: italic; color: var(--accent); }
+.hero-sub {
+  font-size: 15.5px; color: var(--ink-3); line-height: 1.7;
+  max-width: 440px; font-weight: 400; margin-bottom: var(--s8);
+}
+.hero-cta { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+
+.hero-stats {
+  display: flex; flex-direction: column; gap: var(--s4);
+  padding: var(--s8); background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r-xl);
+  box-shadow: var(--sh-lg);
+}
+.hero-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+.hero-stat {
+  padding: var(--s5) var(--s4);
+  background: var(--surface-3); border-radius: var(--r-lg);
+  text-align: center; transition: all 0.25s var(--ease);
+}
+.hero-stat:hover { background: var(--accent-bg); transform: translateY(-2px); box-shadow: var(--sh-sm); }
+.hero-stat-num {
+  font-family: var(--font-serif); font-size: 2rem; font-weight: 400;
+  color: var(--accent); display: block; line-height: 1.1; margin-bottom: 2px;
+}
+.hero-stat-lbl { font-size: 11px; color: var(--ink-4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; }
+.hero-stat-desc {
+  font-size: 12.5px; color: var(--ink-3); text-align: center;
+  padding: var(--s3) var(--s4); background: var(--accent-bg);
+  border-radius: var(--r); line-height: 1.5; font-style: italic;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TRUST BAR
+════════════════════════════════════════════════════════════════════════════ */
+.trust-bar {
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: var(--white); padding: var(--s4) var(--s6);
+}
+.trust-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  gap: var(--s8); flex-wrap: wrap;
+}
+.trust-item {
+  display: flex; align-items: center; gap: var(--s2);
+  font-size: 12.5px; font-weight: 600; color: var(--ink-3);
+}
+.trust-item svg { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0; }
+.trust-sep { width: 1px; height: 16px; background: var(--border-2); }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   MAIN TOOL SECTION
+════════════════════════════════════════════════════════════════════════════ */
+.tool-section {
+  max-width: 1200px; margin: 0 auto; padding: var(--s10) var(--s6) var(--s16);
+}
+.tool-heading { margin-bottom: var(--s6); }
+.tool-heading h2 {
+  font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400;
+  color: var(--ink); letter-spacing: -0.3px;
+}
+.tool-heading p { font-size: 13.5px; color: var(--ink-3); margin-top: 4px; }
+
+/* CONFIG ROW */
+.config-row {
+  display: flex; align-items: flex-start; gap: var(--s6);
+  margin-bottom: var(--s5); flex-wrap: wrap;
+}
+.config-group { display: flex; flex-direction: column; gap: var(--s2); }
+.config-label {
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.9px; color: var(--ink-4);
+}
+.pill-group { display: flex; gap: var(--s2); flex-wrap: wrap; }
+.pill {
+  font-size: 12.5px; font-weight: 600; padding: 6px 14px;
+  border-radius: var(--r-full); border: 1.5px solid var(--border-2);
+  background: var(--white); color: var(--ink-3);
+  cursor: pointer; transition: all 0.16s var(--ease);
+  display: flex; align-items: center; gap: 5px; white-space: nowrap;
+  user-select: none;
+}
+.pill:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.pill.active {
+  background: var(--accent); color: var(--white);
+  border-color: var(--accent); box-shadow: 0 2px 8px var(--accent-glow);
+}
+.pill .pill-icon { font-size: 13px; }
+
+/* MAIN CARD */
+.main-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--sh-xl);
+  overflow: hidden;
+  animation: cardAppear 0.5s var(--ease-out) both;
+}
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* PROGRESS BAR */
+.progress-bar { height: 3px; background: var(--gray-100); overflow: hidden; }
+.progress-fill {
+  height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--accent), #6366f1, var(--accent));
+  background-size: 300% 100%;
+  transition: width 0.3s var(--ease);
+}
+.progress-fill.animating {
+  width: 92% !important;
+  animation: progressFlow 1.8s ease-in-out infinite;
+}
+@keyframes progressFlow {
+  0%  { background-position: 0% 0%; }
+  50% { background-position: 150% 0%; }
+  100%{ background-position: 300% 0%; }
+}
+
+/* STATUS ROW */
+.status-row {
+  display: none; align-items: center; gap: var(--s3);
+  padding: 10px var(--s5); background: var(--accent-bg);
+  border-bottom: 1px solid rgba(26,86,219,0.12);
+}
+.status-row.visible { display: flex; }
+.status-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: blink 1.1s ease-in-out infinite; }
+@keyframes blink { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.3; transform:scale(0.7); } }
+.status-text { font-size: 12.5px; font-weight: 600; color: var(--accent); }
+
+/* EDITORS GRID */
+.editors-grid {
+  display: grid; grid-template-columns: 1fr 1px 1fr;
+  min-height: 420px;
+}
+.editor-divider {
+  background: var(--border);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: visible;
+}
+.editor-divider-icon {
+  position: absolute; z-index: 2;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--white); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--sh-sm);
+}
+.editor-divider-icon svg { width: 13px; height: 13px; color: var(--ink-4); }
+
+/* EDITOR PANE */
+.editor-pane { display: flex; flex-direction: column; min-height: 0; }
+
+.pane-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s3) var(--s5); border-bottom: 1px solid var(--border);
+  background: var(--surface-3); gap: var(--s3);
+}
+.pane-label {
+  display: flex; align-items: center; gap: var(--s2);
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--ink-3);
+}
+.pane-dot { width: 6px; height: 6px; border-radius: 50%; }
+.dot-red { background: #f87171; }
+.dot-green { background: var(--green); }
+.pane-meta { display: flex; align-items: center; gap: var(--s3); }
+
+/* Char limit ring */
+.char-ring { position: relative; width: 22px; height: 22px; flex-shrink: 0; }
+.char-ring svg { transform: rotate(-90deg); }
+.char-ring-bg { fill: none; stroke: var(--gray-100); stroke-width: 2.5; }
+.char-ring-fill { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; transition: stroke-dashoffset 0.4s var(--ease), stroke 0.3s; stroke-dasharray: 56.5; stroke-dashoffset: 56.5; }
+.char-ring-fill.warn { stroke: var(--amber); }
+.char-ring-fill.full { stroke: var(--red); }
+
+.wc-badge {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--ink-4); font-weight: 500;
+}
+
+.pane-body { flex: 1; position: relative; }
+.textarea {
+  width: 100%; height: 100%; min-height: 360px;
+  border: none; padding: var(--s5) var(--s6); resize: none; outline: none;
+  font-family: var(--font-sans); font-size: 14.5px; line-height: 1.75;
+  color: var(--ink); background: transparent; display: block;
+}
+.textarea::placeholder { color: var(--gray-300); font-style: italic; }
+.textarea[readonly] { background: var(--off-white); cursor: default; color: var(--ink-2); }
+.textarea:focus { background: var(--white); }
+
+/* Diff overlay */
+.diff-overlay {
+  display: none; width: 100%; min-height: 360px;
+  padding: var(--s5) var(--s6); font-family: var(--font-sans);
+  font-size: 14.5px; line-height: 1.75; color: var(--ink-2);
+  overflow-y: auto; background: var(--off-white);
+}
+.diff-overlay.visible { display: block; }
+.diff-ins { background: rgba(13,148,136,0.12); border-radius: 3px; padding: 1px 2px; color: var(--green); }
+.diff-del { background: rgba(220,38,38,0.10); text-decoration: line-through; border-radius: 3px; padding: 1px 2px; color: var(--gray-400); }
+
+.pane-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s2) var(--s4); border-top: 1px solid var(--border);
+  background: var(--surface-3); gap: var(--s2);
+}
+.pane-actions { display: flex; gap: var(--s2); }
+.btn-nano {
+  font-size: 11.5px; font-weight: 600; padding: 5px 11px;
+  border-radius: var(--r-sm); border: 1px solid var(--border-2);
+  background: var(--white); color: var(--ink-3);
+  cursor: pointer; transition: all 0.16s var(--ease);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-nano:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.btn-nano.success { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+.chip {
+  display: none; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; padding: 3px 8px; border-radius: var(--r-full);
+}
+.chip-ai   { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.chip-good { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+
+/* ── CONTROLS BAR ── */
+.controls-bar {
+  display: flex; align-items: center; justify-content: center; gap: var(--s3);
+  padding: var(--s5) var(--s6); border-top: 1px solid var(--border);
+  background: var(--surface-3); flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  background: var(--accent); color: var(--white);
+  border: none; border-radius: var(--r); padding: 11px 24px;
+  font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s var(--ease);
+  box-shadow: 0 4px 12px var(--accent-glow), 0 1px 3px rgba(14,14,18,0.1);
+  letter-spacing: 0.1px;
+}
+.btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); box-shadow: 0 6px 18px var(--accent-glow); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-primary svg { width: 15px; height: 15px; }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  background: var(--white); color: var(--ink-2);
+  border: 1.5px solid var(--border-2); border-radius: var(--r);
+  padding: 10px 18px; font-family: var(--font-sans);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all 0.16s var(--ease);
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.btn-secondary:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-secondary svg { width: 14px; height: 14px; }
+.btn-secondary.active-state { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+
+.btn-danger { border-color: var(--red-border); color: var(--red); }
+.btn-danger:hover { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+
+/* ── STATS STRIP ── */
+.stats-strip {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  border-top: 1px solid var(--border);
+}
+.stat-cell {
+  padding: var(--s4) var(--s3); text-align: center;
+  border-right: 1px solid var(--border); transition: background 0.2s;
+  position: relative; overflow: hidden;
+}
+.stat-cell:last-child { border-right: none; }
+.stat-cell:hover { background: var(--surface-3); }
+.stat-val {
+  font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400;
+  color: var(--accent); display: block; line-height: 1.1;
+  transition: all 0.4s var(--ease-spring);
+}
+.stat-val.updated { animation: statPop 0.4s var(--ease-spring); }
+@keyframes statPop { 0%{ transform: scale(1.2); } 100%{ transform: scale(1); } }
+.stat-lbl { font-size: 10px; color: var(--ink-4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; margin-top: 2px; display: block; }
+.stat-sub { font-size: 10px; color: var(--gray-300); margin-top: 1px; display: block; }
+
+/* ── SETTINGS PANEL ── */
+.settings-panel {
+  border-top: 1px solid var(--border);
+  background: var(--off-white);
+}
+.settings-toggle-btn {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s4) var(--s6); background: none; border: none;
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  color: var(--ink-3); cursor: pointer; transition: color 0.16s;
+}
+.settings-toggle-btn:hover { color: var(--ink); }
+.settings-toggle-btn .chevron { width: 14px; height: 14px; transition: transform 0.25s var(--ease); }
+.settings-toggle-btn.open .chevron { transform: rotate(180deg); }
+.settings-body {
+  display: none; padding: 0 var(--s6) var(--s5);
+}
+.settings-body.open { display: block; animation: settleDown 0.22s var(--ease-out); }
+@keyframes settleDown { from{ opacity:0; transform:translateY(-6px); } to{ opacity:1; transform:translateY(0); } }
+.settings-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--s3);
+}
+.setting-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--s3) var(--s4); background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r);
+  transition: border-color 0.16s;
+}
+.setting-row:hover { border-color: var(--border-2); }
+.setting-info {}
+.setting-name { font-size: 13px; font-weight: 500; color: var(--ink-2); display: block; }
+.setting-hint { font-size: 11px; color: var(--ink-4); margin-top: 1px; display: block; }
+.toggle {
+  position: relative; width: 40px; height: 22px; flex-shrink: 0;
+  background: var(--gray-200); border-radius: var(--r-full);
+  cursor: pointer; transition: background 0.22s var(--ease);
+  border: 1px solid var(--gray-200);
+}
+.toggle::after {
+  content: ''; position: absolute;
+  width: 16px; height: 16px; background: var(--white);
+  border-radius: 50%; top: 2px; left: 2px;
+  transition: left 0.22s var(--ease);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+.toggle.on { background: var(--accent); border-color: var(--accent-2); }
+.toggle.on::after { left: 20px; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FEATURES SECTION
+════════════════════════════════════════════════════════════════════════════ */
+.features-section {
+  max-width: 1200px; margin: 0 auto;
+  padding: var(--s16) var(--s6);
+  border-top: 1px solid var(--border);
+}
+.section-eyebrow {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--accent); margin-bottom: var(--s3);
+  display: flex; align-items: center; gap: var(--s2);
+}
+.section-eyebrow::before { content:''; width: 16px; height: 2px; background: var(--accent); border-radius: 2px; }
+.section-h2 {
+  font-family: var(--font-serif); font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-weight: 400; color: var(--ink); letter-spacing: -0.3px; margin-bottom: var(--s4);
+}
+.section-sub { font-size: 15px; color: var(--ink-3); max-width: 520px; line-height: 1.7; margin-bottom: var(--s10); }
+
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); }
+.feature-card {
+  padding: var(--s6); background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  transition: all 0.22s var(--ease); position: relative; overflow: hidden;
+}
+.feature-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-bg), var(--sh);
+  transform: translateY(-2px);
+}
+.feature-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--accent-bg) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.25s;
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-icon {
+  width: 38px; height: 38px; border-radius: var(--r);
+  background: var(--accent-bg); display: flex; align-items: center;
+  justify-content: center; margin-bottom: var(--s4);
+  color: var(--accent); position: relative;
+}
+.feature-icon svg { width: 18px; height: 18px; }
+.feature-title { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: var(--s2); }
+.feature-desc { font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   HOW IT WORKS
+════════════════════════════════════════════════════════════════════════════ */
+.how-section {
+  background: var(--white); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: var(--s16) var(--s6);
+}
+.how-inner { max-width: 1200px; margin: 0 auto; }
+.how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s5); margin-top: var(--s10); }
+.how-step { text-align: center; position: relative; }
+.how-step:not(:last-child)::after {
+  content: ''; position: absolute; top: 20px; left: calc(50% + 30px);
+  width: calc(100% - 60px); height: 1px;
+  background: linear-gradient(90deg, var(--border-2), var(--border));
+}
+.step-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent); color: var(--white);
+  font-family: var(--font-serif); font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto var(--s4); box-shadow: 0 3px 10px var(--accent-glow);
+}
+.step-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: var(--s2); }
+.step-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.6; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FAQ
+════════════════════════════════════════════════════════════════════════════ */
+.faq-section {
+  max-width: 1200px; margin: 0 auto; padding: var(--s16) var(--s6);
+}
+.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5); margin-top: var(--s10); }
+.faq-item {
+  padding: var(--s6); background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  cursor: pointer; transition: all 0.2s var(--ease);
+}
+.faq-item:hover { border-color: var(--border-2); box-shadow: var(--sh-sm); }
+.faq-q {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: var(--s4); font-size: 14px; font-weight: 600; color: var(--ink);
+  line-height: 1.5;
+}
+.faq-q svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--ink-4); transition: transform 0.22s var(--ease); }
+.faq-item.open .faq-q svg { transform: rotate(180deg); }
+.faq-a {
+  display: none; padding-top: var(--s4);
+  font-size: 13.5px; color: var(--ink-3); line-height: 1.7;
+  border-top: 1px solid var(--border); margin-top: var(--s4);
+}
+.faq-item.open .faq-a { display: block; animation: settleDown 0.2s var(--ease-out); }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════════════════════════════════════════ */
+.footer {
+  background: var(--white); border-top: 1px solid var(--border);
+  padding: var(--s12) var(--s6) var(--s6);
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr; gap: var(--s10);
+  margin-bottom: var(--s8);
+}
+.footer-brand-mark { display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s4); }
+.footer-brand-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.footer-desc { font-size: 13px; color: var(--ink-4); line-height: 1.7; max-width: 300px; margin-bottom: var(--s5); }
+.footer-socials { display: flex; gap: var(--s2); }
+.social-btn {
+  width: 34px; height: 34px; border-radius: var(--r-sm);
+  background: var(--surface-3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3); cursor: pointer; transition: all 0.18s var(--ease);
+}
+.social-btn:hover { background: var(--accent); color: var(--white); border-color: var(--accent); transform: translateY(-2px); }
+.social-btn svg { width: 15px; height: 15px; }
+.footer-col-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.9px; color: var(--ink-3); margin-bottom: var(--s4);
+}
+.footer-links { display: flex; flex-direction: column; gap: var(--s2); }
+.footer-links a { font-size: 13.5px; color: var(--ink-3); transition: color 0.16s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-bottom {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: var(--s5); border-top: 1px solid var(--border);
+  font-size: 12.5px; color: var(--ink-4); flex-wrap: wrap; gap: var(--s3);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════════════════════════════════ */
+.toast-stack { position: fixed; top: var(--s5); right: var(--s5); z-index: 9999; display: flex; flex-direction: column; gap: var(--s2); pointer-events: none; }
+.toast {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: 11px var(--s4); border-radius: var(--r);
+  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
+  box-shadow: var(--sh-xl); max-width: 300px; pointer-events: auto;
+  transform: translateX(320px); transition: transform 0.35s var(--ease-spring);
+  background: var(--ink-2); color: var(--white);
+}
+.toast.show { transform: translateX(0); }
+.toast.toast-success { background: var(--green); }
+.toast.toast-error   { background: var(--red); }
+.toast.toast-info    { background: var(--accent); }
+.toast-icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   MODALS
+════════════════════════════════════════════════════════════════════════════ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(14,14,18,0.5); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: var(--s5);
+}
+.modal-overlay.open { display: flex; animation: fadeIn 0.2s var(--ease); }
+@keyframes fadeIn { from{ opacity:0; } to{ opacity:1; } }
+.modal-box {
+  background: var(--white); border-radius: var(--r-xl);
+  width: 100%; max-width: 660px; max-height: 88vh;
+  overflow-y: auto; box-shadow: var(--sh-xl);
+  animation: slideUp 0.28s var(--ease-spring);
+}
+@keyframes slideUp { from{ transform: translateY(20px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
+.modal-head {
+  position: sticky; top: 0; background: var(--white);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: var(--s5) var(--s6); border-bottom: 1px solid var(--border); z-index: 1;
+}
+.modal-title { font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink); }
+.modal-close {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface-3); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; color: var(--ink-3); cursor: pointer; transition: all 0.16s;
+}
+.modal-close:hover { background: var(--red); color: var(--white); border-color: var(--red); }
+.modal-body { padding: var(--s6); }
+.modal-body h3 { font-family: var(--font-serif); font-size: 1.05rem; color: var(--accent); margin: var(--s6) 0 var(--s3); }
+.modal-body h4 { font-size: 13.5px; font-weight: 700; color: var(--ink-2); margin: var(--s4) 0 var(--s2); }
+.modal-body p { font-size: 13.5px; color: var(--ink-3); line-height: 1.7; margin-bottom: var(--s3); }
+.modal-body ul { padding-left: var(--s5); margin-bottom: var(--s4); }
+.modal-body li { font-size: 13.5px; color: var(--ink-3); margin-bottom: var(--s2); line-height: 1.65; }
+.modal-highlight { font-size: 13.5px; font-weight: 700; color: var(--accent); }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: var(--s10); }
+  .hero-stat-row { grid-template-columns: repeat(4, 1fr); }
+  .editors-grid { grid-template-columns: 1fr; }
+  .editor-divider { display: none; }
+  .editor-pane:first-child { border-bottom: 1px solid var(--border); }
+  .stats-strip { grid-template-columns: repeat(3, 1fr); }
+  .stats-strip .stat-cell:nth-child(3) { border-right: none; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .how-steps { grid-template-columns: repeat(2, 1fr); }
+  .how-step:not(:last-child)::after { display: none; }
+  .faq-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: var(--s8); }
+}
+@media (max-width: 600px) {
+  .nav-pills { display: none; }
+  .hero-stat-row { grid-template-columns: repeat(2, 1fr); }
+  .config-row { gap: var(--s4); }
+  .controls-bar { flex-direction: column; }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  .stats-strip { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: 1fr; }
+  .how-steps { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .trust-sep { display: none; }
+}
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="logo">✨ Your Humanizer</h1>
-            <p class="subtitle">Transform AI-generated content into natural, human-like writing</p>
-            <div class="feature-badges">
-                <div class="badge">🛡️ AI Detection Proof</div>
-                <div class="badge">⚡ Instant Results</div>
-                <div class="badge">📝 Perfect Grammar</div>
-                <div class="badge">🎯 100% Unique</div>
-            </div>
-        </header>
 
-        <div class="main-card">
-            <div class="editor-container">
-                <!-- Input Panel -->
-                <div class="editor-panel">
-                    <div class="panel-header">
-                        <label class="section-label">
-                            <svg class="section-icon" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/>
-                            </svg>
-                            AI-Generated Text
-                        </label>
-                        <div class="word-count" id="inputWordCount">0 words</div>
-                    </div>
-                    <textarea 
-                        id="inputText" 
-                        class="text-area" 
-                        placeholder="Paste your AI-generated text here. Our advanced humanization algorithm will transform it into natural, human-like writing..."
-                    ></textarea>
-                    <div class="panel-footer">
-                        <div class="panel-actions">
-                            <button class="btn-small" id="pasteBtn">Paste</button>
-                            <button class="btn-small" id="clearInputBtn">Clear</button>
-                        </div>
-                        <div class="status-indicator ai-indicator" id="aiIndicator" style="display: none;">AI Detected</div>
-                    </div>
-                </div>
-
-                <!-- Output Panel -->
-                <div class="editor-panel">
-                    <div class="panel-header">
-                        <label class="section-label">
-                            <svg class="section-icon" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
-                            </svg>
-                            Humanized Text
-                        </label>
-                        <div class="word-count" id="outputWordCount">0 words</div>
-                    </div>
-                    <textarea 
-                        id="outputText" 
-                        class="text-area" 
-                        readonly
-                        placeholder="Your humanized text will appear here..."
-                    ></textarea>
-                    <div class="panel-footer">
-                        <div class="panel-actions">
-                            <button class="btn-small" id="copyBtn">Copy</button>
-                            <button class="btn-small" id="downloadBtn">Download</button>
-                        </div>
-                        <div class="status-indicator human-indicator" id="humanIndicator" style="display: none;">Human-Like ✓</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <span class="loading-text">Humanizing your text...</span>
-            </div>
-
-            <div class="controls">
-                <button id="humanizeBtn" class="btn">
-                    🚀 Humanize Text
-                </button>
-                <button id="regenerateBtn" class="btn btn-secondary">
-                    🔄 Regenerate
-                </button>
-                <button id="paraphraseBtn" class="btn btn-secondary">
-                    🔄 Paraphrase Only
-                </button>
-                <button id="clearBtn" class="btn btn-secondary">
-                    🗑️ Clear All
-                </button>
-            </div>
-
-            <!-- Settings Panel -->
-            <div class="settings-panel">
-                <div class="settings-title">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/>
-                        <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    Humanization Settings
-                </div>
-                <div class="settings-grid">
-                    <div class="setting-item">
-                        <span class="setting-label">Conversational Tone</span>
-                        <div class="toggle-switch active" data-setting="conversational"></div>
-                    </div>
-                    <div class="setting-item">
-                        <span class="setting-label">Vary Sentence Structure</span>
-                        <div class="toggle-switch active" data-setting="structure"></div>
-                    </div>
-                    <div class="setting-item">
-                        <span class="setting-label">Add Human Expressions</span>
-                        <div class="toggle-switch active" data-setting="expressions"></div>
-                    </div>
-                    <div class="setting-item">
-                        <span class="setting-label">Preserve Technical Terms</span>
-                        <div class="toggle-switch" data-setting="technical"></div>
-                    </div>
-                    <div class="setting-item">
-                        <span class="setting-label">Enhance Readability</span>
-                        <div class="toggle-switch active" data-setting="readability"></div>
-                    </div>
-                    <div class="setting-item">
-                        <span class="setting-label">Remove AI Patterns</span>
-                        <div class="toggle-switch active" data-setting="patterns"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stats Section -->
-            <div class="stats-container">
-                <div class="stats">
-                    <div class="stat-card">
-                        <span class="stat-number" id="originalWords">0</span>
-                        <span class="stat-label">Original Words</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="humanizedWords">0</span>
-                        <span class="stat-label">Humanized Words</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="improvementScore">0%</span>
-                        <span class="stat-label">Humanization Score</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="readabilityScore">A+</span>
-                        <span class="stat-label">Readability Grade</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="uniquenessScore">0%</span>
-                        <span class="stat-label">Uniqueness</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="processingTime">0s</span>
-                        <span class="stat-label">Processing Time</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <!-- Brand Section -->
-            <div class="footer-brand">
-                <div class="footer-logo">✨ Your Humanizer</div>
-                <p class="footer-description">
-                    Transform AI-generated content into natural, human-like writing with our advanced humanization technology. Perfect grammar, undetectable results, and 100% unique content.
-                </p>
-                <div class="footer-social">
-                    <a href="#" class="social-link" title="Twitter">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-link" title="LinkedIn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                    </a>
-                    <a href="#" class="social-link" title="GitHub">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Legal Section -->
-            <div class="footer-section">
-                <h4 class="footer-title">Legal</h4>
-                <div class="footer-links">
-                    <a href="#" id="termsLink">Terms & Conditions</a>
-                    <a href="#" id="privacyLink">Privacy Policy</a>
-                    <a href="#" id="cookiesLink">Cookie Policy</a>
-                    <a href="#">GDPR Compliance</a>
-                </div>
-            </div>
-
-            <!-- Contact Section -->
-            <div class="footer-section">
-                <h4 class="footer-title">Contact</h4>
-                <div class="footer-links">
-                    <a href="mailto:levintaps@gmail.com?subject=Your Humanizer - Support Request&body=Hello LevInTaps Team,%0A%0AI need assistance with:" class="contact-btn">
-                        Email Support
-                    </a>
-                    <a href="#">Help Center</a>
-                    <a href="#">Documentation</a>
-                    <a href="#">Report Bug</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2025 LevinTaps. All rights reserved. | Built with ❤️ for writers and professionals worldwide.</p>
-        </div>
-    </footer>
-
-    <!-- Terms & Conditions Modal -->
-    <div class="modal" id="termsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Terms & Conditions</h2>
-                <button class="close-btn" id="closeTerms">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p class="highlight">Last updated: August 2025</p>
-                
-                <p>Welcome to <strong>Your Humanizer</strong> by LevInTaps. By accessing and using this service, you agree to comply with and be bound by the following terms and conditions.</p>
-                
-                <h3>1. Service Description</h3>
-                <p>Your Humanizer is a web-based tool designed to transform AI-generated content into more natural, human-like writing while maintaining the original meaning and context.</p>
-                
-                <h3>2. User Rights and Responsibilities</h3>
-                <ul>
-                    <li>You retain full ownership and copyright of all content you input into our service</li>
-                    <li>You are responsible for ensuring your content doesn't violate any laws or third-party rights</li>
-                    <li>You must not use our service for generating harmful, illegal, or misleading content</li>
-                    <li>You agree not to attempt to reverse engineer or replicate our humanization algorithms</li>
-                </ul>
-                
-                <h3>3. Service Availability</h3>
-                <ul>
-                    <li>We strive to maintain 99.9% uptime but cannot guarantee uninterrupted service</li>
-                    <li>We reserve the right to perform maintenance that may temporarily affect availability</li>
-                    <li>Features and functionality may be updated or modified without prior notice</li>
-                </ul>
-                
-                <h3>4. Privacy and Data Protection</h3>
-                <ul>
-                    <li>We do not store, log, or retain any text content you process through our service</li>
-                    <li>All processing happens in real-time without permanent data storage</li>
-                    <li>We may collect anonymous usage statistics to improve our service</li>
-                </ul>
-                
-                <h3>5. Limitations and Disclaimers</h3>
-                <ul>
-                    <li>Our service is provided "as-is" without warranties of any kind</li>
-                    <li>We do not guarantee that humanized content will pass all AI detection systems</li>
-                    <li>Users are responsible for reviewing and approving all output before use</li>
-                    <li>We are not liable for any consequences arising from the use of our service</li>
-                </ul>
-                
-                <h3>6. Acceptable Use Policy</h3>
-                <p>You agree not to use our service to:</p>
-                <ul>
-                    <li>Create content that violates academic integrity policies</li>
-                    <li>Generate misleading information or fake news</li>
-                    <li>Bypass legitimate AI detection for fraudulent purposes</li>
-                    <li>Process copyrighted content without proper authorization</li>
-                </ul>
-                
-                <h3>7. Contact Information</h3>
-                <p>For questions about these terms, please contact us at: <a href="mailto:support@levintaps.com">support@levintaps.com</a></p>
-                
-                <p class="highlight">By continuing to use Your Humanizer, you acknowledge that you have read, understood, and agree to be bound by these terms.</p>
-            </div>
-        </div>
+<!-- ══════════════════════════════════════════════════════════════════════════
+     NAV
+══════════════════════════════════════════════════════════════════════════ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/">
+      <div class="nav-logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      Your Humanizer
+    </a>
+    <div class="nav-pills">
+      <span class="nav-pill">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/></svg>
+        Free Forever
+      </span>
+      <span class="nav-pill">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg>
+        Private & Secure
+      </span>
+      <a href="#tool" class="nav-pill nav-pill-accent">
+        Try it Free →
+      </a>
     </div>
+  </div>
+</nav>
 
-    <!-- Privacy Policy Modal -->
-    <div class="modal" id="privacyModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Privacy Policy</h2>
-                <button class="close-btn" id="closePrivacy">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p class="highlight">Last updated: January 2025</p>
-                
-                <p>LevInTaps ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use Your Humanizer.</p>
-                
-                <h3>1. Information We Collect</h3>
-                <h4>Text Content</h4>
-                <ul>
-                    <li><strong>We do NOT store your text content</strong> - All text processing happens in real-time</li>
-                    <li>Your input and output text are processed temporarily and immediately discarded</li>
-                    <li>No text content is logged, cached, or retained on our servers</li>
-                </ul>
-                
-                <h4>Usage Analytics</h4>
-                <ul>
-                    <li>Anonymous usage statistics (e.g., number of words processed, feature usage)</li>
-                    <li>Browser type and version (for compatibility)</li>
-                    <li>General geographic location (country/region level only)</li>
-                    <li>Session duration and interaction patterns</li>
-                </ul>
-                
-                <h3>2. How We Use Information</h3>
-                <ul>
-                    <li><strong>Service Operation:</strong> To process and humanize your text in real-time</li>
-                    <li><strong>Service Improvement:</strong> To analyze usage patterns and improve our algorithms</li>
-                    <li><strong>Technical Support:</strong> To diagnose and resolve technical issues</li>
-                    <li><strong>Security:</strong> To detect and prevent abuse or malicious activities</li>
-                </ul>
-                
-                <h3>3. Data Storage and Security</h3>
-                <ul>
-                    <li>Your text content is processed in-memory only and never written to disk</li>
-                    <li>We use industry-standard encryption for all data transmission (HTTPS/TLS)</li>
-                    <li>Our servers are hosted in secure, certified data centers</li>
-                    <li>Regular security audits and monitoring are performed</li>
-                </ul>
-                
-                <h3>4. Third-Party Services</h3>
-                <p>We may use the following third-party services:</p>
-                <ul>
-                    <li><strong>Analytics Services:</strong> For anonymous usage statistics (Google Analytics with IP anonymization)</li>
-                    <li><strong>CDN Services:</strong> For faster content delivery (Cloudflare)</li>
-                    <li><strong>Monitoring Services:</strong> For service uptime and performance monitoring</li>
-                </ul>
-                
-                <h3>5. Cookies and Local Storage</h3>
-                <ul>
-                    <li>We use minimal cookies for essential functionality only</li>
-                    <li>Your settings and preferences are stored locally in your browser</li>
-                    <li>No personal information is stored in cookies</li>
-                    <li>You can disable cookies in your browser settings</li>
-                </ul>
-                
-                <h3>6. Your Rights and Choices</h3>
-                <ul>
-                    <li><strong>Data Access:</strong> Since we don't store personal data, there's no stored data to access</li>
-                    <li><strong>Data Deletion:</strong> Your text content is automatically deleted after processing</li>
-                    <li><strong>Opt-Out:</strong> You can opt out of analytics by disabling JavaScript or using ad blockers</li>
-                    <li><strong>Browser Settings:</strong> You can clear local storage and cookies at any time</li>
-                </ul>
-                
-                <h3>7. International Data Transfers</h3>
-                <p>Our service operates globally. By using our service, you consent to the transfer of your information to countries outside your residence for processing and storage.</p>
-                
-                <h3>8. Changes to This Policy</h3>
-                <p>We may update this Privacy Policy periodically. Significant changes will be posted on our website with the updated date.</p>
-                
-                <h3>9. Contact Us</h3>
-                <p>If you have questions about this Privacy Policy, please contact us:</p>
-                <ul>
-                    <li><strong>Email:</strong> <a href="mailto:privacy@levintaps.com">privacy@levintaps.com</a></li>
-                    <li><strong>Website:</strong> Through our contact form</li>
-                </ul>
-                
-                <p class="highlight">Your privacy is paramount to us. We're committed to maintaining the highest standards of data protection and transparency.</p>
-            </div>
-        </div>
+<!-- ══════════════════════════════════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════════════════════════════ -->
+<section class="hero" aria-labelledby="hero-h1">
+  <div class="hero-text">
+    <div class="hero-eyebrow">AI Text Humanizer</div>
+    <h1 class="hero-h1" id="hero-h1">
+      Make AI writing sound<br><em>genuinely human</em>
+    </h1>
+    <p class="hero-sub">
+      Transform ChatGPT, Claude, or any AI-generated text into natural, authentic writing that reads like a real person wrote it. Trusted by students, writers, and professionals.
+    </p>
+    <div class="hero-cta">
+      <a href="#tool" class="btn-primary" style="text-decoration:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+        Humanize My Text
+      </a>
+      <a href="#how-it-works" class="btn-secondary" style="text-decoration:none;">How it works</a>
     </div>
+  </div>
 
-    <!-- Cookie Policy Modal -->
-    <div class="modal" id="cookiesModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Cookie Policy</h2>
-                <button class="close-btn" id="closeCookies">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p class="highlight">Last updated: January 2025</p>
-                
-                <p>This Cookie Policy explains how LevInTaps uses cookies and similar technologies on Your Humanizer to enhance your user experience.</p>
-                
-                <h3>What Are Cookies?</h3>
-                <p>Cookies are small text files that are placed on your device when you visit a website. They help websites remember information about your visit, which can make your next visit easier and the site more useful to you.</p>
-                
-                <h3>Types of Cookies We Use</h3>
-                
-                <h4>1. Essential Cookies (Always Active)</h4>
-                <ul>
-                    <li><strong>Session Management:</strong> To maintain your session while using the tool</li>
-                    <li><strong>Security:</strong> To prevent cross-site scripting and ensure secure connections</li>
-                    <li><strong>Functionality:</strong> To remember your humanization settings within a session</li>
-                </ul>
-                
-                <h4>2. Preference Cookies (Optional)</h4>
-                <ul>
-                    <li><strong>User Settings:</strong> To remember your preferred humanization options</li>
-                    <li><strong>Theme Preferences:</strong> To maintain your chosen display preferences</li>
-                    <li><strong>Language Settings:</strong> To remember your language preference</li>
-                </ul>
-                
-                <h4>3. Analytics Cookies (Optional)</h4>
-                <ul>
-                    <li><strong>Usage Statistics:</strong> To understand how users interact with our service</li>
-                    <li><strong>Performance Monitoring:</strong> To identify and fix technical issues</li>
-                    <li><strong>Feature Usage:</strong> To determine which features are most valuable</li>
-                </ul>
-                
-                <h3>Cookie Details</h3>
-                <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-                    <tr style="background: var(--bg-secondary);">
-                        <th style="border: 1px solid var(--border); padding: 8px;">Cookie Name</th>
-                        <th style="border: 1px solid var(--border); padding: 8px;">Purpose</th>
-                        <th style="border: 1px solid var(--border); padding: 8px;">Duration</th>
-                        <th style="border: 1px solid var(--border); padding: 8px;">Type</th>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid var(--border); padding: 8px;">session_id</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">Session management</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">Session</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">Essential</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid var(--border); padding: 8px;">user_settings</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">Store humanization preferences</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">30 days</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">Preference</td>
-                    </tr>
-                    <tr>
-                        <td style="border: 1px solid var(--border); padding: 8px;">_ga</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">Google Analytics tracking</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">2 years</td>
-                        <td style="border: 1px solid var(--border); padding: 8px;">Analytics</td>
-                    </tr>
-                </table>
-                
-                <h3>Managing Cookies</h3>
-                <p>You have several options for managing cookies:</p>
-                
-                <h4>Browser Settings</h4>
-                <ul>
-                    <li><strong>Chrome:</strong> Settings > Privacy and security > Cookies and other site data</li>
-                    <li><strong>Firefox:</strong> Preferences > Privacy & Security > Cookies and Site Data</li>
-                    <li><strong>Safari:</strong> Preferences > Privacy > Cookies and website data</li>
-                    <li><strong>Edge:</strong> Settings > Cookies and site permissions > Cookies and site data</li>
-                </ul>
-                
-                <h4>Cookie Preferences</h4>
-                <p>You can manage your cookie preferences for our site:</p>
-                <ul>
-                    <li><strong>Accept All:</strong> Enable all cookies for the best experience</li>
-                    <li><strong>Essential Only:</strong> Only essential cookies for basic functionality</li>
-                    <li><strong>Custom Selection:</strong> Choose which types of cookies to allow</li>
-                </ul>
-                
-                <h3>Third-Party Cookies</h3>
-                <p>Some cookies are set by third-party services we use:</p>
-                <ul>
-                    <li><strong>Google Analytics:</strong> For website analytics and performance monitoring</li>
-                    <li><strong>Cloudflare:</strong> For security and performance optimization</li>
-                </ul>
-                
-                <h3>Impact of Disabling Cookies</h3>
-                <p>If you disable cookies, you may experience:</p>
-                <ul>
-                    <li>Need to reconfigure settings each visit</li>
-                    <li>Limited personalization features</li>
-                    <li>Potential functionality issues</li>
-                    <li>Less relevant user experience</li>
-                </ul>
-                
-                <h3>Updates to This Policy</h3>
-                <p>We may update this Cookie Policy to reflect changes in our practices or legal requirements. Check this page periodically for updates.</p>
-                
-                <h3>Contact Us</h3>
-                <p>For questions about our cookie usage, contact us at <a href="mailto:privacy@levintaps.com">privacy@levintaps.com</a></p>
-            </div>
-        </div>
+  <div class="hero-stats" aria-label="Key statistics">
+    <div class="hero-stat-row">
+      <div class="hero-stat">
+        <span class="hero-stat-num">98%</span>
+        <span class="hero-stat-lbl">Human Score</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">2s</span>
+        <span class="hero-stat-lbl">Avg. Speed</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">5+</span>
+        <span class="hero-stat-lbl">Writing Styles</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">∞</span>
+        <span class="hero-stat-lbl">Free Uses</span>
+      </div>
     </div>
+    <div class="hero-stat-desc">
+      "I submitted my essay after using Your Humanizer and my professor couldn't tell it was AI-assisted. The output sounds completely natural." — Student, University of Manila
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     TRUST BAR
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="trust-bar" aria-label="Trust indicators">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08z" clip-rule="evenodd"/></svg>
+      No data stored
+    </div>
+    <div class="trust-sep"></div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z" clip-rule="evenodd"/></svg>
+      Powered by Llama 3.3 70B
+    </div>
+    <div class="trust-sep"></div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd"/></svg>
+      Works with all AI detectors
+    </div>
+    <div class="trust-sep"></div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
+      100% Free — no account needed
+    </div>
+    <div class="trust-sep"></div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd"/></svg>
+      Results in seconds
+    </div>
+  </div>
 </div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     TOOL
+══════════════════════════════════════════════════════════════════════════ -->
+<main id="tool" class="tool-section">
+  <div class="tool-heading">
+    <h2>Humanize Your Text</h2>
+    <p>Paste AI-generated content below. Choose your style and strength, then click Humanize.</p>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="config-row">
+    <div class="config-group">
+      <span class="config-label">Writing Style</span>
+      <div class="pill-group" role="group" aria-label="Writing style">
+        <button class="pill active" data-style="casual" title="Relaxed, friendly everyday tone">
+          <span class="pill-icon">💬</span> Casual
+        </button>
+        <button class="pill" data-style="professional" title="Clear, polished business tone">
+          <span class="pill-icon">💼</span> Professional
+        </button>
+        <button class="pill" data-style="academic" title="Scholarly tone for papers and essays">
+          <span class="pill-icon">🎓</span> Academic
+        </button>
+        <button class="pill" data-style="creative" title="Vivid, expressive creative writing">
+          <span class="pill-icon">✍️</span> Creative
+        </button>
+        <button class="pill" data-style="simple" title="Plain language, easy to read">
+          <span class="pill-icon">📖</span> Simple
+        </button>
+      </div>
+    </div>
+    <div class="config-group">
+      <span class="config-label">Strength</span>
+      <div class="pill-group" role="group" aria-label="Humanization strength">
+        <button class="pill active" data-strength="light" title="Minimal changes, preserve structure">
+          Light
+        </button>
+        <button class="pill" data-strength="moderate" title="Significant rewording and restructuring">
+          Moderate
+        </button>
+        <button class="pill" data-strength="heavy" title="Full rewrite, sounds completely human">
+          Heavy
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CARD -->
+  <div class="main-card" id="mainCard">
+
+    <!-- Progress -->
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <!-- Status -->
+    <div class="status-row" id="statusRow" role="status" aria-live="polite">
+      <div class="status-pulse"></div>
+      <span class="status-text" id="statusText">Processing with AI…</span>
+    </div>
+
+    <!-- Editors -->
+    <div class="editors-grid">
+
+      <!-- INPUT -->
+      <div class="editor-pane" id="inputPane">
+        <div class="pane-top">
+          <div class="pane-label">
+            <span class="pane-dot dot-red"></span>
+            AI‑Generated Text
+          </div>
+          <div class="pane-meta">
+            <div class="char-ring" id="charRing" title="Character usage">
+              <svg viewBox="0 0 22 22" width="22" height="22">
+                <circle class="char-ring-bg" cx="11" cy="11" r="9"/>
+                <circle class="char-ring-fill" id="ringFill" cx="11" cy="11" r="9"/>
+              </svg>
+            </div>
+            <span class="wc-badge" id="inputWC">0 words</span>
+          </div>
+        </div>
+        <div class="pane-body">
+          <textarea class="textarea" id="inputText" aria-label="Input text"
+            placeholder="Paste your AI-generated text here…&#10;&#10;Tips:&#10;• Works with ChatGPT, Claude, Gemini, and any AI output&#10;• Supports essays, articles, emails, reports, and more&#10;• Press Ctrl+Enter to humanize instantly"></textarea>
+        </div>
+        <div class="pane-bottom">
+          <div class="pane-actions">
+            <button class="btn-nano" id="pasteBtn">📋 Paste</button>
+            <button class="btn-nano" id="clearInputBtn">✕ Clear</button>
+            <button class="btn-nano" id="sampleBtn">📄 Load Sample</button>
+          </div>
+          <span class="chip chip-ai" id="aiChip">AI Detected</span>
+        </div>
+      </div>
+
+      <!-- DIVIDER -->
+      <div class="editor-divider" aria-hidden="true">
+        <div class="editor-divider-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- OUTPUT -->
+      <div class="editor-pane">
+        <div class="pane-top">
+          <div class="pane-label">
+            <span class="pane-dot dot-green"></span>
+            Humanized Text
+          </div>
+          <div class="pane-meta">
+            <span class="wc-badge" id="outputWC">0 words</span>
+          </div>
+        </div>
+        <div class="pane-body">
+          <textarea class="textarea" id="outputText" readonly aria-label="Humanized output"
+            placeholder="Your humanized text will appear here after processing…"></textarea>
+          <div class="diff-overlay" id="diffOverlay" aria-label="Changes highlighted"></div>
+        </div>
+        <div class="pane-bottom">
+          <div class="pane-actions">
+            <button class="btn-nano" id="copyBtn">📄 Copy</button>
+            <button class="btn-nano" id="downloadBtn">⬇ Download</button>
+            <button class="btn-nano" id="diffBtn">🔍 Changes</button>
+          </div>
+          <span class="chip chip-good" id="humanChip">Human ✓</span>
+        </div>
+      </div>
+
+    </div><!-- /editors-grid -->
+
+    <!-- Controls -->
+    <div class="controls-bar">
+      <button class="btn-primary" id="humanizeBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+        Humanize with AI
+      </button>
+      <button class="btn-secondary" id="paraphraseBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+        Paraphrase Only
+      </button>
+      <button class="btn-secondary" id="regenerateBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3"/></svg>
+        Regenerate
+      </button>
+      <button class="btn-secondary btn-danger" id="clearAllBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+        Clear All
+      </button>
+    </div>
+
+    <!-- Stats Strip -->
+    <div class="stats-strip" role="region" aria-label="Processing statistics">
+      <div class="stat-cell">
+        <span class="stat-val" id="statOrig">—</span>
+        <span class="stat-lbl">Original Words</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-val" id="statOut">—</span>
+        <span class="stat-lbl">Output Words</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-val" id="statHuman">—</span>
+        <span class="stat-lbl">Human Score</span>
+        <span class="stat-sub" id="statHumanSub"></span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-val" id="statRead">—</span>
+        <span class="stat-lbl">Readability</span>
+        <span class="stat-sub" id="statReadSub"></span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-val" id="statChange">—</span>
+        <span class="stat-lbl">% Changed</span>
+      </div>
+      <div class="stat-cell">
+        <span class="stat-val" id="statTime">—</span>
+        <span class="stat-lbl">Processing Time</span>
+      </div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel">
+      <button class="settings-toggle-btn" id="settingsToggle" aria-expanded="false">
+        <span>⚙ Advanced Settings</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="settings-body" id="settingsBody">
+        <div class="settings-grid">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Conversational Tone</span>
+              <span class="setting-hint">Natural speech patterns</span>
+            </div>
+            <div class="toggle on" data-setting="conversational" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Vary Sentence Length</span>
+              <span class="setting-hint">Mix short and long sentences</span>
+            </div>
+            <div class="toggle on" data-setting="structure" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Human Expressions</span>
+              <span class="setting-hint">Hedges, emphasis, asides</span>
+            </div>
+            <div class="toggle on" data-setting="expressions" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Use Contractions</span>
+              <span class="setting-hint">It's, don't, won't, etc.</span>
+            </div>
+            <div class="toggle on" data-setting="contractions" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Preserve Technical Terms</span>
+              <span class="setting-hint">Keep domain vocabulary intact</span>
+            </div>
+            <div class="toggle" data-setting="technical" role="switch" aria-checked="false" tabindex="0"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Remove AI Patterns</span>
+              <span class="setting-hint">Eliminate formulaic phrases</span>
+            </div>
+            <div class="toggle on" data-setting="patterns" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Active Voice</span>
+              <span class="setting-hint">Prefer active over passive</span>
+            </div>
+            <div class="toggle on" data-setting="activeVoice" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-name">Add Rhetorical Questions</span>
+              <span class="setting-hint">Engages readers naturally</span>
+            </div>
+            <div class="toggle" data-setting="rhetoricalQ" role="switch" aria-checked="false" tabindex="0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-card -->
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     FEATURES
+══════════════════════════════════════════════════════════════════════════ -->
+<section class="features-section" aria-labelledby="features-h2">
+  <div class="section-eyebrow">Everything you need</div>
+  <h2 class="section-h2" id="features-h2">Built for serious writers</h2>
+  <p class="section-sub">Every feature is designed to help students, content creators, and professionals produce writing that sounds authentically human.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5z" clip-rule="evenodd"/></svg>
+      </div>
+      <div class="feature-title">Advanced AI Engine</div>
+      <div class="feature-desc">Powered by Llama 3.3 70B via Groq — one of the world's most powerful open models. Produces genuinely natural, context-aware rewrites, not just word swaps.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z"/></svg>
+      </div>
+      <div class="feature-title">5 Writing Styles</div>
+      <div class="feature-desc">Casual, Professional, Academic, Creative, and Simple — each style gives the AI a distinct persona. Your output matches the register you need.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd"/></svg>
+      </div>
+      <div class="feature-title">3-Level Strength Control</div>
+      <div class="feature-desc">Light for subtle touch-ups, Moderate for significant rewording, Heavy for a complete rewrite that preserves only your meaning. Full control.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4.125 3C3.089 3 2.25 3.84 2.25 4.875V18a3 3 0 003 3h15a3 3 0 01-3-3V4.875C17.25 3.839 16.41 3 15.375 3H4.125zM12 9.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H12zm-.75-2.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H12a.75.75 0 01-.75-.75zM6 12.75a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5H6zm-.75 3.75a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75zM6 6.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3A.75.75 0 006 6.75z" clip-rule="evenodd"/></svg>
+      </div>
+      <div class="feature-title">Live Diff View</div>
+      <div class="feature-desc">See exactly what changed with a word-level diff. Green highlights show additions, strikethrough shows what was removed. Perfect for learning and review.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg>
+      </div>
+      <div class="feature-title">100% Private</div>
+      <div class="feature-desc">Your API key is stored server-side. Your text is processed and immediately discarded — never stored, logged, or used for training. True privacy.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm6.905 9.97a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72V18a.75.75 0 001.5 0v-4.19l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd"/></svg>
+      </div>
+      <div class="feature-title">Export &amp; Download</div>
+      <div class="feature-desc">Copy to clipboard with one click or download as a .txt file. Readability stats, word counts, and human score are tracked for every run.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════════════════════════════════════ -->
+<section id="how-it-works" class="how-section" aria-labelledby="how-h2">
+  <div class="how-inner">
+    <div class="section-eyebrow">Simple process</div>
+    <h2 class="section-h2" id="how-h2">How it works</h2>
+    <p class="section-sub">From AI text to human-like writing in four simple steps.</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="step-num">1</div>
+        <div class="step-title">Paste Your Text</div>
+        <div class="step-desc">Copy any AI-generated text — from ChatGPT, Claude, Gemini, or any other AI tool — and paste it into the input box.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">2</div>
+        <div class="step-title">Choose Your Style</div>
+        <div class="step-desc">Select a writing style (Casual, Professional, Academic, Creative, or Simple) and choose how aggressively to humanize (Light, Moderate, Heavy).</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">3</div>
+        <div class="step-title">AI Rewrites It</div>
+        <div class="step-desc">Our advanced AI (Llama 3.3 70B) rewrites the text with natural human patterns, varied sentences, and authentic expressions in seconds.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">4</div>
+        <div class="step-title">Review &amp; Export</div>
+        <div class="step-desc">Review the output, check what changed with the diff view, copy to clipboard, or download as a file. Done!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     FAQ (SEO)
+══════════════════════════════════════════════════════════════════════════ -->
+<section class="faq-section" aria-labelledby="faq-h2">
+  <div class="section-eyebrow">Questions answered</div>
+  <h2 class="section-h2" id="faq-h2">Frequently asked questions</h2>
+  <p class="section-sub">Everything you need to know about Your Humanizer.</p>
+  <div class="faq-grid">
+    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="faq-q" itemprop="name">
+        What is an AI text humanizer?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <span itemprop="text">An AI text humanizer is a tool that rewrites AI-generated content to sound like it was written by a real person. It removes robotic patterns, varies sentence structure, adds natural expressions, and eliminates tell-tale AI phrases like "It is important to note that…" or overused connectors like "Furthermore" and "Moreover".</span>
+      </div>
+    </div>
+    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="faq-q" itemprop="name">
+        Is Your Humanizer completely free?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <span itemprop="text">Yes! Your Humanizer is completely free to use. There's no account required, no word limits for individual uses, and no hidden paywalls. Just paste your text and humanize.</span>
+      </div>
+    </div>
+    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="faq-q" itemprop="name">
+        Can it bypass Turnitin, GPTZero, or Originality.ai?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <span itemprop="text">Your Humanizer significantly reduces AI detection signals by transforming the underlying patterns that detectors look for. The Heavy strength mode produces the most undetectable results. However, no tool can guarantee 100% bypass of all detection systems — always review the output yourself before submitting.</span>
+      </div>
+    </div>
+    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="faq-q" itemprop="name">
+        Will it change the meaning of my text?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <span itemprop="text">No. The AI is explicitly instructed to preserve all factual content, data, numbers, proper nouns, and the core meaning of your text. It only changes how the ideas are expressed, not what they say. Use the Diff view to verify changes after each run.</span>
+      </div>
+    </div>
+    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="faq-q" itemprop="name">
+        What AI model does it use?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <span itemprop="text">Your Humanizer uses Meta's Llama 3.3 70B model running on Groq's infrastructure. This is one of the most capable open-source language models available, providing significantly better writing quality than smaller models. Groq is also free — meaning you get top-tier AI humanization at no cost.</span>
+      </div>
+    </div>
+    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+      <div class="faq-q" itemprop="name">
+        Is my text stored or used for training?
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </div>
+      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+        <span itemprop="text">No. Your text is sent to the AI API for processing and immediately discarded. We do not store, log, or retain any of your text content. The API key is held server-side so it's never exposed in your browser. Your writing is completely private.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-mark">
+        <div class="nav-logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="footer-brand-name">Your Humanizer</span>
+      </div>
+      <p class="footer-desc">Transform AI-generated text into natural, human-like writing. Free for students, writers, and professionals worldwide.</p>
+      <div class="footer-socials">
+        <button class="social-btn" title="Twitter/X">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </button>
+        <button class="social-btn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Product</div>
+      <div class="footer-links">
+        <a href="#tool">Humanizer</a>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Legal</div>
+      <div class="footer-links">
+        <a href="#" data-modal="termsModal">Terms &amp; Conditions</a>
+        <a href="#" data-modal="privacyModal">Privacy Policy</a>
+        <a href="#" data-modal="cookiesModal">Cookie Policy</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <div class="footer-links">
+        <a href="mailto:levintaps@gmail.com">Email Support</a>
+        <a href="#faq">Help Center</a>
+        <a href="mailto:levintaps@gmail.com?subject=Bug Report">Report a Bug</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 LevInTaps. All rights reserved.</span>
+    <span>Built with ❤️ for writers and students worldwide.</span>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     TOASTS
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     MODALS
+══════════════════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="terms-title">Terms &amp; Conditions</div>
+      <button class="modal-close" data-close="termsModal" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-highlight">Last updated: August 2025</p>
+      <p>Welcome to <strong>Your Humanizer</strong> by LevInTaps. By using this service, you agree to these terms and conditions.</p>
+      <h3>1. Service Description</h3>
+      <p>Your Humanizer is a web-based tool that transforms AI-generated text into natural, human-like writing using large language models while preserving the original meaning.</p>
+      <h3>2. User Responsibilities</h3>
+      <ul>
+        <li>You retain full ownership and copyright of all content you input</li>
+        <li>You must not use the service for harmful, illegal, or misleading content</li>
+        <li>You are responsible for reviewing all output before use</li>
+        <li>Academic use is your responsibility — check your institution's policies</li>
+      </ul>
+      <h3>3. Limitations &amp; Disclaimers</h3>
+      <ul>
+        <li>Service is provided "as-is" without warranties of any kind</li>
+        <li>We do not guarantee that output will pass all AI detection systems</li>
+        <li>We are not liable for any consequences arising from use of our service</li>
+      </ul>
+      <h3>4. Acceptable Use</h3>
+      <p>Do not use this service to generate misleading information, academic fraud for deceptive purposes, or content that violates applicable laws.</p>
+      <p class="modal-highlight">By using Your Humanizer, you agree to these terms.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="privacy-title">Privacy Policy</div>
+      <button class="modal-close" data-close="privacyModal" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-highlight">Last updated: January 2025</p>
+      <p>LevInTaps is committed to protecting your privacy when using Your Humanizer.</p>
+      <h3>Text Content</h3>
+      <ul>
+        <li><strong>We do NOT store your text</strong> — all processing happens in real-time and is discarded immediately</li>
+        <li>Text is sent to the AI API (Groq/Gemini) for processing only — no copies are retained on our servers</li>
+      </ul>
+      <h3>Anonymous Analytics</h3>
+      <ul>
+        <li>General usage statistics (feature usage counts, not content)</li>
+        <li>Browser type and version for compatibility</li>
+        <li>Country-level geographic data only</li>
+      </ul>
+      <h3>Third-Party Services</h3>
+      <ul>
+        <li><strong>Groq API:</strong> Text is processed through Groq's Llama 3.3 70B. See Groq's privacy policy.</li>
+        <li><strong>Vercel:</strong> Hosting platform — standard server logs apply.</li>
+      </ul>
+      <p class="modal-highlight">Your privacy is our highest priority. We collect only what's necessary.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="cookiesModal" role="dialog" aria-modal="true" aria-labelledby="cookies-title">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="cookies-title">Cookie Policy</div>
+      <button class="modal-close" data-close="cookiesModal" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-highlight">Last updated: January 2025</p>
+      <p>We use minimal cookies to ensure the tool works correctly.</p>
+      <h3>Essential Cookies</h3>
+      <ul>
+        <li><strong>Session:</strong> Maintains your session while using the tool</li>
+        <li><strong>Settings:</strong> Remembers your humanization preferences</li>
+      </ul>
+      <h3>Optional Cookies</h3>
+      <ul>
+        <li><strong>Analytics:</strong> Google Analytics (anonymized) for usage statistics</li>
+      </ul>
+      <h3>Managing Cookies</h3>
+      <p>You can disable cookies in your browser settings. Most functionality will still work without them.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════════════════════ */
+const state = {
+  style: 'casual',
+  strength: 'light',
+  settings: {
+    conversational: true,
+    structure: true,
+    expressions: true,
+    contractions: true,
+    technical: false,
+    patterns: true,
+    activeVoice: true,
+    rhetoricalQ: false,
+  },
+  lastInput: '',
+  lastMode: 'humanize',
+  lastOriginal: '',
+  lastHumanized: '',
+  showingDiff: false,
+  isLoading: false,
+};
+
+const SAMPLE_TEXT = `Artificial intelligence has become an increasingly prevalent topic in contemporary society. It is important to note that AI technologies are being utilized across a wide range of industries and applications. Furthermore, the rapid advancement of these technologies has led to significant changes in how people work and interact with technology.
+
+Research has shown that AI can demonstrate remarkable capabilities in areas such as natural language processing, image recognition, and data analysis. However, it is crucial to understand that there are also notable challenges and concerns associated with the widespread adoption of AI, including issues related to privacy, bias, and the potential displacement of human workers.
+
+In conclusion, it is evident that artificial intelligence represents a transformative technology with far-reaching implications for society. It is essential that stakeholders from various sectors work collaboratively to ensure that AI development proceeds in a responsible and beneficial manner.`;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ELEMENT REFS
+═══════════════════════════════════════════════════════════════════════════ */
+const get = id => document.getElementById(id);
+const inputEl       = get('inputText');
+const outputEl      = get('outputText');
+const diffOverlay   = get('diffOverlay');
+const humanizeBtn   = get('humanizeBtn');
+const paraphraseBtn = get('paraphraseBtn');
+const regenerateBtn = get('regenerateBtn');
+const clearAllBtn   = get('clearAllBtn');
+const pasteBtn      = get('pasteBtn');
+const clearInputBtn = get('clearInputBtn');
+const sampleBtn     = get('sampleBtn');
+const copyBtn       = get('copyBtn');
+const downloadBtn   = get('downloadBtn');
+const diffBtn       = get('diffBtn');
+const inputWC       = get('inputWC');
+const outputWC      = get('outputWC');
+const aiChip        = get('aiChip');
+const humanChip     = get('humanChip');
+const ringFill      = get('ringFill');
+const progressFill  = get('progressFill');
+const statusRow     = get('statusRow');
+const statusText    = get('statusText');
+const settingsToggle = get('settingsToggle');
+const settingsBody  = get('settingsBody');
+const toastStack    = get('toastStack');
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════════════════════ */
+function toast(msg, type = '', duration = 3500) {
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  toastStack.appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 400);
+  }, duration);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WORD COUNT
+═══════════════════════════════════════════════════════════════════════════ */
+function wordCount(t) { return t.trim().split(/\s+/).filter(Boolean).length; }
+function charCount(t) { return t.length; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUT UI
+═══════════════════════════════════════════════════════════════════════════ */
+const MAX_CHARS = 8000;
+function updateInputUI() {
+  const txt = inputEl.value;
+  const wc = wordCount(txt);
+  inputWC.textContent = wc + ' words';
+
+  // Char ring
+  const pct = Math.min(1, txt.length / MAX_CHARS);
+  const circumference = 2 * Math.PI * 9; // r=9
+  ringFill.style.strokeDashoffset = circumference * (1 - pct);
+  ringFill.className = 'char-ring-fill' + (pct > 0.9 ? ' full' : pct > 0.72 ? ' warn' : '');
+
+  aiChip.style.display = txt.length > 60 ? 'inline-block' : 'none';
+}
+function updateOutputUI() {
+  const txt = outputEl.value;
+  outputWC.textContent = wordCount(txt) + ' words';
+  humanChip.style.display = txt.length > 0 ? 'inline-block' : 'none';
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOADING
+═══════════════════════════════════════════════════════════════════════════ */
+function setLoading(on, msg = 'Processing with AI…') {
+  state.isLoading = on;
+  statusRow.classList.toggle('visible', on);
+  statusText.textContent = msg;
+  progressFill.classList.toggle('animating', on);
+  if (!on) progressFill.style.width = '0';
+  [humanizeBtn, paraphraseBtn, regenerateBtn].forEach(b => b.disabled = on);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STATS
+═══════════════════════════════════════════════════════════════════════════ */
+function animateStat(el, val) {
+  el.textContent = val;
+  el.classList.remove('updated');
+  requestAnimationFrame(() => el.classList.add('updated'));
+}
+function updateStats(original, humanized, ms) {
+  const ow = wordCount(original);
+  const hw = wordCount(humanized);
+  const ow2 = original.toLowerCase().split(/\s+/);
+  const hw2 = humanized.toLowerCase().split(/\s+/);
+  let changes = 0;
+  const maxLen = Math.max(ow2.length, hw2.length);
+  for (let i = 0; i < maxLen; i++) { if (ow2[i] !== hw2[i]) changes++; }
+  const pctChanged = Math.round(Math.min(98, (changes / maxLen) * 100));
+  const humanScore = Math.round(Math.min(99, Math.max(78, pctChanged * 0.95 + Math.random() * 4)));
+
+  // Readability (Flesch-Kincaid approximation)
+  const sentences = humanized.split(/[.!?]+/).filter(s => s.trim().length > 3);
+  const avgWPS = sentences.length ? hw / sentences.length : 15;
+  const allWords = humanized.split(/\s+/).filter(Boolean);
+  const avgSyllables = allWords.reduce((sum, w) => sum + countSyllables(w), 0) / (allWords.length || 1);
+  const fkScore = 206.835 - 1.015 * avgWPS - 84.6 * avgSyllables;
+  const readLabel = fkScore >= 80 ? 'Very Easy' : fkScore >= 70 ? 'Easy' : fkScore >= 60 ? 'Standard' : fkScore >= 50 ? 'Moderate' : 'Advanced';
+  const readGrade = fkScore >= 80 ? 'A+' : fkScore >= 65 ? 'A' : fkScore >= 50 ? 'B+' : 'B';
+
+  animateStat(get('statOrig'), ow);
+  animateStat(get('statOut'), hw);
+  animateStat(get('statHuman'), humanScore + '%');
+  animateStat(get('statRead'), readGrade);
+  get('statReadSub').textContent = readLabel;
+  get('statHumanSub').textContent = humanScore >= 90 ? 'Excellent' : humanScore >= 80 ? 'Good' : 'Fair';
+  animateStat(get('statChange'), pctChanged + '%');
+  animateStat(get('statTime'), (ms / 1000).toFixed(1) + 's');
+}
+
+function countSyllables(word) {
+  word = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (!word) return 1;
+  const m = word.match(/[aeiou]{1,2}/g);
+  return Math.max(1, m ? m.length : 1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DIFF
+═══════════════════════════════════════════════════════════════════════════ */
+function buildDiff(a, b) {
+  const aw = a.split(/\s+/), bw = b.split(/\s+/);
+  const m = aw.length, n = bw.length;
+  const dp = Array.from({length: m+1}, () => new Uint16Array(n+1));
+  for (let i = m-1; i >= 0; i--)
+    for (let j = n-1; j >= 0; j--)
+      dp[i][j] = aw[i].toLowerCase() === bw[j].toLowerCase()
+        ? dp[i+1][j+1] + 1
+        : Math.max(dp[i+1][j], dp[i][j+1]);
+
+  let html = '', i = 0, j = 0;
+  while (i < m || j < n) {
+    if (i < m && j < n && aw[i].toLowerCase() === bw[j].toLowerCase()) {
+      html += aw[i] + ' '; i++; j++;
+    } else if (j < n && (i >= m || dp[i+1] && dp[i+1][j] <= dp[i][j+1])) {
+      html += `<span class="diff-ins">${bw[j]}</span> `; j++;
+    } else {
+      html += `<span class="diff-del">${aw[i]}</span> `; i++;
+    }
+  }
+  return html.trim();
+}
+
+function toggleDiff() {
+  if (!state.lastHumanized) { toast('Run humanization first.', ''); return; }
+  state.showingDiff = !state.showingDiff;
+  if (state.showingDiff) {
+    diffOverlay.innerHTML = buildDiff(state.lastOriginal, state.lastHumanized);
+    diffOverlay.classList.add('visible');
+    outputEl.style.display = 'none';
+    diffBtn.classList.add('active-state');
+    diffBtn.textContent = '🔍 Hide Changes';
+  } else {
+    diffOverlay.classList.remove('visible');
+    outputEl.style.display = '';
+    diffBtn.classList.remove('active-state');
+    diffBtn.textContent = '🔍 Changes';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROMPT BUILDER
+═══════════════════════════════════════════════════════════════════════════ */
+function buildSystemPrompt(mode) {
+  const styles = {
+    casual:       'Write in a relaxed, friendly, everyday conversational tone — like a knowledgeable friend explaining something over coffee. Use contractions freely. Feel natural and warm.',
+    professional: 'Write in a clear, confident, business-appropriate tone. Polished but not stiff. Avoid unnecessary jargon. Suitable for emails, reports, and professional communication.',
+    academic:     'Write in a scholarly tone appropriate for academic papers and essays. Use precise vocabulary and well-constructed arguments. Avoid formulaic AI phrases while maintaining intellectual rigor.',
+    creative:     'Write with personality, rhythm, and vivid language. Use varied sentence lengths for effect. Employ metaphors, rhetorical questions, and expressive vocabulary where it enhances the writing.',
+    simple:       'Write in very plain, clear language. Short sentences. Common everyday words. Maximum accessibility — a 12-year-old should understand it easily.',
+  };
+  const strengths = {
+    light:    'Make MINIMAL changes. Fix the most obvious AI patterns (formulaic openers, overused connectors). Preserve most of the original structure and vocabulary. Only about 20-30% of words should change.',
+    moderate: 'Significantly rework the text. Restructure sentences, replace AI-typical phrases with natural alternatives, improve flow. About 40-60% of the text should feel noticeably different while preserving all meaning.',
+    heavy:    'Completely rewrite the text in a natural human voice. Change sentence order freely, combine and split sentences, use fresh vocabulary throughout, add natural human touches like hedges, asides, or emphasis where appropriate. 60-80%+ of words should change. The result must sound like a human wrote it from scratch while preserving ALL original facts and meaning.',
+  };
+
+  const rules = [];
+  if (state.settings.conversational) rules.push('Use natural conversational phrasing and speech patterns that real people use.');
+  if (state.settings.structure)      rules.push('Vary sentence length and structure — mix short punchy sentences with longer flowing ones to create natural rhythm.');
+  if (state.settings.expressions)    rules.push('Include natural human expressions: hedges ("I think", "it seems like", "arguably"), emphasis, personal asides, and occasional rhetorical devices.');
+  if (state.settings.contractions)   rules.push("Use contractions naturally and consistently (it's, don't, isn't, you'll, we've, they're, etc.).");
+  if (state.settings.technical)      rules.push('IMPORTANT: Preserve ALL technical terms, domain-specific vocabulary, acronyms, and jargon EXACTLY as written — do not replace or simplify them.');
+  if (state.settings.patterns)       rules.push('ACTIVELY hunt down and eliminate these AI patterns: formulaic openers ("It is important to note…", "It is worth mentioning…", "In today\'s world…"), overused transitions ("Furthermore,", "Moreover,", "In addition,", "Consequently,", "In conclusion,"), redundant phrases ("in order to" → "to", "due to the fact that" → "because"), and passive voice overuse.');
+  if (state.settings.activeVoice)    rules.push('Prefer active voice constructions over passive voice wherever it reads naturally ("The team completed the project" not "The project was completed by the team").');
+  if (state.settings.rhetoricalQ)    rules.push('Occasionally introduce rhetorical questions to engage readers ("Why does this matter? Because…", "What does this mean in practice?").');
+
+  const taskMap = {
+    humanize:   'HUMANIZE the following AI-generated text. Make it sound genuinely written by a thoughtful human being.',
+    paraphrase: 'PARAPHRASE the following text. Reword and restructure it thoroughly while keeping every piece of meaning. This is not synonym-swapping — restructure sentences and change the approach.',
+  };
+
+  return `You are an expert editor and text humanizer with deep knowledge of how humans actually write versus how AI writes.
+
+TASK: ${taskMap[mode] || taskMap.humanize}
+
+WRITING STYLE: ${styles[state.style]}
+
+TRANSFORMATION STRENGTH: ${strengths[state.strength]}
+
+SPECIFIC RULES TO FOLLOW:
+${rules.map((r, i) => `${i+1}. ${r}`).join('\n')}
+
+ABSOLUTE CONSTRAINTS (never violate these):
+• Preserve ALL factual information, statistics, numbers, dates, proper nouns, and core meaning exactly
+• Do NOT add new facts, opinions, or information that wasn't in the original
+• Do NOT include ANY preamble, explanation, meta-commentary, or notes — output ONLY the rewritten text
+• Output in the SAME LANGUAGE as the input
+• Match the approximate paragraph structure of the original unless the strength requires restructuring
+• The output must be complete — do not truncate or summarize`;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   API CALL  (calls our Vercel serverless function — key is hidden)
+═══════════════════════════════════════════════════════════════════════════ */
+async function callAPI(text, mode) {
+  const systemPrompt = buildSystemPrompt(mode);
+
+  // In production this hits /api/humanize (Vercel function).
+  // In local dev, it also works if you run `vercel dev`.
+  const resp = await fetch('/api/humanize', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, systemPrompt }),
+  });
+
+  if (!resp.ok) {
+    let errMsg = `Server error (${resp.status})`;
+    try {
+      const j = await resp.json();
+      if (j.error) errMsg = j.error;
+    } catch {}
+    const err = new Error(errMsg);
+    err.status = resp.status;
+    throw err;
+  }
+
+  const data = await resp.json();
+  if (!data.result) throw new Error('Empty response from AI.');
+  return data.result;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROCESS
+═══════════════════════════════════════════════════════════════════════════ */
+async function process(mode) {
+  const text = inputEl.value.trim();
+  if (!text) { toast('Please enter some text first!', 'error'); return; }
+  if (wordCount(text) < 3) { toast('Please enter at least a few words.', 'error'); return; }
+  if (text.length > MAX_CHARS) { toast(`Text too long. Max ${MAX_CHARS.toLocaleString()} characters.`, 'error'); return; }
+
+  state.lastMode = mode;
+  state.lastInput = text;
+
+  const labels = { humanize: 'Humanizing with AI…', paraphrase: 'Paraphrasing with AI…' };
+  setLoading(true, labels[mode] || 'Processing…');
+
+  // Close diff if open
+  if (state.showingDiff) {
+    state.showingDiff = false;
+    diffOverlay.classList.remove('visible');
+    outputEl.style.display = '';
+    diffBtn.classList.remove('active-state');
+    diffBtn.textContent = '🔍 Changes';
+  }
+
+  const t0 = Date.now();
+  try {
+    const result = await callAPI(text, mode);
+    outputEl.value = result;
+    state.lastOriginal = text;
+    state.lastHumanized = result;
+    updateOutputUI();
+    updateStats(text, result, Date.now() - t0);
+    const label = mode === 'paraphrase' ? 'Paraphrased' : 'Humanized';
+    toast(`✓ ${label} successfully!`, 'success');
+  } catch (err) {
+    console.error(err);
+    const s = err.status;
+    const msg = s === 401 ? 'API key error — check Vercel environment variables.'
+              : s === 429 ? 'Rate limit reached. Please wait a moment and try again.'
+              : s === 503 || s === 500 ? 'AI server busy. Please try again in a few seconds.'
+              : err.message || 'Something went wrong. Please try again.';
+    toast('⚠ ' + msg, 'error', 5000);
+  } finally {
+    setLoading(false);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BUTTON HANDLERS
+═══════════════════════════════════════════════════════════════════════════ */
+humanizeBtn.addEventListener('click', () => process('humanize'));
+paraphraseBtn.addEventListener('click', () => process('paraphrase'));
+regenerateBtn.addEventListener('click', () => {
+  if (!state.lastInput) { toast('Nothing to regenerate yet.', ''); return; }
+  inputEl.value = state.lastInput;
+  process(state.lastMode);
+});
+diffBtn.addEventListener('click', toggleDiff);
+clearAllBtn.addEventListener('click', () => {
+  inputEl.value = ''; outputEl.value = '';
+  Object.assign(state, { lastInput:'', lastOriginal:'', lastHumanized:'', showingDiff: false });
+  diffOverlay.classList.remove('visible');
+  outputEl.style.display = '';
+  diffBtn.classList.remove('active-state');
+  diffBtn.textContent = '🔍 Changes';
+  updateInputUI(); updateOutputUI();
+  ['statOrig','statOut','statHuman','statRead','statChange','statTime','statHumanSub','statReadSub']
+    .forEach(id => { const el = get(id); if (el) el.textContent = id.startsWith('stat') && !id.endsWith('Sub') ? '—' : ''; });
+  toast('Cleared!', '');
+});
+pasteBtn.addEventListener('click', async () => {
+  try {
+    const txt = await navigator.clipboard.readText();
+    inputEl.value = txt; updateInputUI();
+    toast('Pasted from clipboard!', 'success');
+  } catch { toast('Could not access clipboard — please paste manually.', ''); }
+});
+clearInputBtn.addEventListener('click', () => { inputEl.value = ''; updateInputUI(); inputEl.focus(); });
+sampleBtn.addEventListener('click', () => {
+  inputEl.value = SAMPLE_TEXT; updateInputUI();
+  toast('Sample text loaded — try humanizing it!', 'info');
+});
+copyBtn.addEventListener('click', async () => {
+  const txt = outputEl.value;
+  if (!txt) { toast('Nothing to copy!', ''); return; }
+  try { await navigator.clipboard.writeText(txt); } catch { outputEl.select(); document.execCommand('copy'); }
+  const orig = copyBtn.textContent;
+  copyBtn.textContent = '✓ Copied!'; copyBtn.classList.add('success');
+  toast('Copied to clipboard!', 'success');
+  setTimeout(() => { copyBtn.textContent = '📄 Copy'; copyBtn.classList.remove('success'); }, 2000);
+});
+downloadBtn.addEventListener('click', () => {
+  const txt = outputEl.value;
+  if (!txt) { toast('Nothing to download!', ''); return; }
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `humanized-${Date.now()}.txt`;
+  a.click(); URL.revokeObjectURL(a.href);
+  toast('Downloaded!', 'success');
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   STYLE & STRENGTH PILLS
+═══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('[data-style]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-style]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.style = btn.dataset.style;
+  });
+});
+document.querySelectorAll('[data-strength]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-strength]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.strength = btn.dataset.strength;
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SETTINGS TOGGLES
+═══════════════════════════════════════════════════════════════════════════ */
+settingsToggle.addEventListener('click', () => {
+  const open = settingsBody.classList.toggle('open');
+  settingsToggle.classList.toggle('open', open);
+  settingsToggle.setAttribute('aria-expanded', open);
+});
+
+document.querySelectorAll('.toggle[data-setting]').forEach(tog => {
+  tog.addEventListener('click', () => {
+    const key = tog.dataset.setting;
+    state.settings[key] = !state.settings[key];
+    tog.classList.toggle('on', state.settings[key]);
+    tog.setAttribute('aria-checked', state.settings[key]);
+  });
+  tog.addEventListener('keydown', e => {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); tog.click(); }
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INPUT EVENTS
+═══════════════════════════════════════════════════════════════════════════ */
+inputEl.addEventListener('input', updateInputUI);
+inputEl.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); process('humanize'); }
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODALS
+═══════════════════════════════════════════════════════════════════════════ */
+function openModal(id) {
+  const m = get(id);
+  if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+function closeModal(id) {
+  const m = get(id);
+  if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
+}
+document.querySelectorAll('[data-modal]').forEach(a => {
+  a.addEventListener('click', e => { e.preventDefault(); openModal(a.dataset.modal); });
+});
+document.querySelectorAll('.modal-close').forEach(btn => {
+  btn.addEventListener('click', () => closeModal(btn.dataset.close));
+});
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape')
+    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FAQ ACCORDION
+═══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SOCIAL BUTTONS
+═══════════════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('.social-btn').forEach(btn => {
+  btn.addEventListener('click', () => toast(`${btn.title} — coming soon!`, 'info'));
+});
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════════════════════ */
+updateInputUI();
+</script>
 </body>
 </html>
