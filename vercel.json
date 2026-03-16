@@ -1,7 +1,10 @@
 {
-    "functions": {
-        "api/humanize.js": {
-        "maxDuration": 30
-        }
+  "functions": {
+    "api/humanize.js": {
+      "maxDuration": 30
     }
+  },
+  "rewrites": [
+    { "source": "/api/humanize", "destination": "/api/humanize" }
+  ]
 }

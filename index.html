@@ -7,9 +7,6 @@
 
 <!-- SEO -->
 <title>Your Humanizer — Free AI Text Humanizer for Students &amp; Writers</title>
-<!-- Favicon -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%231a56db'/><path d='M12 2L2 7l10 5 10-5-10-5z' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M2 17l10 5 10-5' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M2 12l10 5 10-5' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>"/>
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect width='24' height='24' rx='6' fill='%231a56db'/><path d='M12 2L2 7l10 5 10-5-10-5z' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M2 17l10 5 10-5' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M2 12l10 5 10-5' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/></svg>"/>
 <meta name="description" content="Transform AI-generated text into natural, human-like writing instantly. Free humanizer tool. Bypass AI detection, improve readability, and write authentically. Perfect for students, writers, and professionals."/>
 <meta name="keywords" content="AI humanizer, humanize AI text, bypass AI detection, AI to human text converter, free AI humanizer, ChatGPT humanizer, essay humanizer, paraphrase AI text, make AI text human, students, writers"/>
 <meta name="author" content="LevInTaps"/>
@@ -1139,10 +1136,8 @@ textarea{font-family:var(--font-sans);}
     </div>
     <div class="feature-card">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg></div>
-        <div class="feature-title">100% Private</div>
-        <div class="feature-desc">
-        Your text is processed securely and never stored. Everything is immediately discarded after processing. Enjoy dark mode, a mobile-friendly interface, and settings that automatically save between sessions.
-        </div>
+      <div class="feature-title">100% Private</div>
+      <div class="feature-desc">Your text is processed instantly and never stored—everything is discarded the moment it's done. Enjoy a sleek dark mode, a fully mobile-friendly experience, and preferences that stay saved between sessions.</div>
     </div>
   </div>
 </section>
@@ -1213,9 +1208,9 @@ textarea{font-family:var(--font-sans);}
     <div>
       <div class="footer-col-title">Support</div>
       <div class="footer-links">
-        <a href="mailto:levintaps@gmail.com">Email Support</a>
+        <a href="/cdn-cgi/l/email-protection#fa969f8c93948e9b8a89ba9d979b9396d4999597">Email Support</a>
         <a href="#faq">Help Center</a>
-        <a href="mailto:levintaps@gmail.com?subject=Bug Report">Report a Bug</a>
+        <a href="/cdn-cgi/l/email-protection#deb2bba8b7b0aabfaead9eb9b3bfb7b2f0bdb1b3e1adabbcb4bbbdaae39cabb9fe8cbbaeb1acaa">Report a Bug</a>
       </div>
     </div>
   </div>
@@ -1269,7 +1264,7 @@ textarea{font-family:var(--font-sans);}
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 'use strict';
 /* ══════════════════════════════════════════════════════════════════
    THEME
@@ -1461,7 +1456,7 @@ function updateInputUI() {
   const pct = Math.min(1, txt.length / MAX_CH);
   ringFill.style.strokeDashoffset = CIRC * (1 - pct);
   const cls = pct > .9 ? 'full' : pct > .72 ? 'warn' : '';
-  ringFill.className = 'char-ring-fill' + (cls ? ' ' + cls : '');
+  ringFill.setAttribute('class', 'char-ring-fill' + (cls ? ' ' + cls : ''));
   charText.className = 'char-text' + (cls ? ' ' + cls : '');
   charText.textContent = txt.length >= 1000
     ? Math.round(txt.length/1000*10)/10 + 'k/' + MAX_CH/1000 + 'k'
@@ -1667,17 +1662,33 @@ ABSOLUTE CONSTRAINTS:
    API CALL
 ══════════════════════════════════════════════════════════════════ */
 async function callAPI(text, mode) {
-  const resp = await fetch('/api/humanize', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, systemPrompt: buildPrompt(mode) }),
-  });
+  let resp;
+  try {
+    resp = await fetch('/api/humanize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, systemPrompt: buildPrompt(mode) }),
+    });
+  } catch (netErr) {
+    throw new Error('Network error — check your internet connection.');
+  }
+
+  // 405 almost always means the page is opened as a local HTML file
+  // or the Vercel function hasn't been deployed yet
+  if (resp.status === 405) {
+    throw Object.assign(
+      new Error('API not available. Open this via Vercel (run "vercel dev" locally or deploy to Vercel). Opening index.html directly as a file will not work.'),
+      { status: 405, body: {} }
+    );
+  }
+
   if (!resp.ok) {
     let body = {}; try { body = await resp.json(); } catch {}
     const err = new Error(body.message || body.error || `Error ${resp.status}`);
     err.status = resp.status; err.body = body;
     throw err;
   }
+
   const data = await resp.json();
   if (!data.result) throw new Error('Empty response from AI.');
   return data.result;
@@ -1860,11 +1871,4 @@ document.querySelectorAll('.footer-links a[data-modal]').forEach(a=>a.addEventLi
 /* INIT */
 // Restore saved style/strength pills
 document.querySelectorAll('[data-style]').forEach(b=>b.classList.toggle('active',b.dataset.style===S.style));
-document.querySelectorAll('[data-strength]').forEach(b=>b.classList.toggle('active',b.dataset.strength===S.strength));
-updateStyleGuide();
-applyStyleLocks();
-updateInputUI();
-renderHistory();
-</script>
-</body>
-</html>
+documen
