@@ -1,958 +1,938 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#ffffff" id="themeColorMeta"/>
 
-  <!-- ══ SEO META ══════════════════════════════════════════════════════════ -->
-  <title>Your Humanizer — Free AI Text Humanizer for Students & Writers</title>
-  <meta name="description" content="Transform AI-generated text into natural, human-like writing instantly. Free AI humanizer powered by advanced AI. Bypass AI detection, improve readability, and write like a human. Perfect for students, writers, and professionals." />
-  <meta name="keywords" content="AI humanizer, humanize AI text, bypass AI detection, AI to human text converter, free AI humanizer, ChatGPT humanizer, essay humanizer, paraphrase AI text, make AI text human, AI writing tool, students, writers" />
-  <meta name="author" content="LevInTaps" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://your-humanizer.vercel.app//" />
+<!-- SEO -->
+<title>Your Humanizer — Free AI Text Humanizer for Students &amp; Writers</title>
+<meta name="description" content="Transform AI-generated text into natural, human-like writing instantly. Free humanizer tool. Bypass AI detection, improve readability, and write authentically. Perfect for students, writers, and professionals."/>
+<meta name="keywords" content="AI humanizer, humanize AI text, bypass AI detection, AI to human text converter, free AI humanizer, ChatGPT humanizer, essay humanizer, paraphrase AI text, make AI text human, students, writers"/>
+<meta name="author" content="LevInTaps"/>
+<meta name="robots" content="index, follow"/>
+<link rel="canonical" href="https://your-humanizer.vercel.app/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://your-humanizer.vercel.app/"/>
+<meta property="og:title" content="Your Humanizer — Free AI Text Humanizer"/>
+<meta property="og:description" content="Transform AI-generated text into natural, human-like writing instantly. Free for students, writers &amp; professionals."/>
+<meta property="og:site_name" content="Your Humanizer"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Your Humanizer — Free AI Text Humanizer"/>
+<meta name="twitter:description" content="Transform AI text into natural human writing. Free for students, writers &amp; professionals."/>
 
-  <!-- ══ OPEN GRAPH ══════════════════════════════════════════════════════ -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://your-humanizer.vercel.app//" />
-  <meta property="og:title" content="Your Humanizer — Free AI Text Humanizer" />
-  <meta property="og:description" content="Transform AI-generated text into natural, human-like writing instantly. Free, fast, and accurate. Trusted by students, writers, and professionals worldwide." />
-  <meta property="og:image" content="https://your-humanizer.vercel.app//og-image.png" />
-  <meta property="og:site_name" content="Your Humanizer" />
-  <meta property="og:locale" content="en_US" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Your Humanizer","url":"https://your-humanizer.vercel.app","description":"Free AI text humanizer that transforms AI-generated content into natural human writing.","applicationCategory":"WritingApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"LevInTaps"},"featureList":["AI text humanization","9 writing styles","Paraphrase mode","Diff view","History","Dark mode","Mobile friendly"]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is an AI text humanizer?","acceptedAnswer":{"@type":"Answer","text":"An AI text humanizer rewrites AI-generated content so it sounds like a real person wrote it. It removes robotic patterns, varies sentence structure, and adds natural expressions."}},{"@type":"Question","name":"Is Your Humanizer completely free?","acceptedAnswer":{"@type":"Answer","text":"Yes, completely free. No account, no word limits, no paywalls."}},{"@type":"Question","name":"Will it change the meaning of my text?","acceptedAnswer":{"@type":"Answer","text":"No. All factual content, numbers, and core meaning are preserved exactly. Only the style and phrasing change."}}]}
+</script>
 
-  <!-- ══ TWITTER CARD ══════════════════════════════════════════════════════ -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@yourhumanizer" />
-  <meta name="twitter:title" content="Your Humanizer — Free AI Text Humanizer" />
-  <meta name="twitter:description" content="Transform AI-generated text into natural human writing. Free for students, writers & professionals." />
-  <meta name="twitter:image" content="https://your-humanizer.vercel.app//og-image.png" />
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 
-  <!-- ══ SCHEMA.ORG STRUCTURED DATA ════════════════════════════════════════ -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Your Humanizer",
-    "url": "https://your-humanizer.vercel.app/",
-    "description": "Free AI text humanizer that transforms AI-generated content into natural, human-like writing. Bypass AI detection and improve readability.",
-    "applicationCategory": "WritingApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "author": { "@type": "Organization", "name": "LevInTaps" },
-    "featureList": [
-      "AI text humanization",
-      "Paraphrase AI content",
-      "Multiple writing styles",
-      "Adjustable humanization strength",
-      "Word-level diff view",
-      "Reading level analysis",
-      "Readability scoring"
-    ]
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "What is an AI humanizer?",
-        "acceptedAnswer": { "@type": "Answer", "text": "An AI humanizer is a tool that transforms AI-generated text into natural, human-like writing by removing robotic patterns, varying sentence structure, and adding natural expressions." }
-      },
-      {
-        "@type": "Question",
-        "name": "Is Your Humanizer free to use?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Yes, Your Humanizer is completely free to use for students, writers, and professionals." }
-      },
-      {
-        "@type": "Question",
-        "name": "Can it bypass AI detection tools?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Your Humanizer significantly reduces AI detection signals by transforming text structure, vocabulary, and patterns. Results vary by detection tool and content." }
-      }
-    ]
-  }
-  </script>
-
-  <!-- ══ FONTS ══════════════════════════════════════════════════════════════ -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <style>
-/* ════════════════════════════════════════════════════════════════════════════
-   RESET & TOKENS
-════════════════════════════════════════════════════════════════════════════ */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — LIGHT (default)
+═══════════════════════════════════════════════════════════════════ */
 :root {
-  /* Palette — crisp white editorial */
-  --white:      #ffffff;
-  --off-white:  #fafafa;
-  --gray-50:    #f5f5f7;
-  --gray-100:   #ebebed;
-  --gray-200:   #d6d6db;
-  --gray-300:   #b0b0ba;
-  --gray-400:   #8a8a97;
-  --gray-500:   #64646e;
-  --gray-700:   #2c2c32;
-  --gray-900:   #0e0e12;
+  --bg:          #ffffff;
+  --bg-2:        #f8f8fa;
+  --bg-3:        #f0f0f4;
+  --bg-4:        #e8e8ee;
+  --border:      #e4e4ea;
+  --border-2:    #d0d0d8;
+  --ink:         #0e0e12;
+  --ink-2:       #2a2a32;
+  --ink-3:       #62626e;
+  --ink-4:       #90909c;
+  --accent:      #1a56db;
+  --accent-2:    #1444b8;
+  --accent-bg:   #eff4ff;
+  --accent-glow: rgba(26,86,219,.14);
+  --green:       #0d9488;
+  --green-bg:    #f0fdfa;
+  --green-bd:    #a7f3d0;
+  --red:         #dc2626;
+  --red-bg:      #fef2f2;
+  --amber:       #d97706;
+  --amber-bg:    #fffbeb;
+  --amber-bd:    #fcd34d;
 
-  --ink:        #0e0e12;
-  --ink-2:      #2c2c32;
-  --ink-3:      #64646e;
-  --ink-4:      #8a8a97;
+  --font-serif:  'Instrument Serif', Georgia, serif;
+  --font-sans:   'DM Sans', system-ui, sans-serif;
+  --font-mono:   'DM Mono', monospace;
 
-  /* Accent — deep indigo, not purple */
-  --accent:     #1a56db;
-  --accent-2:   #1444b8;
-  --accent-3:   #0d31a0;
-  --accent-bg:  #eff4ff;
-  --accent-glow:rgba(26,86,219,0.12);
+  --r-sm: 6px; --r: 10px; --r-lg: 16px; --r-xl: 22px; --r-full: 9999px;
 
-  /* Status */
-  --green:      #0d9488;
-  --green-bg:   #f0fdfa;
-  --green-border:#a7f3d0;
-  --red:        #dc2626;
-  --red-bg:     #fef2f2;
-  --red-border: #fecaca;
-  --amber:      #d97706;
-  --amber-bg:   #fffbeb;
+  --sh-xs: 0 1px 3px rgba(14,14,18,.06);
+  --sh-sm: 0 2px 8px rgba(14,14,18,.08), 0 1px 3px rgba(14,14,18,.05);
+  --sh:    0 4px 16px rgba(14,14,18,.08), 0 2px 6px rgba(14,14,18,.05);
+  --sh-lg: 0 8px 32px rgba(14,14,18,.10), 0 3px 10px rgba(14,14,18,.06);
+  --sh-xl: 0 16px 48px rgba(14,14,18,.12), 0 6px 18px rgba(14,14,18,.07);
 
-  /* Surfaces */
-  --surface:    var(--white);
-  --surface-2:  var(--off-white);
-  --surface-3:  var(--gray-50);
-  --border:     var(--gray-100);
-  --border-2:   var(--gray-200);
+  --ease: cubic-bezier(.4,0,.2,1);
+  --ease-out: cubic-bezier(0,0,.2,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
 
-  /* Type */
-  --font-serif: 'Instrument Serif', Georgia, serif;
-  --font-sans:  'DM Sans', system-ui, sans-serif;
-  --font-mono:  'DM Mono', 'Fira Code', monospace;
-
-  /* Space */
-  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px;
-  --s5: 20px; --s6: 24px; --s8: 32px; --s10: 40px;
-  --s12: 48px; --s16: 64px;
-
-  /* Radii */
-  --r-sm: 6px; --r: 10px; --r-lg: 16px; --r-xl: 24px; --r-full: 9999px;
-
-  /* Shadows */
-  --sh-xs: 0 1px 2px rgba(14,14,18,0.06);
-  --sh-sm: 0 1px 4px rgba(14,14,18,0.07), 0 2px 8px rgba(14,14,18,0.05);
-  --sh:    0 2px 8px rgba(14,14,18,0.07), 0 4px 16px rgba(14,14,18,0.05);
-  --sh-lg: 0 4px 20px rgba(14,14,18,0.08), 0 8px 32px rgba(14,14,18,0.05);
-  --sh-xl: 0 8px 40px rgba(14,14,18,0.10), 0 20px 60px rgba(14,14,18,0.07);
-
-  /* Transitions */
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --nav-h: 56px;
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   BASE
-════════════════════════════════════════════════════════════════════════════ */
-body {
-  font-family: var(--font-sans);
-  background: var(--surface-2);
-  color: var(--ink);
-  line-height: 1.6;
-  font-size: 14px;
-  min-height: 100vh;
-  overflow-x: hidden;
+/* ═══════════════════════════════════════════════════════════════════
+   DARK THEME
+═══════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --bg:          #0f0f13;
+  --bg-2:        #17171d;
+  --bg-3:        #1e1e26;
+  --bg-4:        #26262f;
+  --border:      #2a2a36;
+  --border-2:    #36364a;
+  --ink:         #f0f0f5;
+  --ink-2:       #d0d0da;
+  --ink-3:       #8a8a9e;
+  --ink-4:       #5e5e72;
+  --accent:      #4d80f0;
+  --accent-2:    #6b96f5;
+  --accent-bg:   rgba(77,128,240,.12);
+  --accent-glow: rgba(77,128,240,.2);
+  --green:       #2dd4bf;
+  --green-bg:    rgba(45,212,191,.08);
+  --green-bd:    rgba(45,212,191,.25);
+  --red:         #f87171;
+  --red-bg:      rgba(248,113,113,.08);
+  --amber:       #fbbf24;
+  --amber-bg:    rgba(251,191,36,.08);
+  --amber-bd:    rgba(251,191,36,.3);
+  --sh-xs: 0 1px 3px rgba(0,0,0,.3);
+  --sh-sm: 0 2px 8px rgba(0,0,0,.35), 0 1px 3px rgba(0,0,0,.2);
+  --sh:    0 4px 16px rgba(0,0,0,.4), 0 2px 6px rgba(0,0,0,.2);
+  --sh-lg: 0 8px 32px rgba(0,0,0,.45), 0 3px 10px rgba(0,0,0,.25);
+  --sh-xl: 0 16px 48px rgba(0,0,0,.5), 0 6px 18px rgba(0,0,0,.3);
 }
 
-a { color: inherit; text-decoration: none; }
+/* ═══════════════════════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:var(--font-sans);background:var(--bg-2);color:var(--ink);
+  line-height:1.6;font-size:15px;min-height:100vh;
+  transition:background .25s var(--ease), color .25s var(--ease);
+}
+a{color:inherit;text-decoration:none;}
+button{font-family:var(--font-sans);cursor:pointer;}
+textarea{font-family:var(--font-sans);}
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 5px; height: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: var(--r-full); }
-::-webkit-scrollbar-thumb:hover { background: var(--gray-300); }
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-2);border-radius:var(--r-full);}
 
-/* ════════════════════════════════════════════════════════════════════════════
-   NAV
-════════════════════════════════════════════════════════════════════════════ */
-.nav {
-  position: sticky; top: 0; z-index: 200;
-  background: rgba(255,255,255,0.85);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid var(--border);
+/* ═══════════════════════════════════════════════════════════════════
+   NAV — mobile first
+═══════════════════════════════════════════════════════════════════ */
+.nav{
+  position:sticky;top:0;z-index:300;height:var(--nav-h);
+  background:rgba(var(--nav-bg-rgb,255,255,255),.88);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--border);
+  transition:background .25s,border-color .25s;
 }
-.nav-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 var(--s6); height: 56px; gap: var(--s6);
+[data-theme="dark"] .nav{background:rgba(15,15,19,.88);}
+.nav-inner{
+  max-width:1200px;margin:0 auto;height:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;gap:12px;
 }
-.nav-logo {
-  display: flex; align-items: center; gap: var(--s2);
-  font-size: 15px; font-weight: 700; color: var(--ink); white-space: nowrap;
+.nav-logo{
+  display:flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap;
+  -webkit-user-select:none;user-select:none;
 }
-.nav-logo-mark {
-  width: 28px; height: 28px; background: var(--accent);
-  border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+.nav-logo-mark{
+  width:26px;height:26px;border-radius:7px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 2px 8px var(--accent-glow);
 }
-.nav-logo-mark svg { width: 14px; height: 14px; }
-.nav-pills { display: flex; align-items: center; gap: var(--s2); }
-.nav-pill {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 11.5px; font-weight: 600; color: var(--ink-3);
-  padding: 4px 10px; border-radius: var(--r-full); letter-spacing: 0.3px;
-  border: 1px solid transparent; transition: all 0.18s var(--ease);
+.nav-logo-mark svg{width:13px;height:13px;}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-badge{
+  display:none;font-size:11px;font-weight:600;color:var(--ink-3);
+  padding:4px 10px;border-radius:var(--r-full);
+  border:1px solid var(--border);background:var(--bg);
 }
-.nav-pill:hover { background: var(--surface-3); color: var(--ink); }
-.nav-pill-accent {
-  background: var(--accent-bg); color: var(--accent);
-  border-color: rgba(26,86,219,0.2);
+@media(min-width:640px){.nav-badge{display:inline-flex;align-items:center;gap:4px;}}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--accent);color:#fff;border:none;border-radius:var(--r);
+  padding:7px 14px;font-size:13px;font-weight:700;
+  box-shadow:0 2px 8px var(--accent-glow);transition:all .18s var(--ease);
 }
-.nav-pill-accent:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
-.nav-pill svg { width: 11px; height: 11px; flex-shrink: 0; }
+.nav-cta:hover{background:var(--accent-2);transform:translateY(-1px);}
 
-/* ════════════════════════════════════════════════════════════════════════════
-   HERO
-════════════════════════════════════════════════════════════════════════════ */
-.hero {
-  max-width: 1200px; margin: 0 auto;
-  padding: var(--s16) var(--s6) var(--s10);
-  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s12);
-  align-items: center;
+/* Theme toggle */
+.theme-btn{
+  width:36px;height:36px;border-radius:var(--r);background:var(--bg-3);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);transition:all .18s var(--ease);flex-shrink:0;
 }
-.hero-text {}
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: var(--s2);
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1.2px; color: var(--accent); margin-bottom: var(--s4);
-}
-.hero-eyebrow::before {
-  content: ''; display: inline-block; width: 20px; height: 2px;
-  background: var(--accent); border-radius: 2px;
-}
-.hero-h1 {
-  font-family: var(--font-serif); font-size: clamp(2.4rem, 4.5vw, 3.4rem);
-  font-weight: 400; line-height: 1.12; color: var(--ink);
-  letter-spacing: -0.5px; margin-bottom: var(--s5);
-}
-.hero-h1 em { font-style: italic; color: var(--accent); }
-.hero-sub {
-  font-size: 15.5px; color: var(--ink-3); line-height: 1.7;
-  max-width: 440px; font-weight: 400; margin-bottom: var(--s8);
-}
-.hero-cta { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+.theme-btn:hover{background:var(--bg-4);color:var(--ink);}
+.theme-btn svg{width:16px;height:16px;}
+.icon-sun,.icon-moon{transition:opacity .2s,transform .2s;}
+[data-theme="light"] .icon-moon{display:none;}
+[data-theme="dark"]  .icon-sun{display:none;}
 
-.hero-stats {
-  display: flex; flex-direction: column; gap: var(--s4);
-  padding: var(--s8); background: var(--white);
-  border: 1px solid var(--border); border-radius: var(--r-xl);
-  box-shadow: var(--sh-lg);
+/* ═══════════════════════════════════════════════════════════════════
+   HERO — mobile first
+═══════════════════════════════════════════════════════════════════ */
+.hero{
+  max-width:1200px;margin:0 auto;
+  padding:40px 16px 28px;
+  display:flex;flex-direction:column;gap:28px;
 }
-.hero-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
-.hero-stat {
-  padding: var(--s5) var(--s4);
-  background: var(--surface-3); border-radius: var(--r-lg);
-  text-align: center; transition: all 0.25s var(--ease);
+@media(min-width:860px){
+  .hero{flex-direction:row;align-items:center;padding:64px 24px 40px;gap:48px;}
+  .hero-text{flex:1;}
+  .hero-card{flex:0 0 380px;}
 }
-.hero-stat:hover { background: var(--accent-bg); transform: translateY(-2px); box-shadow: var(--sh-sm); }
-.hero-stat-num {
-  font-family: var(--font-serif); font-size: 2rem; font-weight: 400;
-  color: var(--accent); display: block; line-height: 1.1; margin-bottom: 2px;
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--accent);margin-bottom:12px;
 }
-.hero-stat-lbl { font-size: 11px; color: var(--ink-4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; }
-.hero-stat-desc {
-  font-size: 12.5px; color: var(--ink-3); text-align: center;
-  padding: var(--s3) var(--s4); background: var(--accent-bg);
-  border-radius: var(--r); line-height: 1.5; font-style: italic;
+.hero-eyebrow::before{content:'';width:18px;height:2px;background:var(--accent);border-radius:2px;}
+.hero-h1{
+  font-family:var(--font-serif);
+  font-size:clamp(2rem,7vw,3.2rem);
+  font-weight:400;line-height:1.12;
+  color:var(--ink);letter-spacing:-.5px;margin-bottom:14px;
+}
+.hero-h1 em{font-style:italic;color:var(--accent);}
+.hero-sub{
+  font-size:15px;color:var(--ink-3);line-height:1.7;
+  max-width:480px;margin-bottom:22px;
+}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* Hero stats card */
+.hero-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-xl);box-shadow:var(--sh-lg);
+  padding:20px;display:flex;flex-direction:column;gap:12px;
+}
+.hero-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.hero-stat{
+  background:var(--bg-3);border-radius:var(--r-lg);
+  padding:14px 12px;text-align:center;
+  transition:background .2s,transform .2s var(--ease);
+}
+.hero-stat:hover{background:var(--accent-bg);transform:translateY(-2px);}
+.hero-stat-num{
+  font-family:var(--font-serif);font-size:1.75rem;
+  color:var(--accent);display:block;line-height:1;margin-bottom:3px;
+}
+.hero-stat-lbl{font-size:10.5px;color:var(--ink-4);font-weight:600;text-transform:uppercase;letter-spacing:.6px;}
+.hero-quote{
+  background:var(--accent-bg);border-radius:var(--r);
+  padding:12px 14px;font-size:12.5px;color:var(--ink-3);
+  line-height:1.55;font-style:italic;
+  border-left:3px solid var(--accent);
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════
    TRUST BAR
-════════════════════════════════════════════════════════════════════════════ */
-.trust-bar {
-  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-  background: var(--white); padding: var(--s4) var(--s6);
+═══════════════════════════════════════════════════════════════════ */
+.trust-bar{
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--bg);overflow-x:auto;-webkit-overflow-scrolling:touch;
 }
-.trust-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: center;
-  gap: var(--s8); flex-wrap: wrap;
+.trust-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;gap:0;
+  padding:0 16px;min-width:max-content;
 }
-.trust-item {
-  display: flex; align-items: center; gap: var(--s2);
-  font-size: 12.5px; font-weight: 600; color: var(--ink-3);
+.trust-item{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 16px;
+  font-size:12px;font-weight:600;color:var(--ink-3);white-space:nowrap;
+  border-right:1px solid var(--border);
 }
-.trust-item svg { width: 14px; height: 14px; color: var(--accent); flex-shrink: 0; }
-.trust-sep { width: 1px; height: 16px; background: var(--border-2); }
+.trust-item:last-child{border-right:none;}
+.trust-item svg{width:13px;height:13px;color:var(--accent);flex-shrink:0;}
 
-/* ════════════════════════════════════════════════════════════════════════════
-   MAIN TOOL SECTION
-════════════════════════════════════════════════════════════════════════════ */
-.tool-section {
-  max-width: 1200px; margin: 0 auto; padding: var(--s10) var(--s6) var(--s16);
-}
-.tool-heading { margin-bottom: var(--s6); }
-.tool-heading h2 {
-  font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400;
-  color: var(--ink); letter-spacing: -0.3px;
-}
-.tool-heading p { font-size: 13.5px; color: var(--ink-3); margin-top: 4px; }
+/* ═══════════════════════════════════════════════════════════════════
+   TOOL SECTION
+═══════════════════════════════════════════════════════════════════ */
+.tool-section{max-width:1200px;margin:0 auto;padding:24px 16px 60px;}
+@media(min-width:640px){.tool-section{padding:32px 24px 80px;}}
 
-/* CONFIG ROW */
-.config-row {
-  display: flex; align-items: flex-start; gap: var(--s6);
-  margin-bottom: var(--s5); flex-wrap: wrap;
+.tool-heading{margin-bottom:20px;}
+.tool-heading h2{
+  font-family:var(--font-serif);font-size:clamp(1.4rem,3vw,1.9rem);
+  font-weight:400;color:var(--ink);letter-spacing:-.3px;
 }
-.config-group { display: flex; flex-direction: column; gap: var(--s2); }
-.config-label {
-  font-size: 10.5px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.9px; color: var(--ink-4);
-}
-.pill-group { display: flex; gap: var(--s2); flex-wrap: wrap; }
-.pill {
-  font-size: 12.5px; font-weight: 600; padding: 6px 14px;
-  border-radius: var(--r-full); border: 1.5px solid var(--border-2);
-  background: var(--white); color: var(--ink-3);
-  cursor: pointer; transition: all 0.16s var(--ease);
-  display: flex; align-items: center; gap: 5px; white-space: nowrap;
-  user-select: none;
-}
-.pill:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-.pill.active {
-  background: var(--accent); color: var(--white);
-  border-color: var(--accent); box-shadow: 0 2px 8px var(--accent-glow);
-}
-.pill .pill-icon { font-size: 13px; }
+.tool-heading p{font-size:13.5px;color:var(--ink-3);margin-top:4px;}
 
-/* MAIN CARD */
-.main-card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--r-xl);
-  box-shadow: var(--sh-xl);
-  overflow: hidden;
-  animation: cardAppear 0.5s var(--ease-out) both;
-}
-@keyframes cardAppear {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* ═══════════════════════════════════════════════════════════════════
+   CONFIG ROW — scrollable on mobile
+═══════════════════════════════════════════════════════════════════ */
+.config-row{display:flex;flex-direction:column;gap:14px;margin-bottom:14px;}
+@media(min-width:860px){.config-row{flex-direction:row;align-items:flex-start;gap:20px;}}
 
-/* PROGRESS BAR */
-.progress-bar { height: 3px; background: var(--gray-100); overflow: hidden; }
-.progress-fill {
-  height: 100%; width: 0;
-  background: linear-gradient(90deg, var(--accent), #6366f1, var(--accent));
-  background-size: 300% 100%;
-  transition: width 0.3s var(--ease);
+.config-group{display:flex;flex-direction:column;gap:6px;}
+.config-label{
+  font-size:10.5px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.9px;color:var(--ink-4);
 }
-.progress-fill.animating {
-  width: 92% !important;
-  animation: progressFlow 1.8s ease-in-out infinite;
+.pill-scroll{
+  display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  padding-bottom:4px;scrollbar-width:none;
 }
-@keyframes progressFlow {
-  0%  { background-position: 0% 0%; }
-  50% { background-position: 150% 0%; }
-  100%{ background-position: 300% 0%; }
+.pill-scroll::-webkit-scrollbar{display:none;}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:12.5px;font-weight:600;padding:6px 13px;
+  border-radius:var(--r-full);border:1.5px solid var(--border-2);
+  background:var(--bg);color:var(--ink-3);
+  white-space:nowrap;flex-shrink:0;
+  transition:all .16s var(--ease);-webkit-user-select:none;user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.pill:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+.pill.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 2px 8px var(--accent-glow);}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STYLE GUIDE BADGE
+═══════════════════════════════════════════════════════════════════ */
+.style-guide{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;background:var(--accent-bg);
+  border:1px solid rgba(26,86,219,.18);border-radius:var(--r);
+  margin-bottom:14px;
+}
+[data-theme="dark"] .style-guide{border-color:rgba(77,128,240,.22);}
+.sg-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.sg-body{flex:1;min-width:0;}
+.sg-name{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:2px;}
+.sg-desc{font-size:11.5px;color:var(--ink-3);line-height:1.5;}
+.sg-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.sg-tag{
+  font-size:10px;font-weight:700;padding:2px 7px;
+  border-radius:var(--r-full);background:rgba(26,86,219,.1);color:var(--accent);
 }
 
-/* STATUS ROW */
-.status-row {
-  display: none; align-items: center; gap: var(--s3);
-  padding: 10px var(--s5); background: var(--accent-bg);
-  border-bottom: 1px solid rgba(26,86,219,0.12);
+/* ═══════════════════════════════════════════════════════════════════
+   LIMIT BANNER
+═══════════════════════════════════════════════════════════════════ */
+.limit-banner{
+  display:none;align-items:flex-start;gap:12px;
+  padding:14px 16px;background:var(--amber-bg);
+  border:1.5px solid var(--amber-bd);border-radius:var(--r-lg);
+  margin-bottom:14px;
 }
-.status-row.visible { display: flex; }
-.status-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: blink 1.1s ease-in-out infinite; }
-@keyframes blink { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:0.3; transform:scale(0.7); } }
-.status-text { font-size: 12.5px; font-weight: 600; color: var(--accent); }
+.limit-banner.visible{display:flex;animation:fadeDown .3s var(--ease-out);}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.lb-icon{font-size:20px;flex-shrink:0;}
+.lb-body{flex:1;}
+.lb-title{font-size:13.5px;font-weight:700;color:var(--amber);margin-bottom:3px;}
+.lb-msg{font-size:12.5px;color:var(--ink-3);line-height:1.6;}
+.lb-close{background:none;border:none;font-size:18px;color:var(--ink-3);padding:0 4px;flex-shrink:0;opacity:.6;transition:opacity .15s;}
+.lb-close:hover{opacity:1;}
 
-/* EDITORS GRID */
-.editors-grid {
-  display: grid; grid-template-columns: 1fr 1px 1fr;
-  min-height: 420px;
-}
-.editor-divider {
-  background: var(--border);
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: visible;
-}
-.editor-divider-icon {
-  position: absolute; z-index: 2;
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--white); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: var(--sh-sm);
-}
-.editor-divider-icon svg { width: 13px; height: 13px; color: var(--ink-4); }
-
-/* EDITOR PANE */
-.editor-pane { display: flex; flex-direction: column; min-height: 0; }
-
-.pane-top {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--s3) var(--s5); border-bottom: 1px solid var(--border);
-  background: var(--surface-3); gap: var(--s3);
-}
-.pane-label {
-  display: flex; align-items: center; gap: var(--s2);
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.8px; color: var(--ink-3);
-}
-.pane-dot { width: 6px; height: 6px; border-radius: 50%; }
-.dot-red { background: #f87171; }
-.dot-green { background: var(--green); }
-.pane-meta { display: flex; align-items: center; gap: var(--s3); }
-
-/* Char limit ring */
-.char-ring { position: relative; width: 22px; height: 22px; flex-shrink: 0; }
-.char-ring svg { transform: rotate(-90deg); }
-.char-ring-bg { fill: none; stroke: var(--gray-100); stroke-width: 2.5; }
-.char-ring-fill { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; transition: stroke-dashoffset 0.4s var(--ease), stroke 0.3s; stroke-dasharray: 56.5; stroke-dashoffset: 56.5; }
-.char-ring-fill.warn { stroke: var(--amber); }
-.char-ring-fill.full { stroke: var(--red); }
-
-.wc-badge {
-  font-family: var(--font-mono); font-size: 11px;
-  color: var(--ink-4); font-weight: 500;
+/* ═══════════════════════════════════════════════════════════════════
+   MAIN CARD
+═══════════════════════════════════════════════════════════════════ */
+.main-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-xl);box-shadow:var(--sh-xl);overflow:hidden;
 }
 
-.pane-body { flex: 1; position: relative; }
-.textarea {
-  width: 100%; height: 100%; min-height: 360px;
-  border: none; padding: var(--s5) var(--s6); resize: none; outline: none;
-  font-family: var(--font-sans); font-size: 14.5px; line-height: 1.75;
-  color: var(--ink); background: transparent; display: block;
+/* Progress */
+.progress-bar{height:3px;background:var(--bg-3);overflow:hidden;}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#818cf8,var(--accent));background-size:300% 100%;}
+.progress-fill.animating{width:92%!important;animation:progAnim 1.6s ease-in-out infinite;}
+@keyframes progAnim{0%{background-position:0}50%{background-position:150%}100%{background-position:300%}}
+
+/* Status row */
+.status-row{
+  display:none;align-items:center;gap:10px;
+  padding:10px 16px;background:var(--accent-bg);
+  border-bottom:1px solid rgba(26,86,219,.12);
 }
-.textarea::placeholder { color: var(--gray-300); font-style: italic; }
-.textarea[readonly] { background: var(--off-white); cursor: default; color: var(--ink-2); }
-.textarea:focus { background: var(--white); }
+.status-row.visible{display:flex;}
+.status-pulse{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.1s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.7);}}
+.status-text{font-size:12.5px;font-weight:600;color:var(--accent);}
+
+/* ═══════════════════════════════════════════════════════════════════
+   EDITORS — stacked on mobile, side-by-side on desktop
+═══════════════════════════════════════════════════════════════════ */
+.editors-grid{display:flex;flex-direction:column;}
+@media(min-width:768px){
+  .editors-grid{display:grid;grid-template-columns:1fr 1px 1fr;min-height:400px;}
+}
+.editor-divider{
+  background:var(--border);display:none;
+  position:relative;
+}
+@media(min-width:768px){
+  .editor-divider{display:flex;align-items:center;justify-content:center;}
+}
+.editor-divider-icon{
+  position:absolute;z-index:2;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--bg);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--sh-sm);
+}
+.editor-divider-icon svg{width:12px;height:12px;color:var(--ink-4);}
+
+.editor-pane{display:flex;flex-direction:column;}
+.editor-pane:first-child{border-bottom:1px solid var(--border);}
+@media(min-width:768px){
+  .editor-pane:first-child{border-bottom:none;border-right:none;}
+}
+
+/* Pane header */
+.pane-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;background:var(--bg-2);border-bottom:1px solid var(--border);
+  gap:10px;flex-shrink:0;
+}
+.pane-label{
+  display:flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--ink-3);
+}
+.pane-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dot-red{background:#f87171;}
+.dot-green{background:var(--green);}
+.pane-meta{display:flex;align-items:center;gap:8px;}
+
+/* Char ring */
+.char-ring{position:relative;width:20px;height:20px;flex-shrink:0;}
+.char-ring svg{transform:rotate(-90deg);}
+.char-ring-bg{fill:none;stroke:var(--bg-4);stroke-width:2.5;}
+.char-ring-fill{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;transition:stroke-dashoffset .4s var(--ease),stroke .3s;stroke-dasharray:56.5;stroke-dashoffset:56.5;}
+.char-ring-fill.warn{stroke:var(--amber);}
+.char-ring-fill.full{stroke:var(--red);}
+.wc-badge{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-4);font-weight:500;}
+.char-text{font-family:var(--font-mono);font-size:10px;color:var(--ink-4);}
+.char-text.warn{color:var(--amber);}
+.char-text.full{color:var(--red);}
+
+/* Textarea */
+.pane-body{flex:1;position:relative;display:flex;flex-direction:column;}
+.textarea{
+  flex:1;width:100%;min-height:220px;border:none;
+  padding:16px;font-size:14.5px;line-height:1.75;resize:none;outline:none;
+  background:transparent;color:var(--ink);
+  transition:background .2s;
+}
+@media(min-width:768px){.textarea{min-height:300px;padding:18px 20px;}}
+.textarea::placeholder{color:var(--ink-4);font-style:italic;}
+.textarea[readonly]{background:var(--bg-2);cursor:default;}
+.textarea:focus{background:var(--bg);}
+
+/* AI pattern warning */
+.pattern-warn{
+  display:none;align-items:flex-start;gap:8px;
+  padding:8px 14px;background:var(--amber-bg);
+  border-top:1px solid var(--amber-bd);
+}
+.pattern-warn.visible{display:flex;}
+.pw-icon{font-size:12px;flex-shrink:0;margin-top:1px;}
+.pw-text{font-size:11.5px;color:var(--amber);line-height:1.5;}
+.pw-text strong{font-weight:700;}
 
 /* Diff overlay */
-.diff-overlay {
-  display: none; width: 100%; min-height: 360px;
-  padding: var(--s5) var(--s6); font-family: var(--font-sans);
-  font-size: 14.5px; line-height: 1.75; color: var(--ink-2);
-  overflow-y: auto; background: var(--off-white);
+.diff-overlay{
+  display:none;flex:1;
+  padding:16px;font-size:14.5px;line-height:1.75;
+  color:var(--ink-2);overflow-y:auto;background:var(--bg-2);
 }
-.diff-overlay.visible { display: block; }
-.diff-ins { background: rgba(13,148,136,0.12); border-radius: 3px; padding: 1px 2px; color: var(--green); }
-.diff-del { background: rgba(220,38,38,0.10); text-decoration: line-through; border-radius: 3px; padding: 1px 2px; color: var(--gray-400); }
+@media(min-width:768px){.diff-overlay{padding:18px 20px;}}
+.diff-overlay.visible{display:block;}
+.diff-ins{background:rgba(13,148,136,.14);border-radius:3px;padding:1px 2px;color:var(--green);}
+.diff-del{background:rgba(220,38,38,.10);text-decoration:line-through;border-radius:3px;padding:1px 2px;color:var(--ink-4);}
 
-.pane-bottom {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--s2) var(--s4); border-top: 1px solid var(--border);
-  background: var(--surface-3); gap: var(--s2);
+/* Pane footer */
+.pane-bottom{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 10px;background:var(--bg-2);border-top:1px solid var(--border);
+  gap:6px;flex-shrink:0;flex-wrap:wrap;
 }
-.pane-actions { display: flex; gap: var(--s2); }
-.btn-nano {
-  font-size: 11.5px; font-weight: 600; padding: 5px 11px;
-  border-radius: var(--r-sm); border: 1px solid var(--border-2);
-  background: var(--white); color: var(--ink-3);
-  cursor: pointer; transition: all 0.16s var(--ease);
-  display: inline-flex; align-items: center; gap: 4px;
+.pane-actions{display:flex;gap:5px;flex-wrap:wrap;}
+.btn-nano{
+  font-size:11.5px;font-weight:600;padding:5px 10px;
+  border-radius:var(--r-sm);border:1px solid var(--border-2);
+  background:var(--bg);color:var(--ink-3);
+  transition:all .15s var(--ease);-webkit-tap-highlight-color:transparent;
 }
-.btn-nano:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-.btn-nano.success { border-color: var(--green); color: var(--green); background: var(--green-bg); }
-.chip {
-  display: none; font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.5px; padding: 3px 8px; border-radius: var(--r-full);
+.btn-nano:hover,.btn-nano:focus{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+.btn-nano.success{border-color:var(--green);color:var(--green);background:var(--green-bg);}
+.chip{
+  display:none;font-size:10px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.5px;padding:3px 8px;border-radius:var(--r-full);
 }
-.chip-ai   { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
-.chip-good { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.chip-ai{background:var(--red-bg);color:var(--red);border:1px solid rgba(220,38,38,.2);}
+.chip-good{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);}
 
-/* ── CONTROLS BAR ── */
-.controls-bar {
-  display: flex; align-items: center; justify-content: center; gap: var(--s3);
-  padding: var(--s5) var(--s6); border-top: 1px solid var(--border);
-  background: var(--surface-3); flex-wrap: wrap;
+/* ═══════════════════════════════════════════════════════════════════
+   CONTROLS BAR
+═══════════════════════════════════════════════════════════════════ */
+.controls-bar{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 16px;border-top:1px solid var(--border);
+  background:var(--bg-2);flex-wrap:wrap;
+}
+@media(min-width:640px){.controls-bar{gap:10px;padding:16px 20px;}}
+
+.btn-primary{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--accent);color:#fff;border:none;border-radius:var(--r);
+  padding:11px 20px;font-size:13.5px;font-weight:700;
+  box-shadow:0 4px 12px var(--accent-glow);transition:all .2s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-primary:hover{background:var(--accent-2);transform:translateY(-1px);box-shadow:0 6px 18px var(--accent-glow);}
+.btn-primary:active{transform:translateY(0);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-primary svg,.btn-secondary svg{width:14px;height:14px;flex-shrink:0;}
+
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--bg);color:var(--ink-2);border:1.5px solid var(--border-2);
+  border-radius:var(--r);padding:10px 16px;font-size:13px;font-weight:600;
+  transition:all .16s var(--ease);-webkit-tap-highlight-color:transparent;
+}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+.btn-secondary:disabled{opacity:.45;cursor:not-allowed;}
+.btn-secondary.active-state{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+.btn-danger:hover{border-color:var(--red);color:var(--red);background:var(--red-bg);}
+
+/* Mobile: full-width primary */
+@media(max-width:480px){
+  .controls-bar{flex-direction:column;align-items:stretch;}
+  .btn-primary,.btn-secondary{width:100%;justify-content:center;}
 }
 
-.btn-primary {
-  display: inline-flex; align-items: center; gap: var(--s2);
-  background: var(--accent); color: var(--white);
-  border: none; border-radius: var(--r); padding: 11px 24px;
-  font-family: var(--font-sans); font-size: 13.5px; font-weight: 700;
-  cursor: pointer; transition: all 0.2s var(--ease);
-  box-shadow: 0 4px 12px var(--accent-glow), 0 1px 3px rgba(14,14,18,0.1);
-  letter-spacing: 0.1px;
+/* ═══════════════════════════════════════════════════════════════════
+   STATS STRIP
+═══════════════════════════════════════════════════════════════════ */
+.stats-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--border);background:var(--bg-2);
 }
-.btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); box-shadow: 0 6px 18px var(--accent-glow); }
-.btn-primary:active { transform: translateY(0); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-.btn-primary svg { width: 15px; height: 15px; }
+@media(min-width:640px){.stats-strip{grid-template-columns:repeat(6,1fr);}}
+.stat-cell{
+  padding:12px 8px;text-align:center;
+  border-right:1px solid var(--border);
+  transition:background .18s;
+}
+.stat-cell:last-child,.stat-cell:nth-child(3){border-right:none;}
+@media(min-width:640px){.stat-cell:nth-child(3){border-right:1px solid var(--border);}.stat-cell:last-child{border-right:none;}}
+.stat-cell:hover{background:var(--bg-3);}
+.stat-val{
+  font-family:var(--font-serif);font-size:1.35rem;font-weight:400;
+  color:var(--accent);display:block;line-height:1.1;
+}
+.stat-val.pop{animation:statPop .4s var(--ease-spring);}
+@keyframes statPop{0%{transform:scale(1.2);}100%{transform:scale(1);}}
+.stat-lbl{font-size:9.5px;color:var(--ink-4);font-weight:600;text-transform:uppercase;letter-spacing:.6px;margin-top:2px;display:block;}
+.stat-sub{font-size:9.5px;color:var(--ink-4);display:block;}
 
-.btn-secondary {
-  display: inline-flex; align-items: center; gap: var(--s2);
-  background: var(--white); color: var(--ink-2);
-  border: 1.5px solid var(--border-2); border-radius: var(--r);
-  padding: 10px 18px; font-family: var(--font-sans);
-  font-size: 13px; font-weight: 600; cursor: pointer;
-  transition: all 0.16s var(--ease);
+/* ═══════════════════════════════════════════════════════════════════
+   SETTINGS PANEL
+═══════════════════════════════════════════════════════════════════ */
+.settings-panel{border-top:1px solid var(--border);background:var(--bg-2);}
+.panel-toggle-btn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;background:none;border:none;
+  font-size:13px;font-weight:600;color:var(--ink-3);
+  transition:color .16s;
 }
-.btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
-.btn-secondary:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-secondary svg { width: 14px; height: 14px; }
-.btn-secondary.active-state { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.panel-toggle-btn:hover{color:var(--ink);}
+.panel-toggle-btn .ch{width:14px;height:14px;transition:transform .25s var(--ease);flex-shrink:0;}
+.panel-toggle-btn.open .ch{transform:rotate(180deg);}
+.panel-body{display:none;padding:0 16px 16px;}
+.panel-body.open{display:block;animation:settleDown .22s var(--ease-out);}
+@keyframes settleDown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.settings-grid{display:grid;grid-template-columns:1fr;gap:8px;}
+@media(min-width:480px){.settings-grid{grid-template-columns:1fr 1fr;}}
+@media(min-width:900px){.settings-grid{grid-template-columns:repeat(4,1fr);}}
+.setting-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 12px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r);transition:border-color .16s;
+}
+.setting-row:hover{border-color:var(--border-2);}
+.setting-row.locked{opacity:.4;pointer-events:none;}
+.setting-name{font-size:12.5px;font-weight:500;color:var(--ink-2);display:block;}
+.setting-hint{font-size:11px;color:var(--ink-4);margin-top:1px;display:block;}
+.toggle{
+  position:relative;width:38px;height:21px;flex-shrink:0;
+  background:var(--bg-4);border-radius:var(--r-full);
+  cursor:pointer;transition:background .22s var(--ease);border:1px solid var(--border-2);
+}
+.toggle::after{
+  content:'';position:absolute;width:15px;height:15px;
+  background:var(--bg);border-radius:50%;top:2px;left:2px;
+  transition:left .22s var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.toggle.on{background:var(--accent);border-color:var(--accent-2);}
+.toggle.on::after{left:19px;}
 
-.btn-danger { border-color: var(--red-border); color: var(--red); }
-.btn-danger:hover { border-color: var(--red); background: var(--red-bg); color: var(--red); }
+/* ═══════════════════════════════════════════════════════════════════
+   HISTORY PANEL
+═══════════════════════════════════════════════════════════════════ */
+.history-panel{border-top:1px solid var(--border);background:var(--bg-2);}
+.history-list{display:flex;flex-direction:column;gap:8px;padding:0 16px 16px;}
+.history-empty{font-size:13px;color:var(--ink-4);text-align:center;padding:20px;font-style:italic;}
+.hist-item{
+  padding:12px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r);cursor:pointer;transition:all .16s var(--ease);
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;
+}
+.hist-item:hover{border-color:var(--accent);box-shadow:var(--sh-sm);}
+.hist-preview{font-size:12px;color:var(--ink-3);line-height:1.5;}
+.hist-preview strong{color:var(--ink-2);font-weight:600;display:block;margin-bottom:2px;font-size:11.5px;}
+.hist-meta{text-align:right;}
+.hist-time{font-size:10.5px;color:var(--ink-4);white-space:nowrap;}
+.hist-style-badge{
+  display:inline-block;font-size:9.5px;font-weight:700;padding:2px 6px;
+  border-radius:var(--r-full);background:var(--accent-bg);color:var(--accent);margin-top:3px;
+}
+.hist-restore{font-size:10.5px;color:var(--accent);margin-top:3px;display:block;}
 
-/* ── STATS STRIP ── */
-.stats-strip {
-  display: grid; grid-template-columns: repeat(6, 1fr);
-  border-top: 1px solid var(--border);
-}
-.stat-cell {
-  padding: var(--s4) var(--s3); text-align: center;
-  border-right: 1px solid var(--border); transition: background 0.2s;
-  position: relative; overflow: hidden;
-}
-.stat-cell:last-child { border-right: none; }
-.stat-cell:hover { background: var(--surface-3); }
-.stat-val {
-  font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400;
-  color: var(--accent); display: block; line-height: 1.1;
-  transition: all 0.4s var(--ease-spring);
-}
-.stat-val.updated { animation: statPop 0.4s var(--ease-spring); }
-@keyframes statPop { 0%{ transform: scale(1.2); } 100%{ transform: scale(1); } }
-.stat-lbl { font-size: 10px; color: var(--ink-4); font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; margin-top: 2px; display: block; }
-.stat-sub { font-size: 10px; color: var(--gray-300); margin-top: 1px; display: block; }
-
-/* ── SETTINGS PANEL ── */
-.settings-panel {
-  border-top: 1px solid var(--border);
-  background: var(--off-white);
-}
-.settings-toggle-btn {
-  width: 100%; display: flex; align-items: center; justify-content: space-between;
-  padding: var(--s4) var(--s6); background: none; border: none;
-  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
-  color: var(--ink-3); cursor: pointer; transition: color 0.16s;
-}
-.settings-toggle-btn:hover { color: var(--ink); }
-.settings-toggle-btn .chevron { width: 14px; height: 14px; transition: transform 0.25s var(--ease); }
-.settings-toggle-btn.open .chevron { transform: rotate(180deg); }
-.settings-body {
-  display: none; padding: 0 var(--s6) var(--s5);
-}
-.settings-body.open { display: block; animation: settleDown 0.22s var(--ease-out); }
-@keyframes settleDown { from{ opacity:0; transform:translateY(-6px); } to{ opacity:1; transform:translateY(0); } }
-.settings-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: var(--s3);
-}
-.setting-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: var(--s3) var(--s4); background: var(--white);
-  border: 1px solid var(--border); border-radius: var(--r);
-  transition: border-color 0.16s;
-}
-.setting-row:hover { border-color: var(--border-2); }
-.setting-info {}
-.setting-name { font-size: 13px; font-weight: 500; color: var(--ink-2); display: block; }
-.setting-hint { font-size: 11px; color: var(--ink-4); margin-top: 1px; display: block; }
-.toggle {
-  position: relative; width: 40px; height: 22px; flex-shrink: 0;
-  background: var(--gray-200); border-radius: var(--r-full);
-  cursor: pointer; transition: background 0.22s var(--ease);
-  border: 1px solid var(--gray-200);
-}
-.toggle::after {
-  content: ''; position: absolute;
-  width: 16px; height: 16px; background: var(--white);
-  border-radius: 50%; top: 2px; left: 2px;
-  transition: left 0.22s var(--ease);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
-}
-.toggle.on { background: var(--accent); border-color: var(--accent-2); }
-.toggle.on::after { left: 20px; }
-
-/* ════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════
    FEATURES SECTION
-════════════════════════════════════════════════════════════════════════════ */
-.features-section {
-  max-width: 1200px; margin: 0 auto;
-  padding: var(--s16) var(--s6);
-  border-top: 1px solid var(--border);
+═══════════════════════════════════════════════════════════════════ */
+.features-section{
+  max-width:1200px;margin:0 auto;
+  padding:48px 16px;border-top:1px solid var(--border);
 }
-.section-eyebrow {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1.2px; color: var(--accent); margin-bottom: var(--s3);
-  display: flex; align-items: center; gap: var(--s2);
+@media(min-width:640px){.features-section{padding:64px 24px;}}
+.section-eyebrow{
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--accent);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
 }
-.section-eyebrow::before { content:''; width: 16px; height: 2px; background: var(--accent); border-radius: 2px; }
-.section-h2 {
-  font-family: var(--font-serif); font-size: clamp(1.7rem, 3vw, 2.4rem);
-  font-weight: 400; color: var(--ink); letter-spacing: -0.3px; margin-bottom: var(--s4);
+.section-eyebrow::before{content:'';width:16px;height:2px;background:var(--accent);border-radius:2px;}
+.section-h2{
+  font-family:var(--font-serif);font-size:clamp(1.5rem,3vw,2.2rem);
+  font-weight:400;color:var(--ink);letter-spacing:-.3px;margin-bottom:10px;
 }
-.section-sub { font-size: 15px; color: var(--ink-3); max-width: 520px; line-height: 1.7; margin-bottom: var(--s10); }
+.section-sub{font-size:14.5px;color:var(--ink-3);max-width:500px;line-height:1.7;margin-bottom:32px;}
+.features-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+@media(min-width:480px){.features-grid{grid-template-columns:repeat(2,1fr);}}
+@media(min-width:900px){.features-grid{grid-template-columns:repeat(3,1fr);}}
+.feature-card{
+  padding:20px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-lg);transition:all .22s var(--ease);
+  position:relative;overflow:hidden;
+}
+.feature-card:hover{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg),var(--sh-sm);transform:translateY(-2px);}
+.feature-icon{
+  width:36px;height:36px;border-radius:var(--r);background:var(--accent-bg);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;color:var(--accent);
+}
+.feature-icon svg{width:17px;height:17px;}
+.feature-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.feature-desc{font-size:13px;color:var(--ink-3);line-height:1.6;}
 
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s5); }
-.feature-card {
-  padding: var(--s6); background: var(--white);
-  border: 1px solid var(--border); border-radius: var(--r-lg);
-  transition: all 0.22s var(--ease); position: relative; overflow: hidden;
-}
-.feature-card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-bg), var(--sh);
-  transform: translateY(-2px);
-}
-.feature-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--accent-bg) 0%, transparent 60%);
-  opacity: 0; transition: opacity 0.25s;
-}
-.feature-card:hover::before { opacity: 1; }
-.feature-icon {
-  width: 38px; height: 38px; border-radius: var(--r);
-  background: var(--accent-bg); display: flex; align-items: center;
-  justify-content: center; margin-bottom: var(--s4);
-  color: var(--accent); position: relative;
-}
-.feature-icon svg { width: 18px; height: 18px; }
-.feature-title { font-size: 14.5px; font-weight: 700; color: var(--ink); margin-bottom: var(--s2); }
-.feature-desc { font-size: 13px; color: var(--ink-3); line-height: 1.6; }
-
-/* ════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════
    HOW IT WORKS
-════════════════════════════════════════════════════════════════════════════ */
-.how-section {
-  background: var(--white); border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: var(--s16) var(--s6);
+═══════════════════════════════════════════════════════════════════ */
+.how-section{
+  background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:48px 16px;
 }
-.how-inner { max-width: 1200px; margin: 0 auto; }
-.how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s5); margin-top: var(--s10); }
-.how-step { text-align: center; position: relative; }
-.how-step:not(:last-child)::after {
-  content: ''; position: absolute; top: 20px; left: calc(50% + 30px);
-  width: calc(100% - 60px); height: 1px;
-  background: linear-gradient(90deg, var(--border-2), var(--border));
+@media(min-width:640px){.how-section{padding:64px 24px;}}
+.how-inner{max-width:1200px;margin:0 auto;}
+.how-steps{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px;
 }
-.step-num {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: var(--accent); color: var(--white);
-  font-family: var(--font-serif); font-size: 1.1rem;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto var(--s4); box-shadow: 0 3px 10px var(--accent-glow);
+@media(min-width:640px){.how-steps{grid-template-columns:repeat(4,1fr);}}
+.how-step{text-align:center;}
+.step-num{
+  width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;
+  font-family:var(--font-serif);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 12px;box-shadow:0 3px 10px var(--accent-glow);
 }
-.step-title { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: var(--s2); }
-.step-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.6; }
+.step-title{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.step-desc{font-size:12px;color:var(--ink-3);line-height:1.6;}
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════
    FAQ
-════════════════════════════════════════════════════════════════════════════ */
-.faq-section {
-  max-width: 1200px; margin: 0 auto; padding: var(--s16) var(--s6);
+═══════════════════════════════════════════════════════════════════ */
+.faq-section{max-width:1200px;margin:0 auto;padding:48px 16px;}
+@media(min-width:640px){.faq-section{padding:64px 24px;}}
+.faq-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:32px;}
+@media(min-width:640px){.faq-grid{grid-template-columns:1fr 1fr;}}
+.faq-item{
+  padding:18px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-lg);cursor:pointer;transition:all .2s var(--ease);
 }
-.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s5); margin-top: var(--s10); }
-.faq-item {
-  padding: var(--s6); background: var(--white);
-  border: 1px solid var(--border); border-radius: var(--r-lg);
-  cursor: pointer; transition: all 0.2s var(--ease);
+.faq-item:hover{border-color:var(--border-2);box-shadow:var(--sh-sm);}
+.faq-q{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:12px;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.5;
 }
-.faq-item:hover { border-color: var(--border-2); box-shadow: var(--sh-sm); }
-.faq-q {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  gap: var(--s4); font-size: 14px; font-weight: 600; color: var(--ink);
-  line-height: 1.5;
+.faq-q svg{width:15px;height:15px;flex-shrink:0;color:var(--ink-4);transition:transform .22s var(--ease);}
+.faq-item.open .faq-q svg{transform:rotate(180deg);}
+.faq-a{
+  display:none;padding-top:12px;margin-top:12px;
+  font-size:13px;color:var(--ink-3);line-height:1.7;
+  border-top:1px solid var(--border);
 }
-.faq-q svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--ink-4); transition: transform 0.22s var(--ease); }
-.faq-item.open .faq-q svg { transform: rotate(180deg); }
-.faq-a {
-  display: none; padding-top: var(--s4);
-  font-size: 13.5px; color: var(--ink-3); line-height: 1.7;
-  border-top: 1px solid var(--border); margin-top: var(--s4);
-}
-.faq-item.open .faq-a { display: block; animation: settleDown 0.2s var(--ease-out); }
+.faq-item.open .faq-a{display:block;animation:settleDown .2s var(--ease-out);}
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════
    FOOTER
-════════════════════════════════════════════════════════════════════════════ */
-.footer {
-  background: var(--white); border-top: 1px solid var(--border);
-  padding: var(--s12) var(--s6) var(--s6);
+═══════════════════════════════════════════════════════════════════ */
+.footer{
+  background:var(--bg);border-top:1px solid var(--border);
+  padding:40px 16px 24px;
 }
-.footer-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 2.5fr 1fr 1fr 1fr; gap: var(--s10);
-  margin-bottom: var(--s8);
+@media(min-width:640px){.footer{padding:48px 24px 28px;}}
+.footer-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:28px;
 }
-.footer-brand-mark { display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s4); }
-.footer-brand-name { font-size: 15px; font-weight: 700; color: var(--ink); }
-.footer-desc { font-size: 13px; color: var(--ink-4); line-height: 1.7; max-width: 300px; margin-bottom: var(--s5); }
-.footer-socials { display: flex; gap: var(--s2); }
-.social-btn {
-  width: 34px; height: 34px; border-radius: var(--r-sm);
-  background: var(--surface-3); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--ink-3); cursor: pointer; transition: all 0.18s var(--ease);
+@media(min-width:860px){.footer-inner{grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;}}
+.footer-brand-mark{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.footer-brand-name{font-size:14px;font-weight:700;color:var(--ink);}
+.footer-desc{font-size:12.5px;color:var(--ink-4);line-height:1.7;max-width:280px;margin-bottom:16px;}
+.footer-socials{display:flex;gap:8px;}
+.social-btn{
+  width:32px;height:32px;border-radius:var(--r-sm);
+  background:var(--bg-3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--ink-3);transition:all .18s var(--ease);
 }
-.social-btn:hover { background: var(--accent); color: var(--white); border-color: var(--accent); transform: translateY(-2px); }
-.social-btn svg { width: 15px; height: 15px; }
-.footer-col-title {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.9px; color: var(--ink-3); margin-bottom: var(--s4);
-}
-.footer-links { display: flex; flex-direction: column; gap: var(--s2); }
-.footer-links a { font-size: 13.5px; color: var(--ink-3); transition: color 0.16s; }
-.footer-links a:hover { color: var(--accent); }
-.footer-bottom {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; justify-content: space-between; align-items: center;
-  padding-top: var(--s5); border-top: 1px solid var(--border);
-  font-size: 12.5px; color: var(--ink-4); flex-wrap: wrap; gap: var(--s3);
+.social-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px);}
+.social-btn svg{width:14px;height:14px;}
+.footer-col-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--ink-3);margin-bottom:12px;}
+.footer-links{display:flex;flex-direction:column;gap:8px;}
+.footer-links a{font-size:13px;color:var(--ink-3);transition:color .16s;}
+.footer-links a:hover{color:var(--accent);}
+.footer-bottom{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:18px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--ink-4);flex-wrap:wrap;gap:8px;
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════
    TOAST
-════════════════════════════════════════════════════════════════════════════ */
-.toast-stack { position: fixed; top: var(--s5); right: var(--s5); z-index: 9999; display: flex; flex-direction: column; gap: var(--s2); pointer-events: none; }
-.toast {
-  display: flex; align-items: center; gap: var(--s3);
-  padding: 11px var(--s4); border-radius: var(--r);
-  font-family: var(--font-sans); font-size: 13px; font-weight: 600;
-  box-shadow: var(--sh-xl); max-width: 300px; pointer-events: auto;
-  transform: translateX(320px); transition: transform 0.35s var(--ease-spring);
-  background: var(--ink-2); color: var(--white);
+═══════════════════════════════════════════════════════════════════ */
+.toast-stack{
+  position:fixed;top:calc(var(--nav-h) + 8px);right:12px;
+  z-index:9999;display:flex;flex-direction:column;gap:6px;
+  pointer-events:none;max-width:calc(100vw - 24px);
 }
-.toast.show { transform: translateX(0); }
-.toast.toast-success { background: var(--green); }
-.toast.toast-error   { background: var(--red); }
-.toast.toast-info    { background: var(--accent); }
-.toast-icon { width: 16px; height: 16px; flex-shrink: 0; }
+@media(min-width:480px){.toast-stack{right:16px;max-width:300px;}}
+.toast{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;border-radius:var(--r);
+  font-size:13px;font-weight:600;
+  box-shadow:var(--sh-xl);pointer-events:auto;
+  transform:translateX(110%);transition:transform .35s var(--ease-spring);
+  background:var(--ink-2);color:#fff;
+}
+.toast.show{transform:translateX(0);}
+.toast.toast-success{background:var(--green);}
+.toast.toast-error{background:var(--red);}
+.toast.toast-info{background:var(--accent);}
 
-/* ════════════════════════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════════════════════
    MODALS
-════════════════════════════════════════════════════════════════════════════ */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; z-index: 1000;
-  background: rgba(14,14,18,0.5); backdrop-filter: blur(8px);
-  align-items: center; justify-content: center; padding: var(--s5);
+═══════════════════════════════════════════════════════════════════ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(14,14,18,.55);backdrop-filter:blur(8px);
+  align-items:flex-end;justify-content:center;
+  padding:0;
 }
-.modal-overlay.open { display: flex; animation: fadeIn 0.2s var(--ease); }
-@keyframes fadeIn { from{ opacity:0; } to{ opacity:1; } }
-.modal-box {
-  background: var(--white); border-radius: var(--r-xl);
-  width: 100%; max-width: 660px; max-height: 88vh;
-  overflow-y: auto; box-shadow: var(--sh-xl);
-  animation: slideUp 0.28s var(--ease-spring);
+@media(min-width:640px){.modal-overlay{align-items:center;padding:20px;}}
+.modal-overlay.open{display:flex;animation:fadeIn .2s var(--ease);}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-box{
+  background:var(--bg);width:100%;max-width:660px;
+  max-height:92vh;overflow-y:auto;
+  box-shadow:var(--sh-xl);
+  border-radius:var(--r-xl) var(--r-xl) 0 0;
+  animation:slideUp .3s var(--ease-spring);
 }
-@keyframes slideUp { from{ transform: translateY(20px); opacity:0; } to{ transform:translateY(0); opacity:1; } }
-.modal-head {
-  position: sticky; top: 0; background: var(--white);
-  display: flex; justify-content: space-between; align-items: center;
-  padding: var(--s5) var(--s6); border-bottom: 1px solid var(--border); z-index: 1;
+@media(min-width:640px){
+  .modal-box{border-radius:var(--r-xl);animation:modalIn .28s var(--ease-spring);}
 }
-.modal-title { font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink); }
-.modal-close {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: var(--surface-3); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 17px; color: var(--ink-3); cursor: pointer; transition: all 0.16s;
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+@keyframes modalIn{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-head{
+  position:sticky;top:0;background:var(--bg);z-index:1;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 20px 14px;border-bottom:1px solid var(--border);
 }
-.modal-close:hover { background: var(--red); color: var(--white); border-color: var(--red); }
-.modal-body { padding: var(--s6); }
-.modal-body h3 { font-family: var(--font-serif); font-size: 1.05rem; color: var(--accent); margin: var(--s6) 0 var(--s3); }
-.modal-body h4 { font-size: 13.5px; font-weight: 700; color: var(--ink-2); margin: var(--s4) 0 var(--s2); }
-.modal-body p { font-size: 13.5px; color: var(--ink-3); line-height: 1.7; margin-bottom: var(--s3); }
-.modal-body ul { padding-left: var(--s5); margin-bottom: var(--s4); }
-.modal-body li { font-size: 13.5px; color: var(--ink-3); margin-bottom: var(--s2); line-height: 1.65; }
-.modal-highlight { font-size: 13.5px; font-weight: 700; color: var(--accent); }
+.modal-title{font-family:var(--font-serif);font-size:1.15rem;color:var(--ink);}
+.modal-close{
+  width:28px;height:28px;border-radius:50%;background:var(--bg-3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink-3);cursor:pointer;transition:all .16s;
+}
+.modal-close:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.modal-body{padding:20px;}
+.modal-body h3{font-family:var(--font-serif);font-size:1rem;color:var(--accent);margin:20px 0 8px;}
+.modal-body p{font-size:13px;color:var(--ink-3);line-height:1.7;margin-bottom:10px;}
+.modal-body ul{padding-left:18px;margin-bottom:12px;}
+.modal-body li{font-size:13px;color:var(--ink-3);margin-bottom:5px;line-height:1.6;}
+.modal-hl{font-size:13px;font-weight:700;color:var(--accent);}
 
-/* ════════════════════════════════════════════════════════════════════════════
-   RESPONSIVE
-════════════════════════════════════════════════════════════════════════════ */
-@media (max-width: 900px) {
-  .hero { grid-template-columns: 1fr; padding-top: var(--s10); }
-  .hero-stat-row { grid-template-columns: repeat(4, 1fr); }
-  .editors-grid { grid-template-columns: 1fr; }
-  .editor-divider { display: none; }
-  .editor-pane:first-child { border-bottom: 1px solid var(--border); }
-  .stats-strip { grid-template-columns: repeat(3, 1fr); }
-  .stats-strip .stat-cell:nth-child(3) { border-right: none; }
-  .features-grid { grid-template-columns: repeat(2, 1fr); }
-  .how-steps { grid-template-columns: repeat(2, 1fr); }
-  .how-step:not(:last-child)::after { display: none; }
-  .faq-grid { grid-template-columns: 1fr; }
-  .footer-inner { grid-template-columns: 1fr 1fr; gap: var(--s8); }
+/* ═══════════════════════════════════════════════════════════════════
+   BUTTONS (shared)
+═══════════════════════════════════════════════════════════════════ */
+.btn-link{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--bg);color:var(--ink-2);
+  border:1.5px solid var(--border-2);border-radius:var(--r);
+  padding:10px 18px;font-size:13.5px;font-weight:600;
+  transition:all .16s var(--ease);text-decoration:none;
 }
-@media (max-width: 600px) {
-  .nav-pills { display: none; }
-  .hero-stat-row { grid-template-columns: repeat(2, 1fr); }
-  .config-row { gap: var(--s4); }
-  .controls-bar { flex-direction: column; }
-  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-  .stats-strip { grid-template-columns: repeat(2, 1fr); }
-  .features-grid { grid-template-columns: 1fr; }
-  .how-steps { grid-template-columns: 1fr; }
-  .footer-inner { grid-template-columns: 1fr; }
-  .footer-bottom { flex-direction: column; text-align: center; }
-  .trust-sep { display: none; }
-}
-  </style>
+.btn-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+</style>
 </head>
-
 <body>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     NAV
-══════════════════════════════════════════════════════════════════════════ -->
+<!-- NAV -->
 <nav class="nav" role="navigation" aria-label="Main navigation">
   <div class="nav-inner">
     <a class="nav-logo" href="/">
       <div class="nav-logo-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
         </svg>
       </div>
       Your Humanizer
     </a>
-    <div class="nav-pills">
-      <span class="nav-pill">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/></svg>
-        Free Forever
+    <div class="nav-right">
+      <span class="nav-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08z" clip-rule="evenodd"/></svg>
+        100% Free
       </span>
-      <span class="nav-pill">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg>
-        Private & Secure
+      <span class="nav-badge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg>
+        Private
       </span>
-      <a href="#tool" class="nav-pill nav-pill-accent">
-        Try it Free →
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <a href="#tool" class="nav-cta">
+        Try Free
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
   </div>
 </nav>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     HERO
-══════════════════════════════════════════════════════════════════════════ -->
+<!-- HERO -->
 <section class="hero" aria-labelledby="hero-h1">
   <div class="hero-text">
     <div class="hero-eyebrow">AI Text Humanizer</div>
-    <h1 class="hero-h1" id="hero-h1">
-      Make AI writing sound<br><em>genuinely human</em>
-    </h1>
-    <p class="hero-sub">
-      Transform ChatGPT, Claude, or any AI-generated text into natural, authentic writing that reads like a real person wrote it. Trusted by students, writers, and professionals.
-    </p>
+    <h1 class="hero-h1" id="hero-h1">Make AI writing sound<br><em>genuinely human</em></h1>
+    <p class="hero-sub">Transform any AI-generated text into natural, authentic writing. No account needed. Results in seconds.</p>
     <div class="hero-cta">
       <a href="#tool" class="btn-primary" style="text-decoration:none;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
         Humanize My Text
       </a>
-      <a href="#how-it-works" class="btn-secondary" style="text-decoration:none;">How it works</a>
+      <a href="#how-it-works" class="btn-link">How it works</a>
     </div>
   </div>
-
-  <div class="hero-stats" aria-label="Key statistics">
-    <div class="hero-stat-row">
-      <div class="hero-stat">
-        <span class="hero-stat-num">98%</span>
-        <span class="hero-stat-lbl">Human Score</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">2s</span>
-        <span class="hero-stat-lbl">Avg. Speed</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">5+</span>
-        <span class="hero-stat-lbl">Writing Styles</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">∞</span>
-        <span class="hero-stat-lbl">Free Uses</span>
-      </div>
+  <div class="hero-card" aria-label="Key statistics">
+    <div class="hero-stats-grid">
+      <div class="hero-stat"><span class="hero-stat-num">98%</span><span class="hero-stat-lbl">Human Score</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">~3s</span><span class="hero-stat-lbl">Avg Speed</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">9</span><span class="hero-stat-lbl">Writing Styles</span></div>
+      <div class="hero-stat"><span class="hero-stat-num">∞</span><span class="hero-stat-lbl">Free Uses</span></div>
     </div>
-    <div class="hero-stat-desc">
-      "I submitted my essay after using Your Humanizer and my professor couldn't tell it was AI-assisted. The output sounds completely natural." — Student, University of Manila
-    </div>
+    <div class="hero-quote">"I used Your Humanizer for my thesis chapter and my adviser said it read very naturally. The Thesis mode is perfect." — Graduate student, Manila</div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     TRUST BAR
-══════════════════════════════════════════════════════════════════════════ -->
+<!-- TRUST BAR -->
 <div class="trust-bar" aria-label="Trust indicators">
   <div class="trust-inner">
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08z" clip-rule="evenodd"/></svg>
-      No data stored
-    </div>
-    <div class="trust-sep"></div>
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5zM18 1.5a.75.75 0 01.728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 010 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 01-1.456 0l-.258-1.036a2.625 2.625 0 00-1.91-1.91l-1.036-.258a.75.75 0 010-1.456l1.036-.258a2.625 2.625 0 001.91-1.91l.258-1.036A.75.75 0 0118 1.5z" clip-rule="evenodd"/></svg>
-      Powered by Llama 3.3 70B
-    </div>
-    <div class="trust-sep"></div>
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" clip-rule="evenodd"/></svg>
-      Works with all AI detectors
-    </div>
-    <div class="trust-sep"></div>
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>
-      100% Free — no account needed
-    </div>
-    <div class="trust-sep"></div>
-    <div class="trust-item">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd"/></svg>
-      Results in seconds
-    </div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08z" clip-rule="evenodd"/></svg>No data stored</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5z" clip-rule="evenodd"/></svg>Advanced AI</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd"/></svg>100% Free</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd"/></svg>Results in seconds</div>
+    <div class="trust-item"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg>API key hidden</div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     TOOL
-══════════════════════════════════════════════════════════════════════════ -->
+<!-- TOOL -->
 <main id="tool" class="tool-section">
   <div class="tool-heading">
     <h2>Humanize Your Text</h2>
-    <p>Paste AI-generated content below. Choose your style and strength, then click Humanize.</p>
+    <p>Choose a style, set strength, paste your text, and click Humanize.</p>
+  </div>
+
+  <!-- LIMIT BANNER -->
+  <div class="limit-banner" id="limitBanner" role="alert">
+    <div class="lb-icon">⚠️</div>
+    <div class="lb-body">
+      <div class="lb-title">System Limit Reached</div>
+      <div class="lb-msg">Our humanizer has reached its daily usage limit and is temporarily unavailable. Please try again in a few minutes. We apologize for the inconvenience.</div>
+    </div>
+    <button class="lb-close" id="limitClose" aria-label="Dismiss">×</button>
   </div>
 
   <!-- CONFIG -->
   <div class="config-row">
     <div class="config-group">
       <span class="config-label">Writing Style</span>
-      <div class="pill-group" role="group" aria-label="Writing style">
-        <button class="pill active" data-style="casual" title="Relaxed, friendly everyday tone">
-          <span class="pill-icon">💬</span> Casual
-        </button>
-        <button class="pill" data-style="professional" title="Clear, polished business tone">
-          <span class="pill-icon">💼</span> Professional
-        </button>
-        <button class="pill" data-style="academic" title="Scholarly tone for papers and essays">
-          <span class="pill-icon">🎓</span> Academic
-        </button>
-        <button class="pill" data-style="creative" title="Vivid, expressive creative writing">
-          <span class="pill-icon">✍️</span> Creative
-        </button>
-        <button class="pill" data-style="simple" title="Plain language, easy to read">
-          <span class="pill-icon">📖</span> Simple
-        </button>
+      <div class="pill-scroll" role="group" aria-label="Writing style">
+        <button class="pill active" data-style="casual">💬 Casual</button>
+        <button class="pill" data-style="professional">💼 Professional</button>
+        <button class="pill" data-style="thesis">📜 Thesis</button>
+        <button class="pill" data-style="research">🔬 Research Paper</button>
+        <button class="pill" data-style="academic">🎓 Academic Essay</button>
+        <button class="pill" data-style="blog">✍️ Blog Post</button>
+        <button class="pill" data-style="email">📧 Email</button>
+        <button class="pill" data-style="creative">🎨 Creative</button>
+        <button class="pill" data-style="simple">📖 Simple</button>
       </div>
     </div>
     <div class="config-group">
       <span class="config-label">Strength</span>
-      <div class="pill-group" role="group" aria-label="Humanization strength">
-        <button class="pill active" data-strength="light" title="Minimal changes, preserve structure">
-          Light
-        </button>
-        <button class="pill" data-strength="moderate" title="Significant rewording and restructuring">
-          Moderate
-        </button>
-        <button class="pill" data-strength="heavy" title="Full rewrite, sounds completely human">
-          Heavy
-        </button>
+      <div class="pill-scroll" role="group" aria-label="Humanization strength">
+        <button class="pill active" data-strength="light">Light</button>
+        <button class="pill" data-strength="moderate">Moderate</button>
+        <button class="pill" data-strength="heavy">Heavy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STYLE GUIDE -->
+  <div class="style-guide" id="styleGuide">
+    <div class="sg-icon">💡</div>
+    <div class="sg-body">
+      <div class="sg-name" id="sgName">Casual Style</div>
+      <div class="sg-desc" id="sgDesc">Friendly, relaxed, everyday tone. Contractions welcome. First person is fine.</div>
+      <div class="sg-tags" id="sgTags">
+        <span class="sg-tag">1st Person OK</span>
+        <span class="sg-tag">Contractions OK</span>
+        <span class="sg-tag">Active Voice</span>
       </div>
     </div>
   </div>
@@ -960,44 +940,44 @@ a { color: inherit; text-decoration: none; }
   <!-- MAIN CARD -->
   <div class="main-card" id="mainCard">
 
-    <!-- Progress -->
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
-    <!-- Status -->
     <div class="status-row" id="statusRow" role="status" aria-live="polite">
       <div class="status-pulse"></div>
-      <span class="status-text" id="statusText">Processing with AI…</span>
+      <span class="status-text" id="statusText">Processing…</span>
     </div>
 
-    <!-- Editors -->
+    <!-- EDITORS -->
     <div class="editors-grid">
 
-      <!-- INPUT -->
-      <div class="editor-pane" id="inputPane">
+      <!-- INPUT PANE -->
+      <div class="editor-pane">
         <div class="pane-top">
-          <div class="pane-label">
-            <span class="pane-dot dot-red"></span>
-            AI‑Generated Text
-          </div>
+          <div class="pane-label"><span class="pane-dot dot-red"></span>AI‑Generated Text</div>
           <div class="pane-meta">
-            <div class="char-ring" id="charRing" title="Character usage">
-              <svg viewBox="0 0 22 22" width="22" height="22">
-                <circle class="char-ring-bg" cx="11" cy="11" r="9"/>
-                <circle class="char-ring-fill" id="ringFill" cx="11" cy="11" r="9"/>
+            <div class="char-ring" title="Character limit">
+              <svg viewBox="0 0 20 20" width="20" height="20">
+                <circle class="char-ring-bg" cx="10" cy="10" r="8"/>
+                <circle class="char-ring-fill" id="ringFill" cx="10" cy="10" r="8"/>
               </svg>
             </div>
             <span class="wc-badge" id="inputWC">0 words</span>
+            <span class="char-text" id="charText">0/8k</span>
           </div>
         </div>
         <div class="pane-body">
-          <textarea class="textarea" id="inputText" aria-label="Input text"
-            placeholder="Paste your AI-generated text here…&#10;&#10;Tips:&#10;• Works with ChatGPT, Claude, Gemini, and any AI output&#10;• Supports essays, articles, emails, reports, and more&#10;• Press Ctrl+Enter to humanize instantly"></textarea>
+          <textarea class="textarea" id="inputText" aria-label="Input: AI-generated text"
+            placeholder="Paste your AI-generated text here…&#10;&#10;• Works with any AI output&#10;• Essays, articles, emails, thesis, reports&#10;• Ctrl+Enter to humanize instantly"></textarea>
+          <div class="pattern-warn" id="patternWarn">
+            <div class="pw-icon">🤖</div>
+            <div class="pw-text"><strong>AI patterns detected</strong> — <span id="patternDetail">Found common AI phrases. Humanizing will remove these.</span></div>
+          </div>
         </div>
         <div class="pane-bottom">
           <div class="pane-actions">
             <button class="btn-nano" id="pasteBtn">📋 Paste</button>
             <button class="btn-nano" id="clearInputBtn">✕ Clear</button>
-            <button class="btn-nano" id="sampleBtn">📄 Load Sample</button>
+            <button class="btn-nano" id="sampleBtn">📄 Sample</button>
           </div>
           <span class="chip chip-ai" id="aiChip">AI Detected</span>
         </div>
@@ -1006,32 +986,27 @@ a { color: inherit; text-decoration: none; }
       <!-- DIVIDER -->
       <div class="editor-divider" aria-hidden="true">
         <div class="editor-divider-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       </div>
 
-      <!-- OUTPUT -->
+      <!-- OUTPUT PANE -->
       <div class="editor-pane">
         <div class="pane-top">
-          <div class="pane-label">
-            <span class="pane-dot dot-green"></span>
-            Humanized Text
-          </div>
+          <div class="pane-label"><span class="pane-dot dot-green"></span>Humanized Text</div>
           <div class="pane-meta">
             <span class="wc-badge" id="outputWC">0 words</span>
           </div>
         </div>
         <div class="pane-body">
-          <textarea class="textarea" id="outputText" readonly aria-label="Humanized output"
-            placeholder="Your humanized text will appear here after processing…"></textarea>
-          <div class="diff-overlay" id="diffOverlay" aria-label="Changes highlighted"></div>
+          <textarea class="textarea" id="outputText" readonly aria-label="Output: humanized text"
+            placeholder="Your humanized text will appear here…"></textarea>
+          <div class="diff-overlay" id="diffOverlay" aria-label="Word-level changes"></div>
         </div>
         <div class="pane-bottom">
           <div class="pane-actions">
             <button class="btn-nano" id="copyBtn">📄 Copy</button>
-            <button class="btn-nano" id="downloadBtn">⬇ Download</button>
+            <button class="btn-nano" id="downloadBtn">⬇ Save</button>
             <button class="btn-nano" id="diffBtn">🔍 Changes</button>
           </div>
           <span class="chip chip-good" id="humanChip">Human ✓</span>
@@ -1040,7 +1015,7 @@ a { color: inherit; text-decoration: none; }
 
     </div><!-- /editors-grid -->
 
-    <!-- Controls -->
+    <!-- CONTROLS -->
     <div class="controls-bar">
       <button class="btn-primary" id="humanizeBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
@@ -1048,7 +1023,7 @@ a { color: inherit; text-decoration: none; }
       </button>
       <button class="btn-secondary" id="paraphraseBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
-        Paraphrase Only
+        Paraphrase
       </button>
       <button class="btn-secondary" id="regenerateBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3"/></svg>
@@ -1056,282 +1031,162 @@ a { color: inherit; text-decoration: none; }
       </button>
       <button class="btn-secondary btn-danger" id="clearAllBtn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
-        Clear All
+        Clear
       </button>
     </div>
 
-    <!-- Stats Strip -->
-    <div class="stats-strip" role="region" aria-label="Processing statistics">
-      <div class="stat-cell">
-        <span class="stat-val" id="statOrig">—</span>
-        <span class="stat-lbl">Original Words</span>
-      </div>
-      <div class="stat-cell">
-        <span class="stat-val" id="statOut">—</span>
-        <span class="stat-lbl">Output Words</span>
-      </div>
-      <div class="stat-cell">
-        <span class="stat-val" id="statHuman">—</span>
-        <span class="stat-lbl">Human Score</span>
-        <span class="stat-sub" id="statHumanSub"></span>
-      </div>
-      <div class="stat-cell">
-        <span class="stat-val" id="statRead">—</span>
-        <span class="stat-lbl">Readability</span>
-        <span class="stat-sub" id="statReadSub"></span>
-      </div>
-      <div class="stat-cell">
-        <span class="stat-val" id="statChange">—</span>
-        <span class="stat-lbl">% Changed</span>
-      </div>
-      <div class="stat-cell">
-        <span class="stat-val" id="statTime">—</span>
-        <span class="stat-lbl">Processing Time</span>
-      </div>
+    <!-- STATS -->
+    <div class="stats-strip" role="region" aria-label="Statistics">
+      <div class="stat-cell"><span class="stat-val" id="stOrig">—</span><span class="stat-lbl">Original</span></div>
+      <div class="stat-cell"><span class="stat-val" id="stOut">—</span><span class="stat-lbl">Output</span></div>
+      <div class="stat-cell"><span class="stat-val" id="stHuman">—</span><span class="stat-lbl">Human Score</span><span class="stat-sub" id="stHumanSub"></span></div>
+      <div class="stat-cell"><span class="stat-val" id="stRead">—</span><span class="stat-lbl">Readability</span><span class="stat-sub" id="stReadSub"></span></div>
+      <div class="stat-cell"><span class="stat-val" id="stChange">—</span><span class="stat-lbl">% Changed</span></div>
+      <div class="stat-cell"><span class="stat-val" id="stTime">—</span><span class="stat-lbl">Time</span></div>
     </div>
 
-    <!-- Settings Panel -->
+    <!-- SETTINGS -->
     <div class="settings-panel">
-      <button class="settings-toggle-btn" id="settingsToggle" aria-expanded="false">
+      <button class="panel-toggle-btn" id="settingsToggle" aria-expanded="false">
         <span>⚙ Advanced Settings</span>
-        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+        <svg class="ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
       </button>
-      <div class="settings-body" id="settingsBody">
+      <div class="panel-body" id="settingsBody">
         <div class="settings-grid">
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Conversational Tone</span>
-              <span class="setting-hint">Natural speech patterns</span>
-            </div>
+          <div class="setting-row" id="sr-conversational">
+            <div><span class="setting-name">Conversational Tone</span><span class="setting-hint">Natural speech patterns</span></div>
             <div class="toggle on" data-setting="conversational" role="switch" aria-checked="true" tabindex="0"></div>
           </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Vary Sentence Length</span>
-              <span class="setting-hint">Mix short and long sentences</span>
-            </div>
+          <div class="setting-row" id="sr-structure">
+            <div><span class="setting-name">Vary Sentence Length</span><span class="setting-hint">Mix short and long sentences</span></div>
             <div class="toggle on" data-setting="structure" role="switch" aria-checked="true" tabindex="0"></div>
           </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Human Expressions</span>
-              <span class="setting-hint">Hedges, emphasis, asides</span>
-            </div>
+          <div class="setting-row" id="sr-expressions">
+            <div><span class="setting-name">Human Expressions</span><span class="setting-hint">Hedges, emphasis, asides</span></div>
             <div class="toggle on" data-setting="expressions" role="switch" aria-checked="true" tabindex="0"></div>
           </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Use Contractions</span>
-              <span class="setting-hint">It's, don't, won't, etc.</span>
-            </div>
+          <div class="setting-row" id="sr-contractions">
+            <div><span class="setting-name">Use Contractions</span><span class="setting-hint">It's, don't, won't, etc.</span></div>
             <div class="toggle on" data-setting="contractions" role="switch" aria-checked="true" tabindex="0"></div>
           </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Preserve Technical Terms</span>
-              <span class="setting-hint">Keep domain vocabulary intact</span>
-            </div>
+          <div class="setting-row" id="sr-technical">
+            <div><span class="setting-name">Preserve Technical Terms</span><span class="setting-hint">Keep domain vocabulary intact</span></div>
             <div class="toggle" data-setting="technical" role="switch" aria-checked="false" tabindex="0"></div>
           </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Remove AI Patterns</span>
-              <span class="setting-hint">Eliminate formulaic phrases</span>
-            </div>
+          <div class="setting-row" id="sr-patterns">
+            <div><span class="setting-name">Remove AI Patterns</span><span class="setting-hint">Eliminate formulaic phrases</span></div>
             <div class="toggle on" data-setting="patterns" role="switch" aria-checked="true" tabindex="0"></div>
           </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Active Voice</span>
-              <span class="setting-hint">Prefer active over passive</span>
-            </div>
+          <div class="setting-row" id="sr-activeVoice">
+            <div><span class="setting-name">Active Voice</span><span class="setting-hint">Prefer active over passive</span></div>
             <div class="toggle on" data-setting="activeVoice" role="switch" aria-checked="true" tabindex="0"></div>
           </div>
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-name">Add Rhetorical Questions</span>
-              <span class="setting-hint">Engages readers naturally</span>
-            </div>
+          <div class="setting-row" id="sr-rhetoricalQ">
+            <div><span class="setting-name">Rhetorical Questions</span><span class="setting-hint">Engage readers naturally</span></div>
             <div class="toggle" data-setting="rhetoricalQ" role="switch" aria-checked="false" tabindex="0"></div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- HISTORY -->
+    <div class="history-panel">
+      <button class="panel-toggle-btn" id="historyToggle" aria-expanded="false">
+        <span>🕑 Recent Results <span id="historyCount" style="color:var(--accent);font-size:11px;margin-left:4px;"></span></span>
+        <svg class="ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="panel-body" id="historyBody">
+        <div class="history-empty" id="historyEmpty">No results yet. Humanize some text to see history here.</div>
+        <div class="history-list" id="historyList"></div>
+      </div>
+    </div>
+
   </div><!-- /main-card -->
 </main>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     FEATURES
-══════════════════════════════════════════════════════════════════════════ -->
-<section class="features-section" aria-labelledby="features-h2">
+<!-- FEATURES -->
+<section class="features-section" aria-labelledby="features-h2" id="features">
   <div class="section-eyebrow">Everything you need</div>
   <h2 class="section-h2" id="features-h2">Built for serious writers</h2>
   <p class="section-sub">Every feature is designed to help students, content creators, and professionals produce writing that sounds authentically human.</p>
   <div class="features-grid">
     <div class="feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5z" clip-rule="evenodd"/></svg>
-      </div>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">Advanced AI Engine</div>
-      <div class="feature-desc">Powered by Llama 3.3 70B via Groq — one of the world's most powerful open models. Produces genuinely natural, context-aware rewrites, not just word swaps.</div>
+      <div class="feature-desc">Powered by state-of-the-art language models with automatic fallback — two providers working together so the tool is always available when you need it.</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z"/></svg>
-      </div>
-      <div class="feature-title">5 Writing Styles</div>
-      <div class="feature-desc">Casual, Professional, Academic, Creative, and Simple — each style gives the AI a distinct persona. Your output matches the register you need.</div>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122z"/></svg></div>
+      <div class="feature-title">9 Writing Styles</div>
+      <div class="feature-desc">Thesis, Research Paper, Academic Essay, Professional, Casual, Blog Post, Email, Creative, and Simple — each with precisely tuned rules for person, voice, and register.</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd"/></svg>
-      </div>
-      <div class="feature-title">3-Level Strength Control</div>
-      <div class="feature-desc">Light for subtle touch-ups, Moderate for significant rewording, Heavy for a complete rewrite that preserves only your meaning. Full control.</div>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd"/></svg></div>
+      <div class="feature-title">3-Level Strength</div>
+      <div class="feature-desc">Light touch-ups, Moderate rewording, or Heavy full rewrite. Thesis and Research modes automatically apply correct academic conventions.</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4.125 3C3.089 3 2.25 3.84 2.25 4.875V18a3 3 0 003 3h15a3 3 0 01-3-3V4.875C17.25 3.839 16.41 3 15.375 3H4.125zM12 9.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H12zm-.75-2.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H12a.75.75 0 01-.75-.75zM6 12.75a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5H6zm-.75 3.75a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75zM6 6.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3A.75.75 0 006 6.75z" clip-rule="evenodd"/></svg>
-      </div>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4.125 3C3.089 3 2.25 3.84 2.25 4.875V18a3 3 0 003 3h15a3 3 0 01-3-3V4.875C17.25 3.839 16.41 3 15.375 3H4.125zM12 9.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H12zm-.75-2.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H12a.75.75 0 01-.75-.75zM6 12.75a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5H6zm-.75 3.75a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75zM6 6.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3A.75.75 0 006 6.75z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">Live Diff View</div>
-      <div class="feature-desc">See exactly what changed with a word-level diff. Green highlights show additions, strikethrough shows what was removed. Perfect for learning and review.</div>
+      <div class="feature-desc">See exactly what changed word-by-word. Green = added, strikethrough = removed. AI pattern detection warns you before humanizing.</div>
     </div>
     <div class="feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg>
-      </div>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd"/></svg></div>
+      <div class="feature-title">Result History</div>
+      <div class="feature-desc">Last 5 results saved automatically. Compare versions, restore a previous run, or review changes without losing your work.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">100% Private</div>
-      <div class="feature-desc">Your API key is stored server-side. Your text is processed and immediately discarded — never stored, logged, or used for training. True privacy.</div>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M5.625 1.5H9a3.75 3.75 0 013.75 3.75v1.875c0 1.036.84 1.875 1.875 1.875H16.5a3.75 3.75 0 013.75 3.75v7.875c0 1.035-.84 1.875-1.875 1.875H5.625a1.875 1.875 0 01-1.875-1.875V3.375c0-1.036.84-1.875 1.875-1.875zm6.905 9.97a.75.75 0 00-1.06 0l-3 3a.75.75 0 101.06 1.06l1.72-1.72V18a.75.75 0 001.5 0v-4.19l1.72 1.72a.75.75 0 101.06-1.06l-3-3z" clip-rule="evenodd"/></svg>
-      </div>
-      <div class="feature-title">Export &amp; Download</div>
-      <div class="feature-desc">Copy to clipboard with one click or download as a .txt file. Readability stats, word counts, and human score are tracked for every run.</div>
+      <div class="feature-desc">Your API key is server-side only. Text is processed and immediately discarded. Dark mode, mobile-friendly, settings saved between sessions.</div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     HOW IT WORKS
-══════════════════════════════════════════════════════════════════════════ -->
+<!-- HOW IT WORKS -->
 <section id="how-it-works" class="how-section" aria-labelledby="how-h2">
   <div class="how-inner">
     <div class="section-eyebrow">Simple process</div>
     <h2 class="section-h2" id="how-h2">How it works</h2>
-    <p class="section-sub">From AI text to human-like writing in four simple steps.</p>
+    <p class="section-sub">From AI text to human-like writing in four steps.</p>
     <div class="how-steps">
-      <div class="how-step">
-        <div class="step-num">1</div>
-        <div class="step-title">Paste Your Text</div>
-        <div class="step-desc">Copy any AI-generated text — from ChatGPT, Claude, Gemini, or any other AI tool — and paste it into the input box.</div>
-      </div>
-      <div class="how-step">
-        <div class="step-num">2</div>
-        <div class="step-title">Choose Your Style</div>
-        <div class="step-desc">Select a writing style (Casual, Professional, Academic, Creative, or Simple) and choose how aggressively to humanize (Light, Moderate, Heavy).</div>
-      </div>
-      <div class="how-step">
-        <div class="step-num">3</div>
-        <div class="step-title">AI Rewrites It</div>
-        <div class="step-desc">Our advanced AI (Llama 3.3 70B) rewrites the text with natural human patterns, varied sentences, and authentic expressions in seconds.</div>
-      </div>
-      <div class="how-step">
-        <div class="step-num">4</div>
-        <div class="step-title">Review &amp; Export</div>
-        <div class="step-desc">Review the output, check what changed with the diff view, copy to clipboard, or download as a file. Done!</div>
-      </div>
+      <div class="how-step"><div class="step-num">1</div><div class="step-title">Paste Your Text</div><div class="step-desc">Copy any AI-generated text — from ChatGPT, Claude, Gemini, or any AI tool — and paste it in.</div></div>
+      <div class="how-step"><div class="step-num">2</div><div class="step-title">Choose Style</div><div class="step-desc">Select a writing style and strength. Thesis mode enforces third-person. Blog mode is casual and engaging.</div></div>
+      <div class="how-step"><div class="step-num">3</div><div class="step-title">AI Rewrites It</div><div class="step-desc">Advanced AI rewrites the text with natural human patterns, varied sentences, and authentic expressions in seconds.</div></div>
+      <div class="how-step"><div class="step-num">4</div><div class="step-title">Review &amp; Export</div><div class="step-desc">Review the output, check the diff, copy to clipboard, or download. Your history is saved automatically.</div></div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     FAQ (SEO)
-══════════════════════════════════════════════════════════════════════════ -->
-<section class="faq-section" aria-labelledby="faq-h2">
+<!-- FAQ -->
+<section class="faq-section" aria-labelledby="faq-h2" id="faq">
   <div class="section-eyebrow">Questions answered</div>
   <h2 class="section-h2" id="faq-h2">Frequently asked questions</h2>
   <p class="section-sub">Everything you need to know about Your Humanizer.</p>
   <div class="faq-grid">
-    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-      <div class="faq-q" itemprop="name">
-        What is an AI text humanizer?
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-        <span itemprop="text">An AI text humanizer is a tool that rewrites AI-generated content to sound like it was written by a real person. It removes robotic patterns, varies sentence structure, adds natural expressions, and eliminates tell-tale AI phrases like "It is important to note that…" or overused connectors like "Furthermore" and "Moreover".</span>
-      </div>
-    </div>
-    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-      <div class="faq-q" itemprop="name">
-        Is Your Humanizer completely free?
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-        <span itemprop="text">Yes! Your Humanizer is completely free to use. There's no account required, no word limits for individual uses, and no hidden paywalls. Just paste your text and humanize.</span>
-      </div>
-    </div>
-    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-      <div class="faq-q" itemprop="name">
-        Can it bypass Turnitin, GPTZero, or Originality.ai?
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-        <span itemprop="text">Your Humanizer significantly reduces AI detection signals by transforming the underlying patterns that detectors look for. The Heavy strength mode produces the most undetectable results. However, no tool can guarantee 100% bypass of all detection systems — always review the output yourself before submitting.</span>
-      </div>
-    </div>
-    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-      <div class="faq-q" itemprop="name">
-        Will it change the meaning of my text?
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-        <span itemprop="text">No. The AI is explicitly instructed to preserve all factual content, data, numbers, proper nouns, and the core meaning of your text. It only changes how the ideas are expressed, not what they say. Use the Diff view to verify changes after each run.</span>
-      </div>
-    </div>
-    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-      <div class="faq-q" itemprop="name">
-        What AI model does it use?
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-        <span itemprop="text">Your Humanizer uses Meta's Llama 3.3 70B model running on Groq's infrastructure. This is one of the most capable open-source language models available, providing significantly better writing quality than smaller models. Groq is also free — meaning you get top-tier AI humanization at no cost.</span>
-      </div>
-    </div>
-    <div class="faq-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
-      <div class="faq-q" itemprop="name">
-        Is my text stored or used for training?
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg>
-      </div>
-      <div class="faq-a" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
-        <span itemprop="text">No. Your text is sent to the AI API for processing and immediately discarded. We do not store, log, or retain any of your text content. The API key is held server-side so it's never exposed in your browser. Your writing is completely private.</span>
-      </div>
-    </div>
+    <div class="faq-item"><div class="faq-q">What is an AI text humanizer?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg></div><div class="faq-a">An AI text humanizer rewrites AI-generated content so it sounds like a real person wrote it. It removes robotic patterns, varies sentence structure, adds natural expressions, and eliminates tell-tale AI phrases like "It is important to note that…"</div></div>
+    <div class="faq-item"><div class="faq-q">Is it completely free?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg></div><div class="faq-a">Yes! Your Humanizer is completely free. No account, no word limits per use, no paywalls. Just paste and humanize.</div></div>
+    <div class="faq-item"><div class="faq-q">Can it bypass Turnitin, GPTZero, or Originality.ai?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg></div><div class="faq-a">Your Humanizer significantly reduces AI detection signals by transforming the underlying patterns detectors look for. The Heavy strength produces the most undetectable results. No tool can guarantee 100% — always review the output yourself.</div></div>
+    <div class="faq-item"><div class="faq-q">Will it change the meaning of my text?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg></div><div class="faq-a">No. All factual content, statistics, numbers, citations, and core meaning are preserved exactly. Only the style and phrasing change. Use the Diff view to verify after each run.</div></div>
+    <div class="faq-item"><div class="faq-q">What makes Thesis mode different from Academic?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg></div><div class="faq-a">Thesis mode strictly enforces third-person only (never "I" or "we"), no contractions, formal passive voice where appropriate, and hedging language ("suggests that", "appears to"). Academic Essay is more flexible and allows first person if the original uses it.</div></div>
+    <div class="faq-item"><div class="faq-q">Is my text stored or shared?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg></div><div class="faq-a">No. Your text is sent to our AI service for processing and immediately discarded. We do not store, log, or retain any of your text. The API key is held server-side only — never exposed in your browser.</div></div>
   </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     FOOTER
-══════════════════════════════════════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
     <div>
       <div class="footer-brand-mark">
-        <div class="nav-logo-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <div class="nav-logo-mark" style="width:22px;height:22px;border-radius:6px;" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" width="11" height="11"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
         </div>
         <span class="footer-brand-name">Your Humanizer</span>
       </div>
       <p class="footer-desc">Transform AI-generated text into natural, human-like writing. Free for students, writers, and professionals worldwide.</p>
       <div class="footer-socials">
-        <button class="social-btn" title="Twitter/X">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </button>
-        <button class="social-btn" title="LinkedIn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </button>
+        <button class="social-btn" title="Twitter/X"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
+        <button class="social-btn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></button>
       </div>
     </div>
     <div>
@@ -1362,217 +1217,266 @@ a { color: inherit; text-decoration: none; }
   </div>
   <div class="footer-bottom">
     <span>© 2025 LevInTaps. All rights reserved.</span>
-    <span>Built with ❤️ for writers and students worldwide.</span>
+    <span>Built with ❤️ for writers &amp; students worldwide.</span>
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     TOASTS
-══════════════════════════════════════════════════════════════════════════ -->
-<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+<!-- TOASTS -->
+<div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     MODALS
-══════════════════════════════════════════════════════════════════════════ -->
+<!-- MODALS -->
 <div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="terms-title">
   <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title" id="terms-title">Terms &amp; Conditions</div>
-      <button class="modal-close" data-close="termsModal" aria-label="Close">×</button>
-    </div>
+    <div class="modal-head"><div class="modal-title" id="terms-title">Terms &amp; Conditions</div><button class="modal-close" data-close="termsModal" aria-label="Close">×</button></div>
     <div class="modal-body">
-      <p class="modal-highlight">Last updated: August 2025</p>
-      <p>Welcome to <strong>Your Humanizer</strong> by LevInTaps. By using this service, you agree to these terms and conditions.</p>
-      <h3>1. Service Description</h3>
-      <p>Your Humanizer is a web-based tool that transforms AI-generated text into natural, human-like writing using large language models while preserving the original meaning.</p>
-      <h3>2. User Responsibilities</h3>
-      <ul>
-        <li>You retain full ownership and copyright of all content you input</li>
-        <li>You must not use the service for harmful, illegal, or misleading content</li>
-        <li>You are responsible for reviewing all output before use</li>
-        <li>Academic use is your responsibility — check your institution's policies</li>
-      </ul>
-      <h3>3. Limitations &amp; Disclaimers</h3>
-      <ul>
-        <li>Service is provided "as-is" without warranties of any kind</li>
-        <li>We do not guarantee that output will pass all AI detection systems</li>
-        <li>We are not liable for any consequences arising from use of our service</li>
-      </ul>
-      <h3>4. Acceptable Use</h3>
-      <p>Do not use this service to generate misleading information, academic fraud for deceptive purposes, or content that violates applicable laws.</p>
-      <p class="modal-highlight">By using Your Humanizer, you agree to these terms.</p>
+      <p class="modal-hl">Last updated: August 2025</p>
+      <p>Welcome to <strong>Your Humanizer</strong> by LevInTaps. By using this service, you agree to these terms.</p>
+      <h3>1. Service Description</h3><p>Your Humanizer transforms AI-generated text into natural human writing using large language models while preserving the original meaning.</p>
+      <h3>2. User Responsibilities</h3><ul><li>You retain full ownership of all content you input</li><li>You must not use the service for harmful, illegal, or misleading content</li><li>You are responsible for reviewing all output before use</li><li>Academic use is your responsibility — check your institution's policies</li></ul>
+      <h3>3. Limitations</h3><ul><li>Service is provided "as-is" without warranties</li><li>We do not guarantee that output will pass all AI detection systems</li><li>We are not liable for any consequences arising from use</li></ul>
+      <h3>4. Acceptable Use</h3><p>Do not use to generate misleading information or content that violates applicable laws.</p>
+      <p class="modal-hl">By using Your Humanizer, you agree to these terms.</p>
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
   <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title" id="privacy-title">Privacy Policy</div>
-      <button class="modal-close" data-close="privacyModal" aria-label="Close">×</button>
-    </div>
+    <div class="modal-head"><div class="modal-title" id="privacy-title">Privacy Policy</div><button class="modal-close" data-close="privacyModal" aria-label="Close">×</button></div>
     <div class="modal-body">
-      <p class="modal-highlight">Last updated: January 2025</p>
-      <p>LevInTaps is committed to protecting your privacy when using Your Humanizer.</p>
-      <h3>Text Content</h3>
-      <ul>
-        <li><strong>We do NOT store your text</strong> — all processing happens in real-time and is discarded immediately</li>
-        <li>Text is sent to the AI API (Groq/Gemini) for processing only — no copies are retained on our servers</li>
-      </ul>
-      <h3>Anonymous Analytics</h3>
-      <ul>
-        <li>General usage statistics (feature usage counts, not content)</li>
-        <li>Browser type and version for compatibility</li>
-        <li>Country-level geographic data only</li>
-      </ul>
-      <h3>Third-Party Services</h3>
-      <ul>
-        <li><strong>Groq API:</strong> Text is processed through Groq's Llama 3.3 70B. See Groq's privacy policy.</li>
-        <li><strong>Vercel:</strong> Hosting platform — standard server logs apply.</li>
-      </ul>
-      <p class="modal-highlight">Your privacy is our highest priority. We collect only what's necessary.</p>
+      <p class="modal-hl">Last updated: January 2025</p>
+      <p>LevInTaps is committed to protecting your privacy.</p>
+      <h3>Text Content</h3><ul><li><strong>We do NOT store your text</strong> — all processing happens in real-time and is discarded immediately</li><li>Text is sent to our AI service for processing only — no copies retained</li></ul>
+      <h3>Analytics</h3><ul><li>Anonymous usage statistics (feature counts, not content)</li><li>Browser type and country-level location only</li></ul>
+      <h3>Third-Party Services</h3><ul><li><strong>AI APIs:</strong> Text is processed through third-party AI services. Their privacy policies apply.</li><li><strong>Vercel:</strong> Hosting platform — standard server logs apply.</li></ul>
+      <p class="modal-hl">Your privacy is our highest priority.</p>
     </div>
   </div>
 </div>
-
 <div class="modal-overlay" id="cookiesModal" role="dialog" aria-modal="true" aria-labelledby="cookies-title">
   <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title" id="cookies-title">Cookie Policy</div>
-      <button class="modal-close" data-close="cookiesModal" aria-label="Close">×</button>
-    </div>
+    <div class="modal-head"><div class="modal-title" id="cookies-title">Cookie Policy</div><button class="modal-close" data-close="cookiesModal" aria-label="Close">×</button></div>
     <div class="modal-body">
-      <p class="modal-highlight">Last updated: January 2025</p>
+      <p class="modal-hl">Last updated: January 2025</p>
       <p>We use minimal cookies to ensure the tool works correctly.</p>
-      <h3>Essential Cookies</h3>
-      <ul>
-        <li><strong>Session:</strong> Maintains your session while using the tool</li>
-        <li><strong>Settings:</strong> Remembers your humanization preferences</li>
-      </ul>
-      <h3>Optional Cookies</h3>
-      <ul>
-        <li><strong>Analytics:</strong> Google Analytics (anonymized) for usage statistics</li>
-      </ul>
-      <h3>Managing Cookies</h3>
-      <p>You can disable cookies in your browser settings. Most functionality will still work without them.</p>
+      <h3>Essential</h3><ul><li><strong>Theme preference:</strong> Remembers your dark/light mode choice</li><li><strong>Settings:</strong> Remembers your humanization preferences</li></ul>
+      <h3>Optional</h3><ul><li><strong>Analytics:</strong> Google Analytics (anonymized) for usage statistics</li></ul>
+      <h3>Managing Cookies</h3><p>Disable in your browser settings. Most functionality still works without them.</p>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════════════════════════════════════════ -->
 <script>
 'use strict';
+/* ══════════════════════════════════════════════════════════════════
+   THEME
+══════════════════════════════════════════════════════════════════ */
+const html = document.documentElement;
+const themeBtn = document.getElementById('themeBtn');
+const themeMeta = document.getElementById('themeColorMeta');
 
-/* ═══════════════════════════════════════════════════════════════════════════
+function applyTheme(t) {
+  html.setAttribute('data-theme', t);
+  themeMeta.content = t === 'dark' ? '#0f0f13' : '#ffffff';
+  try { localStorage.setItem('yh-theme', t); } catch {}
+}
+function toggleTheme() {
+  applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+themeBtn.addEventListener('click', toggleTheme);
+// Load saved or system preference
+(function(){
+  let saved; try { saved = localStorage.getItem('yh-theme'); } catch {}
+  if (saved) { applyTheme(saved); return; }
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) applyTheme('dark');
+})();
+
+/* ══════════════════════════════════════════════════════════════════
    STATE
-═══════════════════════════════════════════════════════════════════════════ */
-const state = {
-  style: 'casual',
+══════════════════════════════════════════════════════════════════ */
+const S = {
+  style:    'casual',
   strength: 'light',
-  settings: {
-    conversational: true,
-    structure: true,
-    expressions: true,
-    contractions: true,
-    technical: false,
-    patterns: true,
-    activeVoice: true,
-    rhetoricalQ: false,
+  cfg: {
+    conversational: true, structure: true, expressions: true,
+    contractions: true, technical: false, patterns: true,
+    activeVoice: true, rhetoricalQ: false,
   },
-  lastInput: '',
-  lastMode: 'humanize',
+  lastInput:    '',
+  lastMode:     'humanize',
   lastOriginal: '',
-  lastHumanized: '',
-  showingDiff: false,
-  isLoading: false,
+  lastOutput:   '',
+  showDiff:     false,
+  busy:         false,
+  history:      [],   // max 5
 };
 
-const SAMPLE_TEXT = `Artificial intelligence has become an increasingly prevalent topic in contemporary society. It is important to note that AI technologies are being utilized across a wide range of industries and applications. Furthermore, the rapid advancement of these technologies has led to significant changes in how people work and interact with technology.
+// Persist settings
+(function(){
+  try {
+    const c = JSON.parse(localStorage.getItem('yh-cfg') || 'null');
+    if (c) Object.assign(S.cfg, c);
+    const st = localStorage.getItem('yh-style');
+    const str = localStorage.getItem('yh-strength');
+    if (st)  S.style    = st;
+    if (str) S.strength = str;
+  } catch {}
+})();
 
-Research has shown that AI can demonstrate remarkable capabilities in areas such as natural language processing, image recognition, and data analysis. However, it is crucial to understand that there are also notable challenges and concerns associated with the widespread adoption of AI, including issues related to privacy, bias, and the potential displacement of human workers.
+function saveCfg() {
+  try {
+    localStorage.setItem('yh-cfg', JSON.stringify(S.cfg));
+    localStorage.setItem('yh-style', S.style);
+    localStorage.setItem('yh-strength', S.strength);
+  } catch {}
+}
 
-In conclusion, it is evident that artificial intelligence represents a transformative technology with far-reaching implications for society. It is essential that stakeholders from various sectors work collaboratively to ensure that AI development proceeds in a responsible and beneficial manner.`;
-
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    ELEMENT REFS
-═══════════════════════════════════════════════════════════════════════════ */
-const get = id => document.getElementById(id);
-const inputEl       = get('inputText');
-const outputEl      = get('outputText');
-const diffOverlay   = get('diffOverlay');
-const humanizeBtn   = get('humanizeBtn');
-const paraphraseBtn = get('paraphraseBtn');
-const regenerateBtn = get('regenerateBtn');
-const clearAllBtn   = get('clearAllBtn');
-const pasteBtn      = get('pasteBtn');
-const clearInputBtn = get('clearInputBtn');
-const sampleBtn     = get('sampleBtn');
-const copyBtn       = get('copyBtn');
-const downloadBtn   = get('downloadBtn');
-const diffBtn       = get('diffBtn');
-const inputWC       = get('inputWC');
-const outputWC      = get('outputWC');
-const aiChip        = get('aiChip');
-const humanChip     = get('humanChip');
-const ringFill      = get('ringFill');
-const progressFill  = get('progressFill');
-const statusRow     = get('statusRow');
-const statusText    = get('statusText');
-const settingsToggle = get('settingsToggle');
-const settingsBody  = get('settingsBody');
-const toastStack    = get('toastStack');
+══════════════════════════════════════════════════════════════════ */
+const $  = id => document.getElementById(id);
+const inputEl      = $('inputText');
+const outputEl     = $('outputText');
+const diffOverlay  = $('diffOverlay');
+const humanizeBtn  = $('humanizeBtn');
+const paraphraseBtn= $('paraphraseBtn');
+const regenerateBtn= $('regenerateBtn');
+const clearAllBtn  = $('clearAllBtn');
+const pasteBtn     = $('pasteBtn');
+const clearInputBtn= $('clearInputBtn');
+const sampleBtn    = $('sampleBtn');
+const copyBtn      = $('copyBtn');
+const downloadBtn  = $('downloadBtn');
+const diffBtn      = $('diffBtn');
+const inputWC      = $('inputWC');
+const outputWC     = $('outputWC');
+const aiChip       = $('aiChip');
+const humanChip    = $('humanChip');
+const ringFill     = $('ringFill');
+const charText     = $('charText');
+const progressFill = $('progressFill');
+const statusRow    = $('statusRow');
+const statusText   = $('statusText');
+const patternWarn  = $('patternWarn');
+const patternDetail= $('patternDetail');
+const limitBanner  = $('limitBanner');
+const toastStack   = $('toastStack');
+const settingsToggle=$('settingsToggle');
+const settingsBody = $('settingsBody');
+const historyToggle= $('historyToggle');
+const historyBody  = $('historyBody');
+const historyList  = $('historyList');
+const historyEmpty = $('historyEmpty');
+const historyCount = $('historyCount');
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    TOAST
-═══════════════════════════════════════════════════════════════════════════ */
-function toast(msg, type = '', duration = 3500) {
+══════════════════════════════════════════════════════════════════ */
+function toast(msg, type = '', ms = 3400) {
   const el = document.createElement('div');
-  el.className = `toast toast-${type}`;
+  el.className = `toast${type ? ' toast-' + type : ''}`;
   el.textContent = msg;
   toastStack.appendChild(el);
   requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
-  setTimeout(() => {
-    el.classList.remove('show');
-    setTimeout(() => el.remove(), 400);
-  }, duration);
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, ms);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   WORD COUNT
-═══════════════════════════════════════════════════════════════════════════ */
-function wordCount(t) { return t.trim().split(/\s+/).filter(Boolean).length; }
-function charCount(t) { return t.length; }
+/* ══════════════════════════════════════════════════════════════════
+   STYLE GUIDE DATA
+══════════════════════════════════════════════════════════════════ */
+const STYLE_GUIDES = {
+  casual:       { name:'Casual Style',        desc:'Friendly, relaxed, everyday tone. Contractions welcome. First person is fine.',                             tags:['1st Person OK','Contractions OK','Active Voice'] },
+  professional: { name:'Professional Style',   desc:'Clear, polished business tone. Neutral perspective. No contractions required.',                            tags:['Formal','Neutral Perspective','No Jargon'] },
+  thesis:       { name:'Thesis / Dissertation',desc:'STRICT 3rd person only. No contractions. Formal academic register. Passive voice acceptable.',             tags:['3rd Person ONLY','No Contractions','Passive OK','Hedging Language'] },
+  research:     { name:'Research Paper',       desc:'Objective, impersonal academic writing. 3rd person only. Preserves citations, stats, and technical terms.',tags:['3rd Person ONLY','Preserves Citations','Formal','Hedging'] },
+  academic:     { name:'Academic Essay',       desc:'Scholarly tone for college essays. Generally 3rd person. No contractions. Intellectual rigour.',            tags:['3rd Person Preferred','No Contractions','Scholarly'] },
+  blog:         { name:'Blog Post Style',      desc:'Engaging, conversational, SEO-friendly. First person is natural. Varied rhythm.',                          tags:['1st Person OK','Engaging','Varied Rhythm'] },
+  email:        { name:'Email Style',          desc:'Concise, clear, and direct. Gets to the point quickly. Short paragraphs.',                                 tags:['Concise','Direct','Professional'] },
+  creative:     { name:'Creative Writing',     desc:'Vivid, expressive, literary. Varied sentence lengths for effect. Metaphors welcome.',                      tags:['Expressive','Vivid','Literary Devices'] },
+  simple:       { name:'Simple / Plain',       desc:'Very plain language. Short sentences. Common everyday words. Maximum accessibility.',                      tags:['Short Sentences','Plain Words','Accessible'] },
+};
 
-/* ═══════════════════════════════════════════════════════════════════════════
+function updateStyleGuide() {
+  const g = STYLE_GUIDES[S.style] || STYLE_GUIDES.casual;
+  $('sgName').textContent = g.name;
+  $('sgDesc').textContent = g.desc;
+  const t = $('sgTags');
+  t.innerHTML = g.tags.map(x => `<span class="sg-tag">${x}</span>`).join('');
+}
+
+/* Lock/unlock settings based on style */
+function applyStyleLocks() {
+  const academic = ['thesis','research','academic'].includes(S.style);
+  const setLock = (id, locked) => {
+    const row = document.getElementById('sr-' + id);
+    if (!row) return;
+    row.classList.toggle('locked', locked);
+  };
+  // For academic styles: contractions and conversational are auto-off
+  setLock('contractions',    academic);
+  setLock('conversational',  S.style === 'thesis' || S.style === 'research');
+  setLock('rhetoricalQ',     academic || S.style === 'email');
+  setLock('activeVoice',     S.style === 'thesis' || S.style === 'research');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   AI PATTERN DETECTOR
+══════════════════════════════════════════════════════════════════ */
+const AI_PATTERNS = [
+  /\b(furthermore|moreover|additionally|consequently|nevertheless|nonetheless)\b/gi,
+  /\bit is important to note\b/gi,
+  /\bit is worth (noting|mentioning)\b/gi,
+  /\bin (today's|today's) (modern |rapidly evolving |digital )?world\b/gi,
+  /\bin conclusion\b/gi,
+  /\bfirst and foremost\b/gi,
+  /\bwithout a doubt\b/gi,
+  /\bit is (evident|clear|crucial|essential) that\b/gi,
+  /\bone must (consider|understand|note)\b/gi,
+  /\bthe world of\b/gi,
+];
+function detectAIPatterns(text) {
+  if (text.length < 50) return [];
+  return AI_PATTERNS.filter(r => r.test(text)).map(r => r.source.replace(/\\b/g,'').replace(/\\/g,''));
+}
+function updatePatternWarning(text) {
+  const found = detectAIPatterns(text);
+  patternWarn.classList.toggle('visible', found.length > 0);
+  if (found.length > 0) {
+    patternDetail.textContent = `${found.length} AI pattern${found.length>1?'s':''} found. Humanizing will remove these.`;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
    INPUT UI
-═══════════════════════════════════════════════════════════════════════════ */
-const MAX_CHARS = 8000;
+══════════════════════════════════════════════════════════════════ */
+const MAX_CH = 8000;
+const CIRC = 2 * Math.PI * 8; // r=8 on 20x20 viewBox
 function updateInputUI() {
   const txt = inputEl.value;
-  const wc = wordCount(txt);
+  const wc  = txt.trim().split(/\s+/).filter(Boolean).length;
   inputWC.textContent = wc + ' words';
-
-  // Char ring
-  const pct = Math.min(1, txt.length / MAX_CHARS);
-  const circumference = 2 * Math.PI * 9; // r=9
-  ringFill.style.strokeDashoffset = circumference * (1 - pct);
-  ringFill.className = 'char-ring-fill' + (pct > 0.9 ? ' full' : pct > 0.72 ? ' warn' : '');
-
+  const pct = Math.min(1, txt.length / MAX_CH);
+  ringFill.style.strokeDashoffset = CIRC * (1 - pct);
+  const cls = pct > .9 ? 'full' : pct > .72 ? 'warn' : '';
+  ringFill.className = 'char-ring-fill' + (cls ? ' ' + cls : '');
+  charText.className = 'char-text' + (cls ? ' ' + cls : '');
+  charText.textContent = txt.length >= 1000
+    ? Math.round(txt.length/1000*10)/10 + 'k/' + MAX_CH/1000 + 'k'
+    : txt.length + '/' + MAX_CH;
   aiChip.style.display = txt.length > 60 ? 'inline-block' : 'none';
+  updatePatternWarning(txt);
 }
 function updateOutputUI() {
   const txt = outputEl.value;
-  outputWC.textContent = wordCount(txt) + ' words';
+  const wc = txt.trim().split(/\s+/).filter(Boolean).length;
+  outputWC.textContent = wc + ' words';
   humanChip.style.display = txt.length > 0 ? 'inline-block' : 'none';
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    LOADING
-═══════════════════════════════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════════════════ */
 function setLoading(on, msg = 'Processing with AI…') {
-  state.isLoading = on;
+  S.busy = on;
   statusRow.classList.toggle('visible', on);
   statusText.textContent = msg;
   progressFill.classList.toggle('animating', on);
@@ -1580,372 +1484,383 @@ function setLoading(on, msg = 'Processing with AI…') {
   [humanizeBtn, paraphraseBtn, regenerateBtn].forEach(b => b.disabled = on);
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    STATS
-═══════════════════════════════════════════════════════════════════════════ */
-function animateStat(el, val) {
+══════════════════════════════════════════════════════════════════ */
+function popStat(el, val) {
   el.textContent = val;
-  el.classList.remove('updated');
-  requestAnimationFrame(() => el.classList.add('updated'));
+  el.classList.remove('pop');
+  requestAnimationFrame(() => el.classList.add('pop'));
 }
-function updateStats(original, humanized, ms) {
-  const ow = wordCount(original);
-  const hw = wordCount(humanized);
-  const ow2 = original.toLowerCase().split(/\s+/);
-  const hw2 = humanized.toLowerCase().split(/\s+/);
-  let changes = 0;
-  const maxLen = Math.max(ow2.length, hw2.length);
-  for (let i = 0; i < maxLen; i++) { if (ow2[i] !== hw2[i]) changes++; }
-  const pctChanged = Math.round(Math.min(98, (changes / maxLen) * 100));
-  const humanScore = Math.round(Math.min(99, Math.max(78, pctChanged * 0.95 + Math.random() * 4)));
-
-  // Readability (Flesch-Kincaid approximation)
-  const sentences = humanized.split(/[.!?]+/).filter(s => s.trim().length > 3);
-  const avgWPS = sentences.length ? hw / sentences.length : 15;
-  const allWords = humanized.split(/\s+/).filter(Boolean);
-  const avgSyllables = allWords.reduce((sum, w) => sum + countSyllables(w), 0) / (allWords.length || 1);
-  const fkScore = 206.835 - 1.015 * avgWPS - 84.6 * avgSyllables;
-  const readLabel = fkScore >= 80 ? 'Very Easy' : fkScore >= 70 ? 'Easy' : fkScore >= 60 ? 'Standard' : fkScore >= 50 ? 'Moderate' : 'Advanced';
-  const readGrade = fkScore >= 80 ? 'A+' : fkScore >= 65 ? 'A' : fkScore >= 50 ? 'B+' : 'B';
-
-  animateStat(get('statOrig'), ow);
-  animateStat(get('statOut'), hw);
-  animateStat(get('statHuman'), humanScore + '%');
-  animateStat(get('statRead'), readGrade);
-  get('statReadSub').textContent = readLabel;
-  get('statHumanSub').textContent = humanScore >= 90 ? 'Excellent' : humanScore >= 80 ? 'Good' : 'Fair';
-  animateStat(get('statChange'), pctChanged + '%');
-  animateStat(get('statTime'), (ms / 1000).toFixed(1) + 's');
+function updateStats(orig, out, ms) {
+  const ow = orig.trim().split(/\s+/).filter(Boolean).length;
+  const hw = out.trim().split(/\s+/).filter(Boolean).length;
+  const oa = orig.toLowerCase().split(/\s+/);
+  const ha = out.toLowerCase().split(/\s+/);
+  let ch = 0; const mx = Math.max(oa.length, ha.length);
+  for (let i=0;i<mx;i++) if (oa[i]!==ha[i]) ch++;
+  const pctCh = Math.round(Math.min(98,(ch/mx)*100));
+  const hScore= Math.round(Math.min(99,Math.max(76,pctCh*.95+Math.random()*4)));
+  const sents = out.split(/[.!?]+/).filter(s=>s.trim().length>3);
+  const avgWPS= sents.length ? hw/sents.length : 14;
+  const syls  = out.split(/\s+/).filter(Boolean).reduce((s,w)=>s+Math.max(1,(w.match(/[aeiou]{1,2}/gi)||[]).length),0)/(hw||1);
+  const fk    = 206.835 - 1.015*avgWPS - 84.6*syls;
+  const rdLbl = fk>=80?'Very Easy':fk>=70?'Easy':fk>=60?'Standard':fk>=50?'Moderate':'Advanced';
+  const rdGrd = fk>=80?'A+':fk>=65?'A':fk>=50?'B+':'B';
+  popStat($('stOrig'),  ow);
+  popStat($('stOut'),   hw);
+  popStat($('stHuman'), hScore+'%');
+  popStat($('stRead'),  rdGrd);
+  $('stHumanSub').textContent = hScore>=90?'Excellent':hScore>=80?'Good':'Fair';
+  $('stReadSub').textContent  = rdLbl;
+  popStat($('stChange'), pctCh+'%');
+  popStat($('stTime'),   (ms/1000).toFixed(1)+'s');
 }
 
-function countSyllables(word) {
-  word = word.toLowerCase().replace(/[^a-z]/g, '');
-  if (!word) return 1;
-  const m = word.match(/[aeiou]{1,2}/g);
-  return Math.max(1, m ? m.length : 1);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    DIFF
-═══════════════════════════════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════════════════ */
 function buildDiff(a, b) {
-  const aw = a.split(/\s+/), bw = b.split(/\s+/);
-  const m = aw.length, n = bw.length;
-  const dp = Array.from({length: m+1}, () => new Uint16Array(n+1));
-  for (let i = m-1; i >= 0; i--)
-    for (let j = n-1; j >= 0; j--)
-      dp[i][j] = aw[i].toLowerCase() === bw[j].toLowerCase()
-        ? dp[i+1][j+1] + 1
-        : Math.max(dp[i+1][j], dp[i][j+1]);
-
-  let html = '', i = 0, j = 0;
-  while (i < m || j < n) {
-    if (i < m && j < n && aw[i].toLowerCase() === bw[j].toLowerCase()) {
-      html += aw[i] + ' '; i++; j++;
-    } else if (j < n && (i >= m || dp[i+1] && dp[i+1][j] <= dp[i][j+1])) {
-      html += `<span class="diff-ins">${bw[j]}</span> `; j++;
-    } else {
-      html += `<span class="diff-del">${aw[i]}</span> `; i++;
-    }
+  const aw=a.split(/\s+/), bw=b.split(/\s+/);
+  const m=aw.length, n=bw.length;
+  const dp=Array.from({length:m+1},()=>new Uint16Array(n+1));
+  for(let i=m-1;i>=0;i--) for(let j=n-1;j>=0;j--)
+    dp[i][j]=aw[i].toLowerCase()===bw[j].toLowerCase()?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  let html='',i=0,j=0;
+  while(i<m||j<n){
+    if(i<m&&j<n&&aw[i].toLowerCase()===bw[j].toLowerCase()){html+=aw[i]+' ';i++;j++;}
+    else if(j<n&&(i>=m||(dp[i+1]&&dp[i+1][j]<=dp[i][j+1]))){html+=`<span class="diff-ins">${bw[j]}</span> `;j++;}
+    else{html+=`<span class="diff-del">${aw[i]}</span> `;i++;}
   }
   return html.trim();
 }
-
+function closeDiff() {
+  S.showDiff=false;
+  diffOverlay.classList.remove('visible');
+  outputEl.style.display='';
+  diffBtn.classList.remove('active-state');
+  diffBtn.textContent='🔍 Changes';
+}
 function toggleDiff() {
-  if (!state.lastHumanized) { toast('Run humanization first.', ''); return; }
-  state.showingDiff = !state.showingDiff;
-  if (state.showingDiff) {
-    diffOverlay.innerHTML = buildDiff(state.lastOriginal, state.lastHumanized);
+  if (!S.lastOutput) { toast('Humanize some text first.'); return; }
+  S.showDiff = !S.showDiff;
+  if (S.showDiff) {
+    diffOverlay.innerHTML = buildDiff(S.lastOriginal, S.lastOutput);
     diffOverlay.classList.add('visible');
-    outputEl.style.display = 'none';
+    outputEl.style.display='none';
     diffBtn.classList.add('active-state');
-    diffBtn.textContent = '🔍 Hide Changes';
-  } else {
-    diffOverlay.classList.remove('visible');
-    outputEl.style.display = '';
-    diffBtn.classList.remove('active-state');
-    diffBtn.textContent = '🔍 Changes';
-  }
+    diffBtn.textContent='🔍 Hide';
+  } else { closeDiff(); }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
+   HISTORY
+══════════════════════════════════════════════════════════════════ */
+function addHistory(orig, out, style, mode) {
+  S.history.unshift({ orig, out, style, mode, ts: Date.now() });
+  if (S.history.length > 5) S.history.pop();
+  renderHistory();
+}
+function renderHistory() {
+  const count = S.history.length;
+  historyCount.textContent = count ? `(${count})` : '';
+  if (!count) {
+    historyEmpty.style.display = 'block';
+    historyList.innerHTML = '';
+    return;
+  }
+  historyEmpty.style.display = 'none';
+  historyList.innerHTML = S.history.map((h, i) => {
+    const preview = h.out.substring(0, 100).replace(/</g,'&lt;') + (h.out.length > 100 ? '…' : '');
+    const origPrev= h.orig.substring(0, 60).replace(/</g,'&lt;') + (h.orig.length > 60 ? '…' : '');
+    const t = new Date(h.ts);
+    const timeStr = t.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    const sg = STYLE_GUIDES[h.style] || STYLE_GUIDES.casual;
+    return `<div class="hist-item" data-idx="${i}">
+      <div class="hist-preview"><strong>${origPrev}</strong>${preview}</div>
+      <div class="hist-meta">
+        <div class="hist-time">${timeStr}</div>
+        <div class="hist-style-badge">${sg.name.split(' ')[0]}</div>
+        <span class="hist-restore">↩ Restore</span>
+      </div>
+    </div>`;
+  }).join('');
+  historyList.querySelectorAll('.hist-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const h = S.history[parseInt(el.dataset.idx)];
+      inputEl.value  = h.orig;
+      outputEl.value = h.out;
+      S.lastOriginal = h.orig;
+      S.lastOutput   = h.out;
+      S.lastInput    = h.orig;
+      updateInputUI(); updateOutputUI();
+      closeDiff();
+      toast('↩ Previous result restored', 'info');
+      // Switch to the saved style
+      document.querySelectorAll('[data-style]').forEach(p => p.classList.toggle('active', p.dataset.style === h.style));
+      S.style = h.style;
+      updateStyleGuide(); applyStyleLocks();
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
    PROMPT BUILDER
-═══════════════════════════════════════════════════════════════════════════ */
-function buildSystemPrompt(mode) {
+══════════════════════════════════════════════════════════════════ */
+function buildPrompt(mode) {
   const styles = {
-    casual:       'Write in a relaxed, friendly, everyday conversational tone — like a knowledgeable friend explaining something over coffee. Use contractions freely. Feel natural and warm.',
-    professional: 'Write in a clear, confident, business-appropriate tone. Polished but not stiff. Avoid unnecessary jargon. Suitable for emails, reports, and professional communication.',
-    academic:     'Write in a scholarly tone appropriate for academic papers and essays. Use precise vocabulary and well-constructed arguments. Avoid formulaic AI phrases while maintaining intellectual rigor.',
-    creative:     'Write with personality, rhythm, and vivid language. Use varied sentence lengths for effect. Employ metaphors, rhetorical questions, and expressive vocabulary where it enhances the writing.',
-    simple:       'Write in very plain, clear language. Short sentences. Common everyday words. Maximum accessibility — a 12-year-old should understand it easily.',
+    casual:       'Write in a relaxed, friendly, everyday conversational tone. Like a knowledgeable friend talking. Use contractions freely. First person ("I", "we") is fine.',
+    professional: 'Write in a clear, confident, business-appropriate tone. Polished but not stiff. Avoid jargon. Neutral perspective.',
+    thesis:       'STRICT RULES: (1) THIRD PERSON ONLY — never use "I", "we", "my", "our". Use "the researcher", "this study", "the findings indicate". (2) NO contractions — spell everything out fully. (3) Formal academic vocabulary throughout. (4) Passive voice is acceptable and conventional. (5) Use hedging language: "appears to", "suggests that", "may indicate". (6) Impersonal, objective tone throughout. (7) Preserve all citations exactly.',
+    research:     'STRICT RULES: (1) THIRD PERSON ONLY — never "I" or "we". Use "the study", "the analysis", "researchers". (2) NO contractions. (3) Precise scientific language. (4) Passive voice preferred where academic convention calls for it. (5) Hedging is essential — "suggests", "indicates", "appears to", "may". (6) Preserve all statistics, p-values, citations, and technical terms exactly. (7) Do not simplify or make conversational in any way.',
+    academic:     'Write in a scholarly tone for college/university essays. Use precise vocabulary. Generally third person but first person acceptable if the original uses it. No contractions. Avoid formulaic AI phrases while maintaining intellectual rigour.',
+    blog:         'Write in an engaging, readable blog post style. Conversational but informative. First person is natural. Vary sentence lengths for rhythm. Rhetorical questions are great. Contractions are fine.',
+    email:        'Write in a concise, clear, professional email tone. Get to the point quickly. Short paragraphs. Polite but not verbose. Match the formality level of the original.',
+    creative:     'Write with personality, rhythm, and vivid language. Vary sentence lengths for deliberate effect. Use metaphors, imagery, and expressive vocabulary. First person is natural. Contractions welcome.',
+    simple:       'Write in very plain, clear language. Short sentences. Common everyday words only. A middle-school student should understand it easily. No complex vocabulary.',
   };
   const strengths = {
-    light:    'Make MINIMAL changes. Fix the most obvious AI patterns (formulaic openers, overused connectors). Preserve most of the original structure and vocabulary. Only about 20-30% of words should change.',
-    moderate: 'Significantly rework the text. Restructure sentences, replace AI-typical phrases with natural alternatives, improve flow. About 40-60% of the text should feel noticeably different while preserving all meaning.',
-    heavy:    'Completely rewrite the text in a natural human voice. Change sentence order freely, combine and split sentences, use fresh vocabulary throughout, add natural human touches like hedges, asides, or emphasis where appropriate. 60-80%+ of words should change. The result must sound like a human wrote it from scratch while preserving ALL original facts and meaning.',
+    light:    'MINIMAL changes. Fix the most obvious AI patterns (formulaic openers, overused connectors like "Furthermore", "Moreover"). Preserve most of the original structure and vocabulary. ~20-30% of words change.',
+    moderate: 'Significantly rework the text. Restructure sentences, replace AI-typical phrases, improve flow. ~40-60% of the text should feel noticeably different while preserving all meaning.',
+    heavy:    'Completely rewrite in a natural human voice matching the chosen style. Change sentence order freely, combine/split sentences, use fresh vocabulary. ~60-80%+ of words should change. Must sound like a skilled human wrote it from scratch.',
   };
-
   const rules = [];
-  if (state.settings.conversational) rules.push('Use natural conversational phrasing and speech patterns that real people use.');
-  if (state.settings.structure)      rules.push('Vary sentence length and structure — mix short punchy sentences with longer flowing ones to create natural rhythm.');
-  if (state.settings.expressions)    rules.push('Include natural human expressions: hedges ("I think", "it seems like", "arguably"), emphasis, personal asides, and occasional rhetorical devices.');
-  if (state.settings.contractions)   rules.push("Use contractions naturally and consistently (it's, don't, isn't, you'll, we've, they're, etc.).");
-  if (state.settings.technical)      rules.push('IMPORTANT: Preserve ALL technical terms, domain-specific vocabulary, acronyms, and jargon EXACTLY as written — do not replace or simplify them.');
-  if (state.settings.patterns)       rules.push('ACTIVELY hunt down and eliminate these AI patterns: formulaic openers ("It is important to note…", "It is worth mentioning…", "In today\'s world…"), overused transitions ("Furthermore,", "Moreover,", "In addition,", "Consequently,", "In conclusion,"), redundant phrases ("in order to" → "to", "due to the fact that" → "because"), and passive voice overuse.');
-  if (state.settings.activeVoice)    rules.push('Prefer active voice constructions over passive voice wherever it reads naturally ("The team completed the project" not "The project was completed by the team").');
-  if (state.settings.rhetoricalQ)    rules.push('Occasionally introduce rhetorical questions to engage readers ("Why does this matter? Because…", "What does this mean in practice?").');
+  if (S.cfg.conversational && !['thesis','research'].includes(S.style)) rules.push('Use natural phrasing and speech patterns real people use.');
+  if (S.cfg.structure) rules.push('Vary sentence length — mix short punchy sentences with longer flowing ones.');
+  if (S.cfg.expressions && !['thesis','research','email'].includes(S.style)) rules.push('Include natural human expressions and emphasis appropriate for the style.');
+  if (S.cfg.contractions && !['thesis','research','academic'].includes(S.style)) rules.push("Use contractions naturally (it's, don't, isn't, you'll, etc.).");
+  if (['thesis','research','academic'].includes(S.style)) rules.push('Do NOT use contractions. Spell out all words fully (do not, is not, cannot, will not).');
+  if (S.cfg.technical) rules.push('Preserve ALL technical terms, acronyms, domain vocabulary, and citations EXACTLY as written.');
+  if (S.cfg.patterns) rules.push('Eliminate AI patterns: formulaic openers ("It is important to note…", "In today\'s world…"), overused transitions ("Furthermore,", "Moreover,", "In addition,", "In conclusion,"), redundant phrases ("in order to" → "to", "due to the fact that" → "because").');
+  if (S.cfg.activeVoice && !['thesis','research'].includes(S.style)) rules.push('Prefer active voice over passive voice where it reads naturally.');
+  if (['thesis','research'].includes(S.style)) rules.push('Passive voice is acceptable and conventional — use it where academic writing calls for it.');
+  if (S.cfg.rhetoricalQ && ['blog','casual','creative'].includes(S.style)) rules.push('Occasionally use rhetorical questions to engage readers.');
 
-  const taskMap = {
-    humanize:   'HUMANIZE the following AI-generated text. Make it sound genuinely written by a thoughtful human being.',
-    paraphrase: 'PARAPHRASE the following text. Reword and restructure it thoroughly while keeping every piece of meaning. This is not synonym-swapping — restructure sentences and change the approach.',
-  };
+  const task = mode === 'paraphrase'
+    ? 'PARAPHRASE the following text. Reword and restructure it thoroughly while keeping every piece of meaning. Not synonym-swapping — actually restructure sentences.'
+    : 'HUMANIZE the following AI-generated text. Make it sound genuinely written by a skilled human author.';
 
-  return `You are an expert editor and text humanizer with deep knowledge of how humans actually write versus how AI writes.
+  return `You are an expert editor and writing coach. You deeply understand different writing registers and know exactly how humans write versus AI.
 
-TASK: ${taskMap[mode] || taskMap.humanize}
+TASK: ${task}
 
-WRITING STYLE: ${styles[state.style]}
+WRITING STYLE: ${styles[S.style]}
 
-TRANSFORMATION STRENGTH: ${strengths[state.strength]}
+STRENGTH: ${strengths[S.strength]}
 
-SPECIFIC RULES TO FOLLOW:
-${rules.map((r, i) => `${i+1}. ${r}`).join('\n')}
+RULES:
+${rules.map((r,i)=>`${i+1}. ${r}`).join('\n')}
 
-ABSOLUTE CONSTRAINTS (never violate these):
-• Preserve ALL factual information, statistics, numbers, dates, proper nouns, and core meaning exactly
-• Do NOT add new facts, opinions, or information that wasn't in the original
-• Do NOT include ANY preamble, explanation, meta-commentary, or notes — output ONLY the rewritten text
+ABSOLUTE CONSTRAINTS:
+• Preserve ALL facts, statistics, numbers, dates, proper nouns, citations, and core meaning exactly
+• Do NOT add new facts or information not in the original
+• Output ONLY the rewritten text — no preamble, no notes, no meta-commentary
 • Output in the SAME LANGUAGE as the input
-• Match the approximate paragraph structure of the original unless the strength requires restructuring
-• The output must be complete — do not truncate or summarize`;
+• Do not truncate or summarize — output must be complete`;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   API CALL  (calls our Vercel serverless function — key is hidden)
-═══════════════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════════
+   API CALL
+══════════════════════════════════════════════════════════════════ */
 async function callAPI(text, mode) {
-  const systemPrompt = buildSystemPrompt(mode);
-
-  // In production this hits /api/humanize (Vercel function).
-  // In local dev, it also works if you run `vercel dev`.
   const resp = await fetch('/api/humanize', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, systemPrompt }),
+    body: JSON.stringify({ text, systemPrompt: buildPrompt(mode) }),
   });
-
   if (!resp.ok) {
-    let errMsg = `Server error (${resp.status})`;
-    try {
-      const j = await resp.json();
-      if (j.error) errMsg = j.error;
-    } catch {}
-    const err = new Error(errMsg);
-    err.status = resp.status;
+    let body = {}; try { body = await resp.json(); } catch {}
+    const err = new Error(body.message || body.error || `Error ${resp.status}`);
+    err.status = resp.status; err.body = body;
     throw err;
   }
-
   const data = await resp.json();
   if (!data.result) throw new Error('Empty response from AI.');
   return data.result;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
    PROCESS
-═══════════════════════════════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════════════════ */
 async function process(mode) {
   const text = inputEl.value.trim();
   if (!text) { toast('Please enter some text first!', 'error'); return; }
-  if (wordCount(text) < 3) { toast('Please enter at least a few words.', 'error'); return; }
-  if (text.length > MAX_CHARS) { toast(`Text too long. Max ${MAX_CHARS.toLocaleString()} characters.`, 'error'); return; }
+  if (text.split(/\s+/).filter(Boolean).length < 3) { toast('Please enter at least a few words.', 'error'); return; }
+  if (text.length > MAX_CH) { toast(`Text too long. Max ${MAX_CH.toLocaleString()} characters.`, 'error'); return; }
 
-  state.lastMode = mode;
-  state.lastInput = text;
+  S.lastMode  = mode;
+  S.lastInput = text;
 
-  const labels = { humanize: 'Humanizing with AI…', paraphrase: 'Paraphrasing with AI…' };
-  setLoading(true, labels[mode] || 'Processing…');
-
-  // Close diff if open
-  if (state.showingDiff) {
-    state.showingDiff = false;
-    diffOverlay.classList.remove('visible');
-    outputEl.style.display = '';
-    diffBtn.classList.remove('active-state');
-    diffBtn.textContent = '🔍 Changes';
-  }
+  const msgs = { humanize:'Humanizing your text…', paraphrase:'Paraphrasing your text…' };
+  setLoading(true, msgs[mode] || 'Processing…');
+  closeDiff();
 
   const t0 = Date.now();
   try {
     const result = await callAPI(text, mode);
     outputEl.value = result;
-    state.lastOriginal = text;
-    state.lastHumanized = result;
+    S.lastOriginal = text;
+    S.lastOutput   = result;
     updateOutputUI();
     updateStats(text, result, Date.now() - t0);
-    const label = mode === 'paraphrase' ? 'Paraphrased' : 'Humanized';
-    toast(`✓ ${label} successfully!`, 'success');
+    addHistory(text, result, S.style, mode);
+    const lbl = mode === 'paraphrase' ? 'Paraphrased' : 'Humanized';
+    toast(`✓ ${lbl} successfully!`, 'success');
   } catch (err) {
     console.error(err);
-    const s = err.status;
-    const msg = s === 401 ? 'API key error — check Vercel environment variables.'
-              : s === 429 ? 'Rate limit reached. Please wait a moment and try again.'
-              : s === 503 || s === 500 ? 'AI server busy. Please try again in a few seconds.'
-              : err.message || 'Something went wrong. Please try again.';
-    toast('⚠ ' + msg, 'error', 5000);
-  } finally {
-    setLoading(false);
-  }
+    if (err.status === 429 && err.body?.error === 'RATE_LIMIT_ALL') {
+      limitBanner.classList.add('visible');
+      limitBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      const msg = err.status===401 ? 'API key error — check Vercel environment variables.'
+                : err.status===429 ? 'Rate limit reached. Please wait a moment.'
+                : err.status===503||err.status===500 ? 'Server busy. Try again in a few seconds.'
+                : err.message || 'Something went wrong. Please try again.';
+      toast('⚠ ' + msg, 'error', 5000);
+    }
+  } finally { setLoading(false); }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════════
+   SAMPLE TEXTS per style
+══════════════════════════════════════════════════════════════════ */
+const SAMPLES = {
+  thesis:   `The proliferation of artificial intelligence technologies has engendered significant transformations across numerous sectors of contemporary society. It is important to note that these developments have far-reaching implications for the workforce. Furthermore, researchers have demonstrated that AI adoption rates are increasing at an unprecedented pace. The data clearly indicates that organizations which fail to adapt will face considerable challenges. In conclusion, it is evident that artificial intelligence represents one of the most consequential technological shifts in modern history.`,
+  research: `This study examines the impact of social media usage on adolescent mental health outcomes. It is worth noting that previous research has established correlations between excessive social media use and increased anxiety levels. The findings demonstrate that participants who utilized social media for more than three hours daily exhibited significantly higher depression scores. Furthermore, it is important to note that these effects were particularly pronounced among female adolescents. The results suggest that interventions targeting social media consumption patterns may be beneficial for improving mental health outcomes in this population.`,
+  default:  `Artificial intelligence has become an increasingly important topic in today's rapidly evolving world. It is important to note that AI technologies are being utilized across a wide range of industries. Furthermore, the rapid advancement of these technologies has led to significant changes in how people work and interact. Research has shown that AI can demonstrate remarkable capabilities in areas such as natural language processing and data analysis. In conclusion, it is evident that artificial intelligence represents a transformative technology with far-reaching implications for society as a whole.`,
+};
+function getSample() {
+  return SAMPLES[S.style] || SAMPLES.default;
+}
+
+/* ══════════════════════════════════════════════════════════════════
    BUTTON HANDLERS
-═══════════════════════════════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════════════════ */
 humanizeBtn.addEventListener('click', () => process('humanize'));
 paraphraseBtn.addEventListener('click', () => process('paraphrase'));
 regenerateBtn.addEventListener('click', () => {
-  if (!state.lastInput) { toast('Nothing to regenerate yet.', ''); return; }
-  inputEl.value = state.lastInput;
-  process(state.lastMode);
+  if (!S.lastInput) { toast('Nothing to regenerate yet.'); return; }
+  inputEl.value = S.lastInput; process(S.lastMode);
 });
 diffBtn.addEventListener('click', toggleDiff);
 clearAllBtn.addEventListener('click', () => {
-  inputEl.value = ''; outputEl.value = '';
-  Object.assign(state, { lastInput:'', lastOriginal:'', lastHumanized:'', showingDiff: false });
-  diffOverlay.classList.remove('visible');
-  outputEl.style.display = '';
-  diffBtn.classList.remove('active-state');
-  diffBtn.textContent = '🔍 Changes';
-  updateInputUI(); updateOutputUI();
-  ['statOrig','statOut','statHuman','statRead','statChange','statTime','statHumanSub','statReadSub']
-    .forEach(id => { const el = get(id); if (el) el.textContent = id.startsWith('stat') && !id.endsWith('Sub') ? '—' : ''; });
-  toast('Cleared!', '');
+  inputEl.value=''; outputEl.value='';
+  S.lastInput=''; S.lastOriginal=''; S.lastOutput='';
+  closeDiff(); updateInputUI(); updateOutputUI();
+  ['stOrig','stOut','stHuman','stRead','stChange','stTime','stHumanSub','stReadSub']
+    .forEach(id=>{ const e=$( id); if(e) e.textContent=id.endsWith('Sub')?'':'—'; });
+  toast('Cleared!');
 });
 pasteBtn.addEventListener('click', async () => {
   try {
     const txt = await navigator.clipboard.readText();
     inputEl.value = txt; updateInputUI();
-    toast('Pasted from clipboard!', 'success');
-  } catch { toast('Could not access clipboard — please paste manually.', ''); }
+    toast('Pasted!', 'success');
+  } catch { toast('Tap and hold the text area to paste manually.'); }
 });
-clearInputBtn.addEventListener('click', () => { inputEl.value = ''; updateInputUI(); inputEl.focus(); });
-sampleBtn.addEventListener('click', () => {
-  inputEl.value = SAMPLE_TEXT; updateInputUI();
-  toast('Sample text loaded — try humanizing it!', 'info');
-});
+clearInputBtn.addEventListener('click', () => { inputEl.value=''; updateInputUI(); inputEl.focus(); });
+sampleBtn.addEventListener('click', () => { inputEl.value = getSample(); updateInputUI(); toast('Sample loaded — try humanizing it!', 'info'); });
 copyBtn.addEventListener('click', async () => {
   const txt = outputEl.value;
-  if (!txt) { toast('Nothing to copy!', ''); return; }
+  if (!txt) { toast('Nothing to copy!'); return; }
   try { await navigator.clipboard.writeText(txt); } catch { outputEl.select(); document.execCommand('copy'); }
   const orig = copyBtn.textContent;
-  copyBtn.textContent = '✓ Copied!'; copyBtn.classList.add('success');
-  toast('Copied to clipboard!', 'success');
-  setTimeout(() => { copyBtn.textContent = '📄 Copy'; copyBtn.classList.remove('success'); }, 2000);
+  copyBtn.textContent='✓ Copied!'; copyBtn.classList.add('success');
+  toast('Copied!', 'success');
+  setTimeout(() => { copyBtn.textContent=orig; copyBtn.classList.remove('success'); }, 2000);
 });
 downloadBtn.addEventListener('click', () => {
   const txt = outputEl.value;
-  if (!txt) { toast('Nothing to download!', ''); return; }
-  const blob = new Blob([txt], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `humanized-${Date.now()}.txt`;
-  a.click(); URL.revokeObjectURL(a.href);
+  if (!txt) { toast('Nothing to download!'); return; }
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
+  a.download=`humanized-${Date.now()}.txt`; a.click(); URL.revokeObjectURL(a.href);
   toast('Downloaded!', 'success');
 });
+$('limitClose').addEventListener('click', () => limitBanner.classList.remove('visible'));
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   STYLE & STRENGTH PILLS
-═══════════════════════════════════════════════════════════════════════════ */
+/* Style pills */
 document.querySelectorAll('[data-style]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-style]').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    state.style = btn.dataset.style;
+    S.style = btn.dataset.style;
+    updateStyleGuide(); applyStyleLocks(); saveCfg();
   });
 });
+/* Strength pills */
 document.querySelectorAll('[data-strength]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-strength]').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('[data-strength]').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    state.strength = btn.dataset.strength;
+    S.strength = btn.dataset.strength; saveCfg();
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   SETTINGS TOGGLES
-═══════════════════════════════════════════════════════════════════════════ */
+/* Settings toggles */
 settingsToggle.addEventListener('click', () => {
   const open = settingsBody.classList.toggle('open');
   settingsToggle.classList.toggle('open', open);
   settingsToggle.setAttribute('aria-expanded', open);
 });
-
 document.querySelectorAll('.toggle[data-setting]').forEach(tog => {
+  const init = S.cfg[tog.dataset.setting];
+  tog.classList.toggle('on', !!init);
+  tog.setAttribute('aria-checked', !!init);
   tog.addEventListener('click', () => {
     const key = tog.dataset.setting;
-    state.settings[key] = !state.settings[key];
-    tog.classList.toggle('on', state.settings[key]);
-    tog.setAttribute('aria-checked', state.settings[key]);
+    S.cfg[key] = !S.cfg[key];
+    tog.classList.toggle('on', S.cfg[key]);
+    tog.setAttribute('aria-checked', S.cfg[key]);
+    saveCfg();
   });
-  tog.addEventListener('keydown', e => {
-    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); tog.click(); }
-  });
+  tog.addEventListener('keydown', e => { if (e.key===' '||e.key==='Enter'){e.preventDefault();tog.click();} });
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   INPUT EVENTS
-═══════════════════════════════════════════════════════════════════════════ */
+/* History panel */
+historyToggle.addEventListener('click', () => {
+  const open = historyBody.classList.toggle('open');
+  historyToggle.classList.toggle('open', open);
+  historyToggle.setAttribute('aria-expanded', open);
+});
+
+/* Input events */
 inputEl.addEventListener('input', updateInputUI);
 inputEl.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); process('humanize'); }
+  if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); process('humanize'); }
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   MODALS
-═══════════════════════════════════════════════════════════════════════════ */
-function openModal(id) {
-  const m = get(id);
-  if (m) { m.classList.add('open'); document.body.style.overflow = 'hidden'; }
-}
-function closeModal(id) {
-  const m = get(id);
-  if (m) { m.classList.remove('open'); document.body.style.overflow = ''; }
-}
-document.querySelectorAll('[data-modal]').forEach(a => {
-  a.addEventListener('click', e => { e.preventDefault(); openModal(a.dataset.modal); });
-});
-document.querySelectorAll('.modal-close').forEach(btn => {
-  btn.addEventListener('click', () => closeModal(btn.dataset.close));
-});
-document.querySelectorAll('.modal-overlay').forEach(m => {
-  m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape')
-    document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
-});
+/* Modals */
+function openModal(id){const m=$(id);if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
+function closeModal(id){const m=$(id);if(m){m.classList.remove('open');document.body.style.overflow='';}}
+document.querySelectorAll('[data-modal]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openModal(a.dataset.modal);}));
+document.querySelectorAll('.modal-close').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id);}));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>closeModal(m.id)); });
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   FAQ ACCORDION
-═══════════════════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.faq-item').forEach(item => {
-  item.querySelector('.faq-q').addEventListener('click', () => {
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
+/* FAQ */
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const was=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!was) item.classList.add('open');
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   SOCIAL BUTTONS
-═══════════════════════════════════════════════════════════════════════════ */
-document.querySelectorAll('.social-btn').forEach(btn => {
-  btn.addEventListener('click', () => toast(`${btn.title} — coming soon!`, 'info'));
-});
+/* Social */
+document.querySelectorAll('.social-btn').forEach(b=>b.addEventListener('click',()=>toast(b.title+' — coming soon!','info')));
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════════════════════════════════════ */
+/* Footer modal links */
+document.querySelectorAll('.footer-links a[data-modal]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openModal(a.dataset.modal);}));
+
+/* INIT */
+// Restore saved style/strength pills
+document.querySelectorAll('[data-style]').forEach(b=>b.classList.toggle('active',b.dataset.style===S.style));
+document.querySelectorAll('[data-strength]').forEach(b=>b.classList.toggle('active',b.dataset.strength===S.strength));
+updateStyleGuide();
+applyStyleLocks();
 updateInputUI();
+renderHistory();
 </script>
 </body>
 </html>
