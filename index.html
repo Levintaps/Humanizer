@@ -1264,35 +1264,38 @@ textarea{font-family:var(--font-sans);}
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+<script>
 'use strict';
+
 /* ══════════════════════════════════════════════════════════════════
    THEME
 ══════════════════════════════════════════════════════════════════ */
-const html = document.documentElement;
-const themeBtn = document.getElementById('themeBtn');
-const themeMeta = document.getElementById('themeColorMeta');
+var html      = document.documentElement;
+var themeBtn  = document.getElementById('themeBtn');
+var themeMeta = document.getElementById('themeColorMeta');
 
 function applyTheme(t) {
   html.setAttribute('data-theme', t);
-  themeMeta.content = t === 'dark' ? '#0f0f13' : '#ffffff';
-  try { localStorage.setItem('yh-theme', t); } catch {}
+  if (themeMeta) themeMeta.content = t === 'dark' ? '#0f0f13' : '#ffffff';
+  try { localStorage.setItem('yh-theme', t); } catch(e) {}
 }
 function toggleTheme() {
   applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 }
-themeBtn.addEventListener('click', toggleTheme);
-// Load saved or system preference
-(function(){
-  let saved; try { saved = localStorage.getItem('yh-theme'); } catch {}
-  if (saved) { applyTheme(saved); return; }
+if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem('yh-theme'); } catch(e) {}
+  if (saved === 'dark' || saved === 'light') { applyTheme(saved); return; }
   if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) applyTheme('dark');
 })();
 
 /* ══════════════════════════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════════════════════════ */
-const S = {
+var S = {
   style:    'casual',
   strength: 'light',
   cfg: {
@@ -1306,249 +1309,298 @@ const S = {
   lastOutput:   '',
   showDiff:     false,
   busy:         false,
-  history:      [],   // max 5
+  history:      [],
 };
 
-// Persist settings
-(function(){
+(function () {
   try {
-    const c = JSON.parse(localStorage.getItem('yh-cfg') || 'null');
-    if (c) Object.assign(S.cfg, c);
-    const st = localStorage.getItem('yh-style');
-    const str = localStorage.getItem('yh-strength');
-    if (st)  S.style    = st;
-    if (str) S.strength = str;
-  } catch {}
+    var c = JSON.parse(localStorage.getItem('yh-cfg') || 'null');
+    if (c && typeof c === 'object') {
+      Object.keys(S.cfg).forEach(function(k){ if (k in c) S.cfg[k] = !!c[k]; });
+    }
+    var validStyles   = ['casual','professional','thesis','research','academic','blog','email','creative','simple'];
+    var validStrength = ['light','moderate','heavy'];
+    var st  = localStorage.getItem('yh-style');
+    var str = localStorage.getItem('yh-strength');
+    if (st  && validStyles.includes(st))    S.style    = st;
+    if (str && validStrength.includes(str)) S.strength = str;
+  } catch(e) {}
 })();
 
 function saveCfg() {
   try {
-    localStorage.setItem('yh-cfg', JSON.stringify(S.cfg));
-    localStorage.setItem('yh-style', S.style);
+    localStorage.setItem('yh-cfg',      JSON.stringify(S.cfg));
+    localStorage.setItem('yh-style',    S.style);
     localStorage.setItem('yh-strength', S.strength);
-  } catch {}
+  } catch(e) {}
 }
 
 /* ══════════════════════════════════════════════════════════════════
    ELEMENT REFS
 ══════════════════════════════════════════════════════════════════ */
-const $  = id => document.getElementById(id);
-const inputEl      = $('inputText');
-const outputEl     = $('outputText');
-const diffOverlay  = $('diffOverlay');
-const humanizeBtn  = $('humanizeBtn');
-const paraphraseBtn= $('paraphraseBtn');
-const regenerateBtn= $('regenerateBtn');
-const clearAllBtn  = $('clearAllBtn');
-const pasteBtn     = $('pasteBtn');
-const clearInputBtn= $('clearInputBtn');
-const sampleBtn    = $('sampleBtn');
-const copyBtn      = $('copyBtn');
-const downloadBtn  = $('downloadBtn');
-const diffBtn      = $('diffBtn');
-const inputWC      = $('inputWC');
-const outputWC     = $('outputWC');
-const aiChip       = $('aiChip');
-const humanChip    = $('humanChip');
-const ringFill     = $('ringFill');
-const charText     = $('charText');
-const progressFill = $('progressFill');
-const statusRow    = $('statusRow');
-const statusText   = $('statusText');
-const patternWarn  = $('patternWarn');
-const patternDetail= $('patternDetail');
-const limitBanner  = $('limitBanner');
-const toastStack   = $('toastStack');
-const settingsToggle=$('settingsToggle');
-const settingsBody = $('settingsBody');
-const historyToggle= $('historyToggle');
-const historyBody  = $('historyBody');
-const historyList  = $('historyList');
-const historyEmpty = $('historyEmpty');
-const historyCount = $('historyCount');
+var $ = function(id){ return document.getElementById(id); };
+
+var inputEl       = $('inputText');
+var outputEl      = $('outputText');
+var diffOverlay   = $('diffOverlay');
+var humanizeBtn   = $('humanizeBtn');
+var paraphraseBtn = $('paraphraseBtn');
+var regenerateBtn = $('regenerateBtn');
+var clearAllBtn   = $('clearAllBtn');
+var pasteBtn      = $('pasteBtn');
+var clearInputBtn = $('clearInputBtn');
+var sampleBtn     = $('sampleBtn');
+var copyBtn       = $('copyBtn');
+var downloadBtn   = $('downloadBtn');
+var diffBtn       = $('diffBtn');
+var inputWC       = $('inputWC');
+var outputWC      = $('outputWC');
+var aiChip        = $('aiChip');
+var humanChip     = $('humanChip');
+var ringFill      = $('ringFill');
+var charText      = $('charText');
+var progressFill  = $('progressFill');
+var statusRow     = $('statusRow');
+var statusText    = $('statusText');
+var patternWarn   = $('patternWarn');
+var patternDetail = $('patternDetail');
+var limitBanner   = $('limitBanner');
+var limitClose    = $('limitClose');
+var toastStack    = $('toastStack');
+var settingsToggle= $('settingsToggle');
+var settingsBody  = $('settingsBody');
+var historyToggle = $('historyToggle');
+var historyBody   = $('historyBody');
+var historyList   = $('historyList');
+var historyEmpty  = $('historyEmpty');
+var historyCount  = $('historyCount');
 
 /* ══════════════════════════════════════════════════════════════════
    TOAST
 ══════════════════════════════════════════════════════════════════ */
-function toast(msg, type = '', ms = 3400) {
-  const el = document.createElement('div');
-  el.className = `toast${type ? ' toast-' + type : ''}`;
+function toast(msg, type, ms) {
+  if (!toastStack) return;
+  type = type || '';
+  ms   = ms   || 3400;
+  var el = document.createElement('div');
+  el.className = 'toast' + (type ? ' toast-' + type : '');
   el.textContent = msg;
   toastStack.appendChild(el);
-  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
-  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, ms);
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){ el.classList.add('show'); });
+  });
+  setTimeout(function(){
+    el.classList.remove('show');
+    setTimeout(function(){ if (el.parentNode) el.parentNode.removeChild(el); }, 400);
+  }, ms);
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   STYLE GUIDE DATA
+   STYLE GUIDE
 ══════════════════════════════════════════════════════════════════ */
-const STYLE_GUIDES = {
-  casual:       { name:'Casual Style',        desc:'Friendly, relaxed, everyday tone. Contractions welcome. First person is fine.',                             tags:['1st Person OK','Contractions OK','Active Voice'] },
-  professional: { name:'Professional Style',   desc:'Clear, polished business tone. Neutral perspective. No contractions required.',                            tags:['Formal','Neutral Perspective','No Jargon'] },
-  thesis:       { name:'Thesis / Dissertation',desc:'STRICT 3rd person only. No contractions. Formal academic register. Passive voice acceptable.',             tags:['3rd Person ONLY','No Contractions','Passive OK','Hedging Language'] },
-  research:     { name:'Research Paper',       desc:'Objective, impersonal academic writing. 3rd person only. Preserves citations, stats, and technical terms.',tags:['3rd Person ONLY','Preserves Citations','Formal','Hedging'] },
-  academic:     { name:'Academic Essay',       desc:'Scholarly tone for college essays. Generally 3rd person. No contractions. Intellectual rigour.',            tags:['3rd Person Preferred','No Contractions','Scholarly'] },
-  blog:         { name:'Blog Post Style',      desc:'Engaging, conversational, SEO-friendly. First person is natural. Varied rhythm.',                          tags:['1st Person OK','Engaging','Varied Rhythm'] },
-  email:        { name:'Email Style',          desc:'Concise, clear, and direct. Gets to the point quickly. Short paragraphs.',                                 tags:['Concise','Direct','Professional'] },
-  creative:     { name:'Creative Writing',     desc:'Vivid, expressive, literary. Varied sentence lengths for effect. Metaphors welcome.',                      tags:['Expressive','Vivid','Literary Devices'] },
-  simple:       { name:'Simple / Plain',       desc:'Very plain language. Short sentences. Common everyday words. Maximum accessibility.',                      tags:['Short Sentences','Plain Words','Accessible'] },
+var STYLE_GUIDES = {
+  casual:       { name:'Casual Style',         desc:'Friendly, relaxed, everyday tone. Contractions welcome. First person is fine.',                            tags:['1st Person OK','Contractions OK','Active Voice'] },
+  professional: { name:'Professional Style',    desc:'Clear, polished business tone. Neutral perspective. No contractions required.',                           tags:['Formal','Neutral Perspective','No Jargon'] },
+  thesis:       { name:'Thesis / Dissertation', desc:'STRICT 3rd person only. No contractions. Formal academic register. Passive voice acceptable.',            tags:['3rd Person ONLY','No Contractions','Passive OK','Hedging'] },
+  research:     { name:'Research Paper',        desc:'Objective, impersonal. 3rd person only. Preserves all citations, statistics, and technical terms.',        tags:['3rd Person ONLY','Preserves Citations','Formal','Hedging'] },
+  academic:     { name:'Academic Essay',        desc:'Scholarly tone for college essays. Generally 3rd person. No contractions. Intellectual rigour.',           tags:['3rd Person Preferred','No Contractions','Scholarly'] },
+  blog:         { name:'Blog Post Style',       desc:'Engaging, conversational, SEO-friendly. First person is natural. Varied rhythm.',                         tags:['1st Person OK','Engaging','Varied Rhythm'] },
+  email:        { name:'Email Style',           desc:'Concise, clear, and direct. Gets to the point quickly. Short paragraphs.',                                tags:['Concise','Direct','Professional'] },
+  creative:     { name:'Creative Writing',      desc:'Vivid, expressive, literary. Varied sentence lengths for effect. Metaphors welcome.',                     tags:['Expressive','Vivid','Literary Devices'] },
+  simple:       { name:'Simple / Plain',        desc:'Very plain language. Short sentences. Common everyday words. Maximum accessibility.',                     tags:['Short Sentences','Plain Words','Accessible'] },
 };
 
 function updateStyleGuide() {
-  const g = STYLE_GUIDES[S.style] || STYLE_GUIDES.casual;
-  $('sgName').textContent = g.name;
-  $('sgDesc').textContent = g.desc;
-  const t = $('sgTags');
-  t.innerHTML = g.tags.map(x => `<span class="sg-tag">${x}</span>`).join('');
+  var g = STYLE_GUIDES[S.style] || STYLE_GUIDES.casual;
+  var ne = $('sgName'), de = $('sgDesc'), te = $('sgTags');
+  if (ne) ne.textContent = g.name;
+  if (de) de.textContent = g.desc;
+  if (te) te.innerHTML   = g.tags.map(function(x){ return '<span class="sg-tag">'+x+'</span>'; }).join('');
 }
 
-/* Lock/unlock settings based on style */
 function applyStyleLocks() {
-  const academic = ['thesis','research','academic'].includes(S.style);
-  const setLock = (id, locked) => {
-    const row = document.getElementById('sr-' + id);
-    if (!row) return;
-    row.classList.toggle('locked', locked);
-  };
-  // For academic styles: contractions and conversational are auto-off
-  setLock('contractions',    academic);
-  setLock('conversational',  S.style === 'thesis' || S.style === 'research');
-  setLock('rhetoricalQ',     academic || S.style === 'email');
-  setLock('activeVoice',     S.style === 'thesis' || S.style === 'research');
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   AI PATTERN DETECTOR
-══════════════════════════════════════════════════════════════════ */
-const AI_PATTERNS = [
-  /\b(furthermore|moreover|additionally|consequently|nevertheless|nonetheless)\b/gi,
-  /\bit is important to note\b/gi,
-  /\bit is worth (noting|mentioning)\b/gi,
-  /\bin (today's|today's) (modern |rapidly evolving |digital )?world\b/gi,
-  /\bin conclusion\b/gi,
-  /\bfirst and foremost\b/gi,
-  /\bwithout a doubt\b/gi,
-  /\bit is (evident|clear|crucial|essential) that\b/gi,
-  /\bone must (consider|understand|note)\b/gi,
-  /\bthe world of\b/gi,
-];
-function detectAIPatterns(text) {
-  if (text.length < 50) return [];
-  return AI_PATTERNS.filter(r => r.test(text)).map(r => r.source.replace(/\\b/g,'').replace(/\\/g,''));
-}
-function updatePatternWarning(text) {
-  const found = detectAIPatterns(text);
-  patternWarn.classList.toggle('visible', found.length > 0);
-  if (found.length > 0) {
-    patternDetail.textContent = `${found.length} AI pattern${found.length>1?'s':''} found. Humanizing will remove these.`;
+  var isAcad = ['thesis','research','academic'].includes(S.style);
+  function setLock(id, locked) {
+    var row = $('sr-'+id);
+    if (row) row.classList.toggle('locked', locked);
   }
+  setLock('contractions',  isAcad);
+  setLock('conversational', S.style==='thesis'||S.style==='research');
+  setLock('rhetoricalQ',    isAcad||S.style==='email');
+  setLock('activeVoice',    S.style==='thesis'||S.style==='research');
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   INPUT UI
+   AI PATTERN DETECTOR — fresh regex each call (no lastIndex bug)
 ══════════════════════════════════════════════════════════════════ */
-const MAX_CH = 8000;
-const CIRC = 2 * Math.PI * 8; // r=8 on 20x20 viewBox
+var AI_PAT_STRINGS = [
+  'furthermore|moreover|additionally|consequently|nevertheless|nonetheless',
+  'it is important to note',
+  'it is worth noting|it is worth mentioning',
+  'in today.s (modern |rapidly evolving |digital )?world',
+  'in conclusion',
+  'first and foremost',
+  'without a doubt',
+  'it is (evident|clear|crucial|essential) that',
+  'one must (consider|understand|note)',
+];
+
+function detectAIPatterns(text) {
+  if (text.length < 50) return 0;
+  var count = 0;
+  for (var i = 0; i < AI_PAT_STRINGS.length; i++) {
+    if (new RegExp('\\b(' + AI_PAT_STRINGS[i] + ')\\b', 'i').test(text)) count++;
+  }
+  return count;
+}
+
+function updatePatternWarning(text) {
+  if (!patternWarn) return;
+  var found = detectAIPatterns(text);
+  patternWarn.classList.toggle('visible', found > 0);
+  if (found > 0 && patternDetail)
+    patternDetail.textContent = found + ' AI pattern' + (found>1?'s':'') + ' detected. Humanizing will remove these.';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   INPUT / OUTPUT UI
+══════════════════════════════════════════════════════════════════ */
+var MAX_CH = 8000;
+var CIRC   = 2 * Math.PI * 8;  // r=8 matches SVG viewBox="0 0 20 20"
+
 function updateInputUI() {
-  const txt = inputEl.value;
-  const wc  = txt.trim().split(/\s+/).filter(Boolean).length;
-  inputWC.textContent = wc + ' words';
-  const pct = Math.min(1, txt.length / MAX_CH);
-  ringFill.style.strokeDashoffset = CIRC * (1 - pct);
-  const cls = pct > .9 ? 'full' : pct > .72 ? 'warn' : '';
-  ringFill.setAttribute('class', 'char-ring-fill' + (cls ? ' ' + cls : ''));
-  charText.className = 'char-text' + (cls ? ' ' + cls : '');
-  charText.textContent = txt.length >= 1000
-    ? Math.round(txt.length/1000*10)/10 + 'k/' + MAX_CH/1000 + 'k'
-    : txt.length + '/' + MAX_CH;
-  aiChip.style.display = txt.length > 60 ? 'inline-block' : 'none';
+  if (!inputEl) return;
+  var txt = inputEl.value;
+  var wc  = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  if (inputWC) inputWC.textContent = wc + ' words';
+
+  var pct = Math.min(1, txt.length / MAX_CH);
+
+  // SVG element — must use setAttribute, not .className = ...
+  if (ringFill) {
+    ringFill.style.strokeDashoffset = CIRC * (1 - pct);
+    ringFill.setAttribute('class', 'char-ring-fill' + (pct>0.9?' full':pct>0.72?' warn':''));
+  }
+  if (charText) {
+    charText.className = 'char-text' + (pct>0.9?' full':pct>0.72?' warn':'');
+    charText.textContent = txt.length >= 1000
+      ? (Math.round(txt.length/100)/10)+'k/'+(MAX_CH/1000)+'k'
+      : txt.length+'/'+MAX_CH;
+  }
+  if (aiChip) aiChip.style.display = txt.length > 60 ? 'inline-block' : 'none';
   updatePatternWarning(txt);
 }
+
 function updateOutputUI() {
-  const txt = outputEl.value;
-  const wc = txt.trim().split(/\s+/).filter(Boolean).length;
-  outputWC.textContent = wc + ' words';
-  humanChip.style.display = txt.length > 0 ? 'inline-block' : 'none';
+  if (!outputEl) return;
+  var txt = outputEl.value;
+  var wc  = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+  if (outputWC)  outputWC.textContent   = wc + ' words';
+  if (humanChip) humanChip.style.display = txt.length > 0 ? 'inline-block' : 'none';
 }
 
 /* ══════════════════════════════════════════════════════════════════
    LOADING
 ══════════════════════════════════════════════════════════════════ */
-function setLoading(on, msg = 'Processing with AI…') {
-  S.busy = on;
-  statusRow.classList.toggle('visible', on);
-  statusText.textContent = msg;
-  progressFill.classList.toggle('animating', on);
-  if (!on) progressFill.style.width = '0';
-  [humanizeBtn, paraphraseBtn, regenerateBtn].forEach(b => b.disabled = on);
+function setLoading(on, msg) {
+  msg = msg || 'Processing…';
+  S.busy = !!on;
+  if (statusRow)    statusRow.classList.toggle('visible', on);
+  if (statusText)   statusText.textContent = msg;
+  if (progressFill) {
+    progressFill.classList.toggle('animating', on);
+    if (!on) progressFill.style.width = '0';
+  }
+  [humanizeBtn, paraphraseBtn, regenerateBtn].forEach(function(b){ if (b) b.disabled = !!on; });
 }
 
 /* ══════════════════════════════════════════════════════════════════
    STATS
 ══════════════════════════════════════════════════════════════════ */
 function popStat(el, val) {
+  if (!el) return;
   el.textContent = val;
   el.classList.remove('pop');
-  requestAnimationFrame(() => el.classList.add('pop'));
+  requestAnimationFrame(function(){ el.classList.add('pop'); });
 }
+
+function countSyl(word) {
+  word = word.toLowerCase().replace(/[^a-z]/g,'');
+  if (!word) return 1;
+  var m = word.match(/[aeiou]{1,2}/g);
+  return Math.max(1, m ? m.length : 1);
+}
+
 function updateStats(orig, out, ms) {
-  const ow = orig.trim().split(/\s+/).filter(Boolean).length;
-  const hw = out.trim().split(/\s+/).filter(Boolean).length;
-  const oa = orig.toLowerCase().split(/\s+/);
-  const ha = out.toLowerCase().split(/\s+/);
-  let ch = 0; const mx = Math.max(oa.length, ha.length);
-  for (let i=0;i<mx;i++) if (oa[i]!==ha[i]) ch++;
-  const pctCh = Math.round(Math.min(98,(ch/mx)*100));
-  const hScore= Math.round(Math.min(99,Math.max(76,pctCh*.95+Math.random()*4)));
-  const sents = out.split(/[.!?]+/).filter(s=>s.trim().length>3);
-  const avgWPS= sents.length ? hw/sents.length : 14;
-  const syls  = out.split(/\s+/).filter(Boolean).reduce((s,w)=>s+Math.max(1,(w.match(/[aeiou]{1,2}/gi)||[]).length),0)/(hw||1);
-  const fk    = 206.835 - 1.015*avgWPS - 84.6*syls;
-  const rdLbl = fk>=80?'Very Easy':fk>=70?'Easy':fk>=60?'Standard':fk>=50?'Moderate':'Advanced';
-  const rdGrd = fk>=80?'A+':fk>=65?'A':fk>=50?'B+':'B';
-  popStat($('stOrig'),  ow);
-  popStat($('stOut'),   hw);
-  popStat($('stHuman'), hScore+'%');
-  popStat($('stRead'),  rdGrd);
-  $('stHumanSub').textContent = hScore>=90?'Excellent':hScore>=80?'Good':'Fair';
-  $('stReadSub').textContent  = rdLbl;
+  var ow = orig.trim() ? orig.trim().split(/\s+/).length : 0;
+  var hw = out.trim()  ? out.trim().split(/\s+/).length  : 0;
+  var oa = orig.toLowerCase().split(/\s+/);
+  var ha = out.toLowerCase().split(/\s+/);
+  var ch = 0, mx = Math.max(oa.length, ha.length);
+  for (var i=0;i<mx;i++) if (oa[i]!==ha[i]) ch++;
+  var pctCh  = Math.round(Math.min(98,(ch/(mx||1))*100));
+  var hScore = Math.round(Math.min(99,Math.max(76,pctCh*0.95+Math.random()*4)));
+  var sents  = out.split(/[.!?]+/).filter(function(s){ return s.trim().length>3; });
+  var avgWPS = sents.length ? hw/sents.length : 14;
+  var words  = out.split(/\s+/).filter(Boolean);
+  var syls   = words.reduce(function(s,w){ return s+countSyl(w); },0)/(hw||1);
+  var fk     = 206.835 - 1.015*avgWPS - 84.6*syls;
+  var rdLbl  = fk>=80?'Very Easy':fk>=70?'Easy':fk>=60?'Standard':fk>=50?'Moderate':'Advanced';
+  var rdGrd  = fk>=80?'A+':fk>=65?'A':fk>=50?'B+':'B';
+  popStat($('stOrig'),   ow);
+  popStat($('stOut'),    hw);
+  popStat($('stHuman'),  hScore+'%');
+  popStat($('stRead'),   rdGrd);
   popStat($('stChange'), pctCh+'%');
   popStat($('stTime'),   (ms/1000).toFixed(1)+'s');
+  var hs=$('stHumanSub'); if(hs) hs.textContent=hScore>=90?'Excellent':hScore>=80?'Good':'Fair';
+  var rs=$('stReadSub');  if(rs) rs.textContent=rdLbl;
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   DIFF
+   DIFF  — guarded dp access, size limit for long texts
 ══════════════════════════════════════════════════════════════════ */
 function buildDiff(a, b) {
-  const aw=a.split(/\s+/), bw=b.split(/\s+/);
-  const m=aw.length, n=bw.length;
-  const dp=Array.from({length:m+1},()=>new Uint16Array(n+1));
-  for(let i=m-1;i>=0;i--) for(let j=n-1;j>=0;j--)
-    dp[i][j]=aw[i].toLowerCase()===bw[j].toLowerCase()?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
-  let html='',i=0,j=0;
+  var aw = a.split(/\s+/).filter(Boolean);
+  var bw = b.split(/\s+/).filter(Boolean);
+  var m  = aw.length, n = bw.length;
+  if (m > 600 || n > 600) {
+    return '<em style="color:var(--ink-4);font-size:13px;">Text too long for word diff — showing full output:</em><br><br>' +
+      bw.map(function(w){ return '<span class="diff-ins">'+w+'</span>'; }).join(' ');
+  }
+  var dp = [], i, j;
+  for (i=0;i<=m;i++){ dp[i]=new Array(n+1); for(j=0;j<=n;j++) dp[i][j]=0; }
+  for (i=m-1;i>=0;i--) for(j=n-1;j>=0;j--)
+    dp[i][j] = aw[i].toLowerCase()===bw[j].toLowerCase()
+      ? dp[i+1][j+1]+1
+      : Math.max(dp[i+1][j], dp[i][j+1]);
+  var html=''; i=0; j=0;
   while(i<m||j<n){
-    if(i<m&&j<n&&aw[i].toLowerCase()===bw[j].toLowerCase()){html+=aw[i]+' ';i++;j++;}
-    else if(j<n&&(i>=m||(dp[i+1]&&dp[i+1][j]<=dp[i][j+1]))){html+=`<span class="diff-ins">${bw[j]}</span> `;j++;}
-    else{html+=`<span class="diff-del">${aw[i]}</span> `;i++;}
+    if(i<m&&j<n&&aw[i].toLowerCase()===bw[j].toLowerCase()){
+      html+=aw[i]+' '; i++; j++;
+    } else if(j<n&&(i>=m||(dp[i+1]?dp[i+1][j]:0)<=(dp[i]?dp[i][j+1]:0))){
+      html+='<span class="diff-ins">'+bw[j]+'</span> '; j++;
+    } else {
+      html+='<span class="diff-del">'+aw[i]+'</span> '; i++;
+    }
   }
   return html.trim();
 }
+
 function closeDiff() {
-  S.showDiff=false;
-  diffOverlay.classList.remove('visible');
-  outputEl.style.display='';
-  diffBtn.classList.remove('active-state');
-  diffBtn.textContent='🔍 Changes';
+  S.showDiff = false;
+  if (diffOverlay) diffOverlay.classList.remove('visible');
+  if (outputEl)    outputEl.style.display = '';
+  if (diffBtn)     { diffBtn.classList.remove('active-state'); diffBtn.textContent='🔍 Changes'; }
 }
+
 function toggleDiff() {
   if (!S.lastOutput) { toast('Humanize some text first.'); return; }
   S.showDiff = !S.showDiff;
   if (S.showDiff) {
-    diffOverlay.innerHTML = buildDiff(S.lastOriginal, S.lastOutput);
-    diffOverlay.classList.add('visible');
-    outputEl.style.display='none';
-    diffBtn.classList.add('active-state');
-    diffBtn.textContent='🔍 Hide';
+    if (diffOverlay){ diffOverlay.innerHTML=buildDiff(S.lastOriginal,S.lastOutput); diffOverlay.classList.add('visible'); }
+    if (outputEl)    outputEl.style.display='none';
+    if (diffBtn)     { diffBtn.classList.add('active-state'); diffBtn.textContent='🔍 Hide'; }
   } else { closeDiff(); }
 }
 
@@ -1556,49 +1608,47 @@ function toggleDiff() {
    HISTORY
 ══════════════════════════════════════════════════════════════════ */
 function addHistory(orig, out, style, mode) {
-  S.history.unshift({ orig, out, style, mode, ts: Date.now() });
+  S.history.unshift({ orig:orig, out:out, style:style, mode:mode, ts:Date.now() });
   if (S.history.length > 5) S.history.pop();
   renderHistory();
 }
+
 function renderHistory() {
-  const count = S.history.length;
-  historyCount.textContent = count ? `(${count})` : '';
+  var count = S.history.length;
+  if (historyCount) historyCount.textContent = count ? '('+count+')' : '';
   if (!count) {
-    historyEmpty.style.display = 'block';
-    historyList.innerHTML = '';
+    if (historyEmpty) historyEmpty.style.display = 'block';
+    if (historyList)  historyList.innerHTML = '';
     return;
   }
-  historyEmpty.style.display = 'none';
-  historyList.innerHTML = S.history.map((h, i) => {
-    const preview = h.out.substring(0, 100).replace(/</g,'&lt;') + (h.out.length > 100 ? '…' : '');
-    const origPrev= h.orig.substring(0, 60).replace(/</g,'&lt;') + (h.orig.length > 60 ? '…' : '');
-    const t = new Date(h.ts);
-    const timeStr = t.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-    const sg = STYLE_GUIDES[h.style] || STYLE_GUIDES.casual;
-    return `<div class="hist-item" data-idx="${i}">
-      <div class="hist-preview"><strong>${origPrev}</strong>${preview}</div>
-      <div class="hist-meta">
-        <div class="hist-time">${timeStr}</div>
-        <div class="hist-style-badge">${sg.name.split(' ')[0]}</div>
-        <span class="hist-restore">↩ Restore</span>
-      </div>
-    </div>`;
+  if (historyEmpty) historyEmpty.style.display = 'none';
+  if (!historyList) return;
+  historyList.innerHTML = S.history.map(function(h,i){
+    var prev  = h.out.substring(0,100).replace(/&/g,'&amp;').replace(/</g,'&lt;')+(h.out.length>100?'…':'');
+    var oprev = h.orig.substring(0,60).replace(/&/g,'&amp;').replace(/</g,'&lt;')+(h.orig.length>60?'…':'');
+    var t = new Date(h.ts);
+    var ts = t.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    var sg = STYLE_GUIDES[h.style]||STYLE_GUIDES.casual;
+    return '<div class="hist-item" data-idx="'+i+'">'+
+      '<div class="hist-preview"><strong>'+oprev+'</strong>'+prev+'</div>'+
+      '<div class="hist-meta"><div class="hist-time">'+ts+'</div>'+
+      '<div class="hist-style-badge">'+sg.name.split(' ')[0]+'</div>'+
+      '<span class="hist-restore">↩ Restore</span></div></div>';
   }).join('');
-  historyList.querySelectorAll('.hist-item').forEach(el => {
-    el.addEventListener('click', () => {
-      const h = S.history[parseInt(el.dataset.idx)];
-      inputEl.value  = h.orig;
-      outputEl.value = h.out;
-      S.lastOriginal = h.orig;
-      S.lastOutput   = h.out;
-      S.lastInput    = h.orig;
-      updateInputUI(); updateOutputUI();
-      closeDiff();
-      toast('↩ Previous result restored', 'info');
-      // Switch to the saved style
-      document.querySelectorAll('[data-style]').forEach(p => p.classList.toggle('active', p.dataset.style === h.style));
+  historyList.querySelectorAll('.hist-item').forEach(function(el){
+    el.addEventListener('click', function(){
+      var h = S.history[parseInt(el.getAttribute('data-idx'),10)];
+      if (!h) return;
+      if (inputEl)  inputEl.value  = h.orig;
+      if (outputEl) outputEl.value = h.out;
+      S.lastOriginal = h.orig; S.lastOutput = h.out; S.lastInput = h.orig;
+      updateInputUI(); updateOutputUI(); closeDiff();
       S.style = h.style;
+      document.querySelectorAll('[data-style]').forEach(function(p){
+        p.classList.toggle('active', p.getAttribute('data-style')===h.style);
+      });
       updateStyleGuide(); applyStyleLocks();
+      toast('↩ Previous result restored','info');
     });
   });
 }
@@ -1607,90 +1657,84 @@ function renderHistory() {
    PROMPT BUILDER
 ══════════════════════════════════════════════════════════════════ */
 function buildPrompt(mode) {
-  const styles = {
-    casual:       'Write in a relaxed, friendly, everyday conversational tone. Like a knowledgeable friend talking. Use contractions freely. First person ("I", "we") is fine.',
+  var styles = {
+    casual:       'Write in a relaxed, friendly, everyday conversational tone. Contractions are fine. First person is fine.',
     professional: 'Write in a clear, confident, business-appropriate tone. Polished but not stiff. Avoid jargon. Neutral perspective.',
-    thesis:       'STRICT RULES: (1) THIRD PERSON ONLY — never use "I", "we", "my", "our". Use "the researcher", "this study", "the findings indicate". (2) NO contractions — spell everything out fully. (3) Formal academic vocabulary throughout. (4) Passive voice is acceptable and conventional. (5) Use hedging language: "appears to", "suggests that", "may indicate". (6) Impersonal, objective tone throughout. (7) Preserve all citations exactly.',
-    research:     'STRICT RULES: (1) THIRD PERSON ONLY — never "I" or "we". Use "the study", "the analysis", "researchers". (2) NO contractions. (3) Precise scientific language. (4) Passive voice preferred where academic convention calls for it. (5) Hedging is essential — "suggests", "indicates", "appears to", "may". (6) Preserve all statistics, p-values, citations, and technical terms exactly. (7) Do not simplify or make conversational in any way.',
-    academic:     'Write in a scholarly tone for college/university essays. Use precise vocabulary. Generally third person but first person acceptable if the original uses it. No contractions. Avoid formulaic AI phrases while maintaining intellectual rigour.',
-    blog:         'Write in an engaging, readable blog post style. Conversational but informative. First person is natural. Vary sentence lengths for rhythm. Rhetorical questions are great. Contractions are fine.',
-    email:        'Write in a concise, clear, professional email tone. Get to the point quickly. Short paragraphs. Polite but not verbose. Match the formality level of the original.',
-    creative:     'Write with personality, rhythm, and vivid language. Vary sentence lengths for deliberate effect. Use metaphors, imagery, and expressive vocabulary. First person is natural. Contractions welcome.',
-    simple:       'Write in very plain, clear language. Short sentences. Common everyday words only. A middle-school student should understand it easily. No complex vocabulary.',
+    thesis:       'STRICT RULES: (1) THIRD PERSON ONLY — never "I", "we", "my", "our". Use "the researcher", "this study", "the findings indicate". (2) NO contractions — spell all words out fully. (3) Formal academic vocabulary. (4) Passive voice is acceptable. (5) Hedging language: "appears to", "suggests that", "may indicate". (6) Impersonal, objective tone. (7) Preserve all citations exactly.',
+    research:     'STRICT RULES: (1) THIRD PERSON ONLY — never "I" or "we". Use "the study", "the analysis", "researchers". (2) NO contractions. (3) Precise scientific language. (4) Passive voice where conventional. (5) Hedging: "suggests", "indicates", "appears to", "may". (6) Preserve all statistics, p-values, citations, and technical terms exactly.',
+    academic:     'Scholarly tone for college essays. Generally third person but first person acceptable if the original uses it. No contractions. Avoid formulaic AI phrases while maintaining intellectual rigour.',
+    blog:         'Engaging, readable blog post style. Conversational but informative. First person is natural. Vary sentence lengths for rhythm. Contractions are fine.',
+    email:        'Concise, clear, professional email tone. Get to the point quickly. Short paragraphs. Polite but not verbose. Match the formality level of the original.',
+    creative:     'Vivid, expressive, literary style. Vary sentence lengths for deliberate effect. Metaphors and imagery welcome. First person is natural. Contractions welcome.',
+    simple:       'Very plain, clear language. Short sentences. Common everyday words only. A middle-school student should understand it easily.',
   };
-  const strengths = {
-    light:    'MINIMAL changes. Fix the most obvious AI patterns (formulaic openers, overused connectors like "Furthermore", "Moreover"). Preserve most of the original structure and vocabulary. ~20-30% of words change.',
-    moderate: 'Significantly rework the text. Restructure sentences, replace AI-typical phrases, improve flow. ~40-60% of the text should feel noticeably different while preserving all meaning.',
-    heavy:    'Completely rewrite in a natural human voice matching the chosen style. Change sentence order freely, combine/split sentences, use fresh vocabulary. ~60-80%+ of words should change. Must sound like a skilled human wrote it from scratch.',
+  var strengths = {
+    light:    'MINIMAL changes. Fix the most obvious AI patterns only. Preserve most of the original structure. Around 20-30% of words change.',
+    moderate: 'Significantly rework the text. Restructure sentences, replace AI-typical phrases, improve flow. Around 40-60% of the text should feel noticeably different.',
+    heavy:    'Completely rewrite in a natural human voice. Change sentence order freely, use fresh vocabulary. Around 60-80% of words should change. Must sound like a skilled human wrote it from scratch.',
   };
-  const rules = [];
-  if (S.cfg.conversational && !['thesis','research'].includes(S.style)) rules.push('Use natural phrasing and speech patterns real people use.');
+  var isAcad = ['thesis','research','academic'].includes(S.style);
+  var rules = [];
+  if (S.cfg.conversational && !['thesis','research'].includes(S.style)) rules.push('Use natural phrasing and speech patterns that real people use.');
   if (S.cfg.structure) rules.push('Vary sentence length — mix short punchy sentences with longer flowing ones.');
-  if (S.cfg.expressions && !['thesis','research','email'].includes(S.style)) rules.push('Include natural human expressions and emphasis appropriate for the style.');
-  if (S.cfg.contractions && !['thesis','research','academic'].includes(S.style)) rules.push("Use contractions naturally (it's, don't, isn't, you'll, etc.).");
-  if (['thesis','research','academic'].includes(S.style)) rules.push('Do NOT use contractions. Spell out all words fully (do not, is not, cannot, will not).');
+  if (S.cfg.expressions && !['thesis','research','email'].includes(S.style)) rules.push('Include natural human expressions and appropriate emphasis for the style.');
+  if (S.cfg.contractions && !isAcad) rules.push("Use contractions naturally (it's, don't, isn't, you'll, etc.).");
+  if (isAcad) rules.push('Do NOT use contractions. Spell out all words fully (do not, is not, cannot, will not).');
   if (S.cfg.technical) rules.push('Preserve ALL technical terms, acronyms, domain vocabulary, and citations EXACTLY as written.');
-  if (S.cfg.patterns) rules.push('Eliminate AI patterns: formulaic openers ("It is important to note…", "In today\'s world…"), overused transitions ("Furthermore,", "Moreover,", "In addition,", "In conclusion,"), redundant phrases ("in order to" → "to", "due to the fact that" → "because").');
+  if (S.cfg.patterns) rules.push('Eliminate AI patterns: formulaic openers ("It is important to note…", "In today\'s world…"), overused transitions ("Furthermore,", "Moreover,", "In addition,", "In conclusion,"), redundant phrases ("in order to"→"to", "due to the fact that"→"because").');
   if (S.cfg.activeVoice && !['thesis','research'].includes(S.style)) rules.push('Prefer active voice over passive voice where it reads naturally.');
   if (['thesis','research'].includes(S.style)) rules.push('Passive voice is acceptable and conventional — use it where academic writing calls for it.');
   if (S.cfg.rhetoricalQ && ['blog','casual','creative'].includes(S.style)) rules.push('Occasionally use rhetorical questions to engage readers.');
 
-  const task = mode === 'paraphrase'
-    ? 'PARAPHRASE the following text. Reword and restructure it thoroughly while keeping every piece of meaning. Not synonym-swapping — actually restructure sentences.'
+  var task = mode==='paraphrase'
+    ? 'PARAPHRASE the following text. Reword and restructure it thoroughly while keeping every piece of meaning intact. Not synonym-swapping — actually restructure sentences.'
     : 'HUMANIZE the following AI-generated text. Make it sound genuinely written by a skilled human author.';
 
-  return `You are an expert editor and writing coach. You deeply understand different writing registers and know exactly how humans write versus AI.
-
-TASK: ${task}
-
-WRITING STYLE: ${styles[S.style]}
-
-STRENGTH: ${strengths[S.strength]}
-
-RULES:
-${rules.map((r,i)=>`${i+1}. ${r}`).join('\n')}
-
-ABSOLUTE CONSTRAINTS:
-• Preserve ALL facts, statistics, numbers, dates, proper nouns, citations, and core meaning exactly
-• Do NOT add new facts or information not in the original
-• Output ONLY the rewritten text — no preamble, no notes, no meta-commentary
-• Output in the SAME LANGUAGE as the input
-• Do not truncate or summarize — output must be complete`;
+  return 'You are an expert editor and writing coach. You deeply understand different writing registers and know exactly how humans write versus AI.\n\n'+
+    'TASK: '+task+'\n\n'+
+    'WRITING STYLE: '+(styles[S.style]||styles.casual)+'\n\n'+
+    'STRENGTH: '+(strengths[S.strength]||strengths.moderate)+'\n\n'+
+    'RULES:\n'+rules.map(function(r,i){return (i+1)+'. '+r;}).join('\n')+'\n\n'+
+    'ABSOLUTE CONSTRAINTS:\n'+
+    '• Preserve ALL facts, statistics, numbers, dates, proper nouns, citations, and core meaning exactly\n'+
+    '• Do NOT add new facts or information not present in the original\n'+
+    '• Output ONLY the rewritten text — no preamble, no notes, no meta-commentary\n'+
+    '• Output in the SAME LANGUAGE as the input\n'+
+    '• Do not truncate or summarize — the output must be complete';
 }
 
 /* ══════════════════════════════════════════════════════════════════
    API CALL
 ══════════════════════════════════════════════════════════════════ */
 async function callAPI(text, mode) {
-  let resp;
+  var resp;
   try {
     resp = await fetch('/api/humanize', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, systemPrompt: buildPrompt(mode) }),
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({text:text, systemPrompt:buildPrompt(mode)}),
     });
-  } catch (netErr) {
-    throw new Error('Network error — check your internet connection.');
+  } catch(netErr) {
+    throw Object.assign(new Error('Network error — check your internet connection.'),{status:0,body:{}});
   }
 
-  // 405 almost always means the page is opened as a local HTML file
-  // or the Vercel function hasn't been deployed yet
-  if (resp.status === 405) {
+  if (resp.status===404||resp.status===405) {
     throw Object.assign(
-      new Error('API not available. Open this via Vercel (run "vercel dev" locally or deploy to Vercel). Opening index.html directly as a file will not work.'),
-      { status: 405, body: {} }
+      new Error('This app must be hosted on Vercel to work. Deploy it to Vercel, or run "vercel dev" locally.'),
+      {status:resp.status,body:{}}
     );
   }
 
   if (!resp.ok) {
-    let body = {}; try { body = await resp.json(); } catch {}
-    const err = new Error(body.message || body.error || `Error ${resp.status}`);
-    err.status = resp.status; err.body = body;
+    var body={};
+    try { body=await resp.json(); } catch(e){}
+    var err=new Error(body.message||body.error||('Server error '+resp.status));
+    err.status=resp.status; err.body=body;
     throw err;
   }
 
-  const data = await resp.json();
-  if (!data.result) throw new Error('Empty response from AI.');
+  var data=await resp.json();
+  if (!data.result) throw new Error('Empty response from AI. Please try again.');
   return data.result;
 }
 
@@ -1698,177 +1742,223 @@ async function callAPI(text, mode) {
    PROCESS
 ══════════════════════════════════════════════════════════════════ */
 async function process(mode) {
-  const text = inputEl.value.trim();
-  if (!text) { toast('Please enter some text first!', 'error'); return; }
-  if (text.split(/\s+/).filter(Boolean).length < 3) { toast('Please enter at least a few words.', 'error'); return; }
-  if (text.length > MAX_CH) { toast(`Text too long. Max ${MAX_CH.toLocaleString()} characters.`, 'error'); return; }
+  if (S.busy) return;
+  var text = inputEl ? inputEl.value.trim() : '';
+  if (!text) { toast('Please enter some text first!','error'); return; }
+  if (text.split(/\s+/).filter(Boolean).length < 3) { toast('Please enter at least a few words.','error'); return; }
+  if (text.length > MAX_CH) { toast('Text too long. Max '+MAX_CH.toLocaleString()+' characters.','error'); return; }
 
   S.lastMode  = mode;
   S.lastInput = text;
-
-  const msgs = { humanize:'Humanizing your text…', paraphrase:'Paraphrasing your text…' };
-  setLoading(true, msgs[mode] || 'Processing…');
+  setLoading(true, mode==='paraphrase'?'Paraphrasing your text…':'Humanizing your text…');
   closeDiff();
 
-  const t0 = Date.now();
+  var t0 = Date.now();
   try {
-    const result = await callAPI(text, mode);
-    outputEl.value = result;
+    var result = await callAPI(text, mode);
+    if (outputEl) outputEl.value = result;
     S.lastOriginal = text;
     S.lastOutput   = result;
     updateOutputUI();
-    updateStats(text, result, Date.now() - t0);
+    updateStats(text, result, Date.now()-t0);
     addHistory(text, result, S.style, mode);
-    const lbl = mode === 'paraphrase' ? 'Paraphrased' : 'Humanized';
-    toast(`✓ ${lbl} successfully!`, 'success');
-  } catch (err) {
-    console.error(err);
-    if (err.status === 429 && err.body?.error === 'RATE_LIMIT_ALL') {
-      limitBanner.classList.add('visible');
-      limitBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    toast('✓ '+(mode==='paraphrase'?'Paraphrased':'Humanized')+' successfully!','success');
+  } catch(err) {
+    console.error('Humanizer error:', err);
+    if (err.status===429 && err.body && err.body.error==='RATE_LIMIT_ALL') {
+      if (limitBanner) { limitBanner.classList.add('visible'); limitBanner.scrollIntoView({behavior:'smooth',block:'center'}); }
     } else {
-      const msg = err.status===401 ? 'API key error — check Vercel environment variables.'
-                : err.status===429 ? 'Rate limit reached. Please wait a moment.'
-                : err.status===503||err.status===500 ? 'Server busy. Try again in a few seconds.'
-                : err.message || 'Something went wrong. Please try again.';
-      toast('⚠ ' + msg, 'error', 5000);
+      var msg = err.status===401 ? 'API key error — check your Vercel environment variables.'
+              : err.status===429 ? 'Rate limit reached. Please wait a moment and try again.'
+              : (err.status===500||err.status===503) ? 'Server busy — try again in a few seconds.'
+              : err.message||'Something went wrong. Please try again.';
+      toast('⚠ '+msg,'error',5000);
     }
   } finally { setLoading(false); }
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   SAMPLE TEXTS per style
+   SAMPLE TEXTS
 ══════════════════════════════════════════════════════════════════ */
-const SAMPLES = {
-  thesis:   `The proliferation of artificial intelligence technologies has engendered significant transformations across numerous sectors of contemporary society. It is important to note that these developments have far-reaching implications for the workforce. Furthermore, researchers have demonstrated that AI adoption rates are increasing at an unprecedented pace. The data clearly indicates that organizations which fail to adapt will face considerable challenges. In conclusion, it is evident that artificial intelligence represents one of the most consequential technological shifts in modern history.`,
-  research: `This study examines the impact of social media usage on adolescent mental health outcomes. It is worth noting that previous research has established correlations between excessive social media use and increased anxiety levels. The findings demonstrate that participants who utilized social media for more than three hours daily exhibited significantly higher depression scores. Furthermore, it is important to note that these effects were particularly pronounced among female adolescents. The results suggest that interventions targeting social media consumption patterns may be beneficial for improving mental health outcomes in this population.`,
-  default:  `Artificial intelligence has become an increasingly important topic in today's rapidly evolving world. It is important to note that AI technologies are being utilized across a wide range of industries. Furthermore, the rapid advancement of these technologies has led to significant changes in how people work and interact. Research has shown that AI can demonstrate remarkable capabilities in areas such as natural language processing and data analysis. In conclusion, it is evident that artificial intelligence represents a transformative technology with far-reaching implications for society as a whole.`,
+var SAMPLES = {
+  thesis:   'The proliferation of artificial intelligence technologies has engendered significant transformations across numerous sectors of contemporary society. It is important to note that these developments have far-reaching implications for the workforce. Furthermore, researchers have demonstrated that AI adoption rates are increasing at an unprecedented pace. The data clearly indicates that organizations which fail to adapt will face considerable challenges. In conclusion, it is evident that artificial intelligence represents one of the most consequential technological shifts in modern history.',
+  research: 'This study examines the impact of social media usage on adolescent mental health outcomes. It is worth noting that previous research has established correlations between excessive social media use and increased anxiety levels. The findings demonstrate that participants who utilized social media for more than three hours daily exhibited significantly higher depression scores. Furthermore, it is important to note that these effects were particularly pronounced among female adolescents. The results suggest that interventions targeting social media consumption patterns may be beneficial for improving mental health outcomes in this population.',
+  default:  "Artificial intelligence has become an increasingly important topic in today's rapidly evolving world. It is important to note that AI technologies are being utilized across a wide range of industries. Furthermore, the rapid advancement of these technologies has led to significant changes in how people work and interact. Research has shown that AI can demonstrate remarkable capabilities in areas such as natural language processing and data analysis. In conclusion, it is evident that artificial intelligence represents a transformative technology with far-reaching implications for society as a whole.",
 };
-function getSample() {
-  return SAMPLES[S.style] || SAMPLES.default;
-}
+function getSample(){ return SAMPLES[S.style]||SAMPLES.default; }
 
 /* ══════════════════════════════════════════════════════════════════
-   BUTTON HANDLERS
+   EVENT LISTENERS
 ══════════════════════════════════════════════════════════════════ */
-humanizeBtn.addEventListener('click', () => process('humanize'));
-paraphraseBtn.addEventListener('click', () => process('paraphrase'));
-regenerateBtn.addEventListener('click', () => {
-  if (!S.lastInput) { toast('Nothing to regenerate yet.'); return; }
-  inputEl.value = S.lastInput; process(S.lastMode);
+if (humanizeBtn)   humanizeBtn.addEventListener('click',   function(){ process('humanize');   });
+if (paraphraseBtn) paraphraseBtn.addEventListener('click', function(){ process('paraphrase'); });
+if (regenerateBtn) regenerateBtn.addEventListener('click', function(){
+  if (!S.lastInput){ toast('Nothing to regenerate yet.'); return; }
+  if (inputEl) inputEl.value = S.lastInput;
+  process(S.lastMode);
 });
-diffBtn.addEventListener('click', toggleDiff);
-clearAllBtn.addEventListener('click', () => {
-  inputEl.value=''; outputEl.value='';
+if (diffBtn) diffBtn.addEventListener('click', toggleDiff);
+
+if (clearAllBtn) clearAllBtn.addEventListener('click', function(){
+  if (inputEl)  inputEl.value  = '';
+  if (outputEl) outputEl.value = '';
   S.lastInput=''; S.lastOriginal=''; S.lastOutput='';
   closeDiff(); updateInputUI(); updateOutputUI();
-  ['stOrig','stOut','stHuman','stRead','stChange','stTime','stHumanSub','stReadSub']
-    .forEach(id=>{ const e=$( id); if(e) e.textContent=id.endsWith('Sub')?'':'—'; });
+  ['stOrig','stOut','stHuman','stRead','stChange','stTime'].forEach(function(id){
+    var e=$(id); if(e) e.textContent='—';
+  });
+  ['stHumanSub','stReadSub'].forEach(function(id){
+    var e=$(id); if(e) e.textContent='';
+  });
   toast('Cleared!');
 });
-pasteBtn.addEventListener('click', async () => {
-  try {
-    const txt = await navigator.clipboard.readText();
-    inputEl.value = txt; updateInputUI();
-    toast('Pasted!', 'success');
-  } catch { toast('Tap and hold the text area to paste manually.'); }
-});
-clearInputBtn.addEventListener('click', () => { inputEl.value=''; updateInputUI(); inputEl.focus(); });
-sampleBtn.addEventListener('click', () => { inputEl.value = getSample(); updateInputUI(); toast('Sample loaded — try humanizing it!', 'info'); });
-copyBtn.addEventListener('click', async () => {
-  const txt = outputEl.value;
-  if (!txt) { toast('Nothing to copy!'); return; }
-  try { await navigator.clipboard.writeText(txt); } catch { outputEl.select(); document.execCommand('copy'); }
-  const orig = copyBtn.textContent;
-  copyBtn.textContent='✓ Copied!'; copyBtn.classList.add('success');
-  toast('Copied!', 'success');
-  setTimeout(() => { copyBtn.textContent=orig; copyBtn.classList.remove('success'); }, 2000);
-});
-downloadBtn.addEventListener('click', () => {
-  const txt = outputEl.value;
-  if (!txt) { toast('Nothing to download!'); return; }
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
-  a.download=`humanized-${Date.now()}.txt`; a.click(); URL.revokeObjectURL(a.href);
-  toast('Downloaded!', 'success');
-});
-$('limitClose').addEventListener('click', () => limitBanner.classList.remove('visible'));
 
-/* Style pills */
-document.querySelectorAll('[data-style]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-style]').forEach(b=>b.classList.remove('active'));
+if (pasteBtn) pasteBtn.addEventListener('click', async function(){
+  try {
+    var txt = await navigator.clipboard.readText();
+    if (inputEl){ inputEl.value=txt; updateInputUI(); }
+    toast('Pasted!','success');
+  } catch(e){ toast('Could not access clipboard — please paste manually.'); }
+});
+
+if (clearInputBtn) clearInputBtn.addEventListener('click', function(){
+  if (inputEl){ inputEl.value=''; updateInputUI(); inputEl.focus(); }
+});
+
+if (sampleBtn) sampleBtn.addEventListener('click', function(){
+  if (inputEl){ inputEl.value=getSample(); updateInputUI(); }
+  toast('Sample loaded — try humanizing it!','info');
+});
+
+if (copyBtn) copyBtn.addEventListener('click', async function(){
+  var txt = outputEl ? outputEl.value : '';
+  if (!txt){ toast('Nothing to copy!'); return; }
+  try { await navigator.clipboard.writeText(txt); }
+  catch(e){ if(outputEl){ outputEl.select(); document.execCommand('copy'); } }
+  copyBtn.textContent='✓ Copied!';
+  copyBtn.classList.add('success');
+  toast('Copied to clipboard!','success');
+  setTimeout(function(){ copyBtn.textContent='📄 Copy'; copyBtn.classList.remove('success'); }, 2000);
+});
+
+if (downloadBtn) downloadBtn.addEventListener('click', function(){
+  var txt = outputEl ? outputEl.value : '';
+  if (!txt){ toast('Nothing to download!'); return; }
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain'}));
+  a.download='humanized-'+Date.now()+'.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
+  toast('Downloaded!','success');
+});
+
+if (limitClose && limitBanner) {
+  limitClose.addEventListener('click', function(){ limitBanner.classList.remove('visible'); });
+}
+
+// Style pills
+document.querySelectorAll('[data-style]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('[data-style]').forEach(function(b){ b.classList.remove('active'); });
     btn.classList.add('active');
-    S.style = btn.dataset.style;
+    S.style = btn.getAttribute('data-style');
     updateStyleGuide(); applyStyleLocks(); saveCfg();
   });
 });
-/* Strength pills */
-document.querySelectorAll('[data-strength]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('[data-strength]').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    S.strength = btn.dataset.strength; saveCfg();
-  });
-});
 
-/* Settings toggles */
-settingsToggle.addEventListener('click', () => {
-  const open = settingsBody.classList.toggle('open');
-  settingsToggle.classList.toggle('open', open);
-  settingsToggle.setAttribute('aria-expanded', open);
-});
-document.querySelectorAll('.toggle[data-setting]').forEach(tog => {
-  const init = S.cfg[tog.dataset.setting];
-  tog.classList.toggle('on', !!init);
-  tog.setAttribute('aria-checked', !!init);
-  tog.addEventListener('click', () => {
-    const key = tog.dataset.setting;
-    S.cfg[key] = !S.cfg[key];
-    tog.classList.toggle('on', S.cfg[key]);
-    tog.setAttribute('aria-checked', S.cfg[key]);
+// Strength pills
+document.querySelectorAll('[data-strength]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('[data-strength]').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    S.strength = btn.getAttribute('data-strength');
     saveCfg();
   });
-  tog.addEventListener('keydown', e => { if (e.key===' '||e.key==='Enter'){e.preventDefault();tog.click();} });
 });
 
-/* History panel */
-historyToggle.addEventListener('click', () => {
-  const open = historyBody.classList.toggle('open');
+// Settings toggles — sync initial visual state with S.cfg
+document.querySelectorAll('.toggle[data-setting]').forEach(function(tog){
+  var key = tog.getAttribute('data-setting');
+  tog.classList.toggle('on', !!S.cfg[key]);
+  tog.setAttribute('aria-checked', String(!!S.cfg[key]));
+  tog.addEventListener('click', function(){
+    S.cfg[key] = !S.cfg[key];
+    tog.classList.toggle('on', S.cfg[key]);
+    tog.setAttribute('aria-checked', String(S.cfg[key]));
+    saveCfg();
+  });
+  tog.addEventListener('keydown', function(e){
+    if(e.key===' '||e.key==='Enter'){ e.preventDefault(); tog.click(); }
+  });
+});
+
+// Settings panel toggle
+if (settingsToggle) settingsToggle.addEventListener('click', function(){
+  var open = settingsBody ? settingsBody.classList.toggle('open') : false;
+  settingsToggle.classList.toggle('open', open);
+  settingsToggle.setAttribute('aria-expanded', String(open));
+});
+
+// History panel toggle
+if (historyToggle) historyToggle.addEventListener('click', function(){
+  var open = historyBody ? historyBody.classList.toggle('open') : false;
   historyToggle.classList.toggle('open', open);
-  historyToggle.setAttribute('aria-expanded', open);
+  historyToggle.setAttribute('aria-expanded', String(open));
 });
 
-/* Input events */
-inputEl.addEventListener('input', updateInputUI);
-inputEl.addEventListener('keydown', e => {
-  if ((e.ctrlKey||e.metaKey) && e.key==='Enter') { e.preventDefault(); process('humanize'); }
+// Input textarea events
+if (inputEl) {
+  inputEl.addEventListener('input', updateInputUI);
+  inputEl.addEventListener('keydown', function(e){
+    if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){ e.preventDefault(); process('humanize'); }
+  });
+}
+
+// Modals
+function openModal(id){ var m=$(id); if(m){ m.classList.add('open'); document.body.style.overflow='hidden'; } }
+function closeModal(id){ var m=$(id); if(m){ m.classList.remove('open'); document.body.style.overflow=''; } }
+
+document.querySelectorAll('[data-modal]').forEach(function(el){
+  el.addEventListener('click', function(e){ e.preventDefault(); openModal(el.getAttribute('data-modal')); });
+});
+document.querySelectorAll('.modal-close').forEach(function(btn){
+  btn.addEventListener('click', function(){ closeModal(btn.getAttribute('data-close')); });
+});
+document.querySelectorAll('.modal-overlay').forEach(function(m){
+  m.addEventListener('click', function(e){ if(e.target===m) closeModal(m.id); });
+});
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(function(m){ closeModal(m.id); });
 });
 
-/* Modals */
-function openModal(id){const m=$(id);if(m){m.classList.add('open');document.body.style.overflow='hidden';}}
-function closeModal(id){const m=$(id);if(m){m.classList.remove('open');document.body.style.overflow='';}}
-document.querySelectorAll('[data-modal]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openModal(a.dataset.modal);}));
-document.querySelectorAll('.modal-close').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
-document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id);}));
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>closeModal(m.id)); });
-
-/* FAQ */
-document.querySelectorAll('.faq-item').forEach(item=>{
-  item.querySelector('.faq-q').addEventListener('click',()=>{
-    const was=item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+// FAQ accordion
+document.querySelectorAll('.faq-item').forEach(function(item){
+  var q = item.querySelector('.faq-q');
+  if(q) q.addEventListener('click', function(){
+    var was = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
     if(!was) item.classList.add('open');
   });
 });
 
-/* Social */
-document.querySelectorAll('.social-btn').forEach(b=>b.addEventListener('click',()=>toast(b.title+' — coming soon!','info')));
+// Social buttons
+document.querySelectorAll('.social-btn').forEach(function(b){
+  b.addEventListener('click', function(){ toast(b.title+' — coming soon!','info'); });
+});
 
-/* Footer modal links */
-document.querySelectorAll('.footer-links a[data-modal]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openModal(a.dataset.modal);}));
-
-/* INIT */
-// Restore saved style/strength pills
-document.querySelectorAll('[data-style]').forEach(b=>b.classList.toggle('active',b.dataset.style===S.style));
-documen
+/* ══════════════════════════════════════════════════════════════════
+   INIT — restore UI from saved state
+══════════════════════════════════════════════════════════════════ */
+document.querySelectorAll('[data-style]').forEach(function(b){
+  b.classList.toggle('active', b.getAttribute('data-style')===S.style);
+});
+document.querySelectorAll('[data-strength]').forEach(function(b){
+  b.classList.toggle('active', b.getAttribute('data-strength')===S.strength);
+});
+updateStyleGuide();
+applyStyleLocks();
+updateInputUI();
+renderHistory();
+</script>
+</body>
+</html>
