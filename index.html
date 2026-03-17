@@ -804,6 +804,304 @@ textarea{font-family:var(--font-sans);}
   transition:all .16s var(--ease);text-decoration:none;
 }
 .btn-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATIONS — PAGE LOAD REVEALS
+   Staggered entrance: nav → hero → trust → tool → sections
+═══════════════════════════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(22px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity:0; }
+  to   { opacity:1; }
+}
+@keyframes slideInLeft {
+  from { opacity:0; transform:translateX(-28px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes slideInRight {
+  from { opacity:0; transform:translateX(28px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity:0; transform:scale(.92); }
+  to   { opacity:1; transform:scale(1); }
+}
+@keyframes shimmer {
+  0%   { background-position:-600px 0; }
+  100% { background-position:600px 0; }
+}
+@keyframes ripple {
+  to { transform:scale(3.5); opacity:0; }
+}
+@keyframes successPop {
+  0%   { transform:scale(1); }
+  40%  { transform:scale(1.08); }
+  70%  { transform:scale(.96); }
+  100% { transform:scale(1); }
+}
+@keyframes float {
+  0%,100% { transform:translateY(0); }
+  50%     { transform:translateY(-5px); }
+}
+@keyframes countUp {
+  from { opacity:0; transform:translateY(8px) scale(.85); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes dotPulse {
+  0%,80%,100% { transform:scale(0); opacity:0; }
+  40%         { transform:scale(1); opacity:1; }
+}
+@keyframes textReveal {
+  from { opacity:0; filter:blur(3px); transform:translateY(4px); }
+  to   { opacity:1; filter:blur(0); transform:translateY(0); }
+}
+@keyframes navSlideDown {
+  from { opacity:0; transform:translateY(-100%); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes cardReveal {
+  from { opacity:0; transform:translateY(32px) scale(.98); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes glowPulse {
+  0%,100% { box-shadow:0 4px 12px var(--accent-glow); }
+  50%     { box-shadow:0 4px 24px rgba(26,86,219,.32); }
+}
+@keyframes successBounce {
+  0%   { transform:scale(1) rotate(0deg); }
+  25%  { transform:scale(1.15) rotate(-3deg); }
+  50%  { transform:scale(1.08) rotate(2deg); }
+  75%  { transform:scale(1.04) rotate(-1deg); }
+  100% { transform:scale(1) rotate(0deg); }
+}
+@keyframes typingCursor {
+  0%,49% { border-right-color:var(--accent); }
+  50%,100%{ border-right-color:transparent; }
+}
+@keyframes scrollReveal {
+  from { opacity:0; transform:translateY(36px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── NAV ── */
+.nav { animation: navSlideDown .5s var(--ease-out) both; }
+
+/* ── HERO — staggered ── */
+.hero-eyebrow { animation: slideInLeft .55s .1s var(--ease-out) both; }
+.hero-h1      { animation: fadeUp .6s .18s var(--ease-out) both; }
+.hero-sub     { animation: fadeUp .6s .28s var(--ease-out) both; }
+.hero-cta     { animation: fadeUp .6s .36s var(--ease-out) both; }
+.hero-card    { animation: slideInRight .65s .22s var(--ease-out) both; }
+
+/* Hero stat cards float in staggered */
+.hero-stat:nth-child(1) { animation: scaleIn .45s .42s var(--ease-spring) both; }
+.hero-stat:nth-child(2) { animation: scaleIn .45s .52s var(--ease-spring) both; }
+.hero-stat:nth-child(3) { animation: scaleIn .45s .62s var(--ease-spring) both; }
+.hero-stat:nth-child(4) { animation: scaleIn .45s .72s var(--ease-spring) both; }
+.hero-quote   { animation: fadeUp .5s .8s var(--ease-out) both; }
+
+/* ── TRUST BAR ── */
+.trust-item {
+  animation: fadeIn .4s both;
+  opacity: 0;
+}
+.trust-item:nth-child(1) { animation-delay: .5s; }
+.trust-item:nth-child(2) { animation-delay: .62s; }
+.trust-item:nth-child(3) { animation-delay: .74s; }
+.trust-item:nth-child(4) { animation-delay: .86s; }
+.trust-item:nth-child(5) { animation-delay: .98s; }
+
+/* ── MAIN CARD ── */
+.main-card    { animation: cardReveal .65s .3s var(--ease-out) both; }
+.tool-heading { animation: fadeUp .5s .15s var(--ease-out) both; }
+.config-row   { animation: fadeUp .5s .25s var(--ease-out) both; }
+.style-guide  { animation: fadeUp .4s .35s var(--ease-out) both; }
+
+/* ── SCROLL REVEAL — for sections below the fold ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity .6s var(--ease-out), transform .6s var(--ease-out);
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: .1s; }
+.reveal-delay-2 { transition-delay: .2s; }
+.reveal-delay-3 { transition-delay: .3s; }
+.reveal-delay-4 { transition-delay: .4s; }
+
+/* ── SKELETON SHIMMER (output while loading) ── */
+.skeleton-line {
+  height: 14px; border-radius: 6px; margin-bottom: 10px;
+  background: linear-gradient(90deg,
+    var(--bg-3) 0%, var(--bg-2) 40%, var(--bg-3) 60%, var(--bg-3) 100%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+}
+.skeleton-line:nth-child(2) { width:88%; animation-delay:.1s; }
+.skeleton-line:nth-child(3) { width:94%; animation-delay:.2s; }
+.skeleton-line:nth-child(4) { width:75%; animation-delay:.3s; }
+.skeleton-line:nth-child(5) { width:90%; animation-delay:.4s; }
+.skeleton-line:nth-child(6) { width:65%; animation-delay:.5s; }
+.skeleton-wrap {
+  padding: 18px 20px;
+  display: none;
+  flex-direction: column;
+}
+.skeleton-wrap.visible { display: flex; }
+
+/* Typing dots (inside status row while loading) */
+.typing-dots { display:inline-flex; align-items:center; gap:4px; margin-left:6px; }
+.typing-dots span {
+  width:5px; height:5px; border-radius:50%; background:var(--accent);
+  animation: dotPulse 1.4s ease-in-out infinite both;
+}
+.typing-dots span:nth-child(2) { animation-delay:.2s; }
+.typing-dots span:nth-child(3) { animation-delay:.4s; }
+
+/* ── BUTTON RIPPLE ── */
+.btn-primary, .btn-secondary, .btn-nano {
+  position: relative;
+  overflow: hidden;
+}
+.ripple-effect {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
+  width: 10px; height: 10px;
+  pointer-events: none;
+  transform: scale(0);
+  animation: ripple .55s var(--ease-out) forwards;
+}
+.btn-secondary .ripple-effect,
+.btn-nano .ripple-effect {
+  background: rgba(26,86,219,.14);
+}
+
+/* ── SUCCESS STATE — output pane ── */
+.output-success .pane-top {
+  background: var(--green-bg);
+  transition: background .4s var(--ease);
+}
+.output-success .dot-green {
+  animation: glowPulse 1.8s ease-in-out 3;
+  box-shadow: 0 0 0 3px rgba(13,148,136,.2);
+}
+.output-success .textarea {
+  animation: textReveal .5s var(--ease-out) both;
+}
+
+/* ── HUMANIZE BUTTON — glow pulse while idle, ready to use ── */
+.btn-primary:not(:disabled) {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+.btn-primary:disabled { animation: none; }
+
+/* ── PILL ACTIVE — spring pop ── */
+.pill { transition: all .18s var(--ease); }
+.pill.active { animation: successPop .3s var(--ease-spring) both; }
+
+/* ── STAT CELLS — count up reveal ── */
+.stat-val.pop { animation: countUp .45s var(--ease-spring) both; }
+
+/* ── FEATURE CARDS — scroll-driven hover lift ── */
+.feature-card {
+  transition: all .25s var(--ease);
+}
+.feature-card:hover .feature-icon {
+  animation: float 2s ease-in-out infinite;
+}
+.feature-card:hover {
+  box-shadow: 0 0 0 3px var(--accent-bg), 0 8px 24px rgba(26,86,219,.12);
+  transform: translateY(-3px);
+}
+
+/* ── HOW STEP NUMBERS — float animation on hover ── */
+.how-step:hover .step-num {
+  animation: successBounce .5s var(--ease-spring);
+}
+
+/* ── THEME TOGGLE — rotation ── */
+.theme-btn { transition: all .2s var(--ease); }
+.theme-btn:active { transform: rotate(20deg) scale(.9); }
+.theme-btn:hover  { transform: rotate(10deg); }
+
+/* ── NAV LOGO — subtle hover ── */
+.nav-logo:hover .nav-logo-mark {
+  transform: rotate(-8deg) scale(1.1);
+  transition: transform .25s var(--ease-spring);
+}
+.nav-logo-mark { transition: transform .25s var(--ease); }
+
+/* ── TOAST — bounce in ── */
+.toast { transition: transform .38s var(--ease-spring), opacity .3s; }
+
+/* ── PANEL TOGGLE — smooth open ── */
+.panel-body.open {
+  animation: settleDown .25s var(--ease-out) both;
+}
+
+/* ── PROGRESS BAR — glowing trail ── */
+.progress-fill.animating {
+  box-shadow: 0 0 10px rgba(26,86,219,.5), 0 0 4px rgba(26,86,219,.3);
+}
+
+/* ── DIFF OVERLAY — word highlights fade in ── */
+.diff-ins {
+  animation: fadeIn .3s var(--ease-out) both;
+  transition: background .2s;
+}
+.diff-del {
+  animation: fadeIn .3s var(--ease-out) both;
+}
+
+/* ── PATTERN WARNING — slide in ── */
+.pattern-warn.visible {
+  animation: fadeDown .3s var(--ease-out) both;
+}
+
+/* ── HISTORY ITEMS ── */
+.hist-item {
+  transition: all .18s var(--ease);
+  animation: fadeUp .3s var(--ease-out) both;
+}
+.hist-item:nth-child(2) { animation-delay: .05s; }
+.hist-item:nth-child(3) { animation-delay: .1s; }
+.hist-item:nth-child(4) { animation-delay: .15s; }
+.hist-item:nth-child(5) { animation-delay: .2s; }
+
+/* ── PANE DOT — breathe animation when AI detected ── */
+.dot-red { animation: blink 2.5s ease-in-out infinite; }
+
+/* ── TEXTAREA FOCUS — subtle border glow ── */
+.textarea:focus {
+  box-shadow: inset 0 0 0 2px rgba(26,86,219,.1);
+  transition: box-shadow .2s var(--ease), background .2s;
+}
+
+/* ── MODAL — refined entrance ── */
+.modal-box { animation: modalIn .3s var(--ease-spring) both; }
+@media(max-width:640px) {
+  .modal-box { animation: slideUp .35s var(--ease-spring) both; }
+}
+
+/* ── FAQ ANSWER — smooth reveal ── */
+.faq-item.open .faq-a {
+  animation: settleDown .25s var(--ease-out) both;
+}
+
+/* ── REDUCE MOTION — respect user preference ── */
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -944,6 +1242,9 @@ textarea{font-family:var(--font-sans);}
     <div class="status-row" id="statusRow" role="status" aria-live="polite">
       <div class="status-pulse"></div>
       <span class="status-text" id="statusText">Processing…</span>
+      <span class="typing-dots" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
     </div>
 
     <!-- EDITORS -->
@@ -1001,6 +1302,14 @@ textarea{font-family:var(--font-sans);}
           <textarea class="textarea" id="outputText" readonly aria-label="Output: humanized text"
             placeholder="Your humanized text will appear here…"></textarea>
           <div class="diff-overlay" id="diffOverlay" aria-label="Word-level changes"></div>
+          <div class="skeleton-wrap" id="skeletonWrap">
+            <div class="skeleton-line" style="width:97%"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
         </div>
         <div class="pane-bottom">
           <div class="pane-actions">
@@ -1105,36 +1414,36 @@ textarea{font-family:var(--font-sans);}
 
 <!-- FEATURES -->
 <section class="features-section" aria-labelledby="features-h2" id="features">
-  <div class="section-eyebrow">Everything you need</div>
-  <h2 class="section-h2" id="features-h2">Built for serious writers</h2>
-  <p class="section-sub">Every feature is designed to help students, content creators, and professionals produce writing that sounds authentically human.</p>
+  <div class="section-eyebrow reveal">Everything you need</div>
+  <h2 class="section-h2 reveal reveal-delay-1" id="features-h2">Built for serious writers</h2>
+  <p class="section-sub reveal reveal-delay-2">Every feature is designed to help students, content creators, and professionals produce writing that sounds authentically human.</p>
   <div class="features-grid">
-    <div class="feature-card">
+    <div class="feature-card reveal reveal-delay-1">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 4.5a.75.75 0 01.721.544l.813 2.846a3.75 3.75 0 002.576 2.576l2.846.813a.75.75 0 010 1.442l-2.846.813a3.75 3.75 0 00-2.576 2.576l-.813 2.846a.75.75 0 01-1.442 0l-.813-2.846a3.75 3.75 0 00-2.576-2.576l-2.846-.813a.75.75 0 010-1.442l2.846-.813A3.75 3.75 0 007.466 7.89l.813-2.846A.75.75 0 019 4.5z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">Advanced AI Engine</div>
       <div class="feature-desc">Powered by state-of-the-art language models with automatic fallback — two providers working together so the tool is always available when you need it.</div>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal reveal-delay-2">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122z"/></svg></div>
       <div class="feature-title">9 Writing Styles</div>
       <div class="feature-desc">Thesis, Research Paper, Academic Essay, Professional, Casual, Blog Post, Email, Creative, and Simple — each with precisely tuned rules for person, voice, and register.</div>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal reveal-delay-3">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm14.024-.983a1.125 1.125 0 010 1.966l-5.603 3.113A1.125 1.125 0 019 15.113V8.887c0-.857.921-1.4 1.671-.983l5.603 3.113z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">3-Level Strength</div>
       <div class="feature-desc">Light touch-ups, Moderate rewording, or Heavy full rewrite. Thesis and Research modes automatically apply correct academic conventions.</div>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal reveal-delay-1">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4.125 3C3.089 3 2.25 3.84 2.25 4.875V18a3 3 0 003 3h15a3 3 0 01-3-3V4.875C17.25 3.839 16.41 3 15.375 3H4.125zM12 9.75a.75.75 0 000 1.5h1.5a.75.75 0 000-1.5H12zm-.75-2.25a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H12a.75.75 0 01-.75-.75zM6 12.75a.75.75 0 000 1.5h7.5a.75.75 0 000-1.5H6zm-.75 3.75a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5H6a.75.75 0 01-.75-.75zM6 6.75a.75.75 0 00-.75.75v3c0 .414.336.75.75.75h3a.75.75 0 00.75-.75v-3A.75.75 0 006 6.75z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">Live Diff View</div>
       <div class="feature-desc">See exactly what changed word-by-word. Green = added, strikethrough = removed. AI pattern detection warns you before humanizing.</div>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal reveal-delay-2">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">Result History</div>
       <div class="feature-desc">Last 5 results saved automatically. Compare versions, restore a previous run, or review changes without losing your work.</div>
     </div>
-    <div class="feature-card">
+    <div class="feature-card reveal reveal-delay-3">
       <div class="feature-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25v3a3 3 0 00-3 3v6.75a3 3 0 003 3h10.5a3 3 0 003-3v-6.75a3 3 0 00-3-3v-3c0-2.9-2.35-5.25-5.25-5.25zm3.75 8.25v-3a3.75 3.75 0 10-7.5 0v3h7.5z" clip-rule="evenodd"/></svg></div>
       <div class="feature-title">100% Private</div>
       <div class="feature-desc">Your text is processed instantly and never stored—everything is discarded the moment it's done. Enjoy a sleek dark mode, a fully mobile-friendly experience, and preferences that stay saved between sessions.</div>
@@ -1145,22 +1454,22 @@ textarea{font-family:var(--font-sans);}
 <!-- HOW IT WORKS -->
 <section id="how-it-works" class="how-section" aria-labelledby="how-h2">
   <div class="how-inner">
-    <div class="section-eyebrow">Simple process</div>
-    <h2 class="section-h2" id="how-h2">How it works</h2>
-    <p class="section-sub">From AI text to human-like writing in four steps.</p>
+    <div class="section-eyebrow reveal">Simple process</div>
+    <h2 class="section-h2 reveal reveal-delay-1" id="how-h2">How it works</h2>
+    <p class="section-sub reveal reveal-delay-2">From AI text to human-like writing in four steps.</p>
     <div class="how-steps">
-      <div class="how-step"><div class="step-num">1</div><div class="step-title">Paste Your Text</div><div class="step-desc">Copy any AI-generated text — from ChatGPT, Claude, Gemini, or any AI tool — and paste it in.</div></div>
-      <div class="how-step"><div class="step-num">2</div><div class="step-title">Choose Style</div><div class="step-desc">Select a writing style and strength. Thesis mode enforces third-person. Blog mode is casual and engaging.</div></div>
-      <div class="how-step"><div class="step-num">3</div><div class="step-title">AI Rewrites It</div><div class="step-desc">Advanced AI rewrites the text with natural human patterns, varied sentences, and authentic expressions in seconds.</div></div>
-      <div class="how-step"><div class="step-num">4</div><div class="step-title">Review &amp; Export</div><div class="step-desc">Review the output, check the diff, copy to clipboard, or download. Your history is saved automatically.</div></div>
+      <div class="how-step reveal reveal-delay-1"><div class="step-num">1</div><div class="step-title">Paste Your Text</div><div class="step-desc">Copy any AI-generated text — from ChatGPT, Claude, Gemini, or any AI tool — and paste it in.</div></div>
+      <div class="how-step reveal reveal-delay-2"><div class="step-num">2</div><div class="step-title">Choose Style</div><div class="step-desc">Select a writing style and strength. Thesis mode enforces third-person. Blog mode is casual and engaging.</div></div>
+      <div class="how-step reveal reveal-delay-3"><div class="step-num">3</div><div class="step-title">AI Rewrites It</div><div class="step-desc">Advanced AI rewrites the text with natural human patterns, varied sentences, and authentic expressions in seconds.</div></div>
+      <div class="how-step reveal reveal-delay-4"><div class="step-num">4</div><div class="step-title">Review &amp; Export</div><div class="step-desc">Review the output, check the diff, copy to clipboard, or download. Your history is saved automatically.</div></div>
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
 <section class="faq-section" aria-labelledby="faq-h2" id="faq">
-  <div class="section-eyebrow">Questions answered</div>
-  <h2 class="section-h2" id="faq-h2">Frequently asked questions</h2>
+  <div class="section-eyebrow reveal">Questions answered</div>
+  <h2 class="section-h2 reveal reveal-delay-1" id="faq-h2">Frequently asked questions</h2>
   <p class="section-sub">Everything you need to know about Your Humanizer.</p>
   <div class="faq-grid">
     <div class="faq-item"><div class="faq-q">What is an AI text humanizer?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 9l-7 7-7-7"/></svg></div><div class="faq-a">An AI text humanizer rewrites AI-generated content so it sounds like a real person wrote it. It removes robotic patterns, varies sentence structure, adds natural expressions, and eliminates tell-tale AI phrases like "It is important to note that…"</div></div>
@@ -1959,6 +2268,203 @@ updateStyleGuide();
 applyStyleLocks();
 updateInputUI();
 renderHistory();
+
+/* ══════════════════════════════════════════════════════════════════
+   ANIMATION ENHANCEMENTS
+══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. RIPPLE EFFECT on all buttons ── */
+function addRipple(e) {
+  var btn = e.currentTarget;
+  var existing = btn.querySelector('.ripple-effect');
+  if (existing) existing.remove();
+  var rect = btn.getBoundingClientRect();
+  var size = Math.max(rect.width, rect.height) * 1.6;
+  var x = e.clientX - rect.left - size / 2;
+  var y = e.clientY - rect.top  - size / 2;
+  var ripple = document.createElement('span');
+  ripple.className = 'ripple-effect';
+  ripple.style.cssText = 'width:'+size+'px;height:'+size+'px;left:'+x+'px;top:'+y+'px;';
+  btn.appendChild(ripple);
+  ripple.addEventListener('animationend', function(){ ripple.remove(); });
+}
+document.querySelectorAll('.btn-primary,.btn-secondary,.btn-nano').forEach(function(btn){
+  btn.addEventListener('click', addRipple);
+});
+
+/* ── 2. SKELETON SHIMMER — show while loading, hide when done ── */
+var skeletonWrap = document.getElementById('skeletonWrap');
+var _origSetLoading = setLoading;
+setLoading = function(on, msg) {
+  _origSetLoading(on, msg);
+  if (skeletonWrap) {
+    if (on) {
+      skeletonWrap.classList.add('visible');
+      if (outputEl) outputEl.style.display = 'none';
+      if (diffOverlay) diffOverlay.classList.remove('visible');
+    } else {
+      skeletonWrap.classList.remove('visible');
+      if (outputEl) outputEl.style.display = '';
+    }
+  }
+};
+
+/* ── 3. STREAMING TEXT EFFECT on output ── */
+function streamText(el, text, onDone) {
+  if (!el) { if (onDone) onDone(); return; }
+  el.value = '';
+  var words = text.split(' ');
+  var i = 0;
+  var CHUNK = 3; // words per frame — fast but visible
+  function tick() {
+    if (i >= words.length) {
+      el.value = text; // ensure exact final text
+      if (onDone) onDone();
+      return;
+    }
+    var end = Math.min(i + CHUNK, words.length);
+    el.value = words.slice(0, end).join(' ');
+    i = end;
+    // Scroll to bottom as text streams in
+    el.scrollTop = el.scrollHeight;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ── 4. SUCCESS ANIMATION on output pane ── */
+function triggerOutputSuccess() {
+  var pane = outputEl ? outputEl.closest('.editor-pane') : null;
+  if (!pane) return;
+  pane.classList.add('output-success');
+  setTimeout(function(){ pane.classList.remove('output-success'); }, 2200);
+}
+
+/* ── 5. COUNTER ANIMATION for stats ── */
+function animateCounter(el, from, to, duration, suffix) {
+  if (!el) return;
+  suffix = suffix || '';
+  var start = null;
+  var fromN = parseFloat(from) || 0;
+  var toN   = parseFloat(to)   || 0;
+  function step(ts) {
+    if (!start) start = ts;
+    var progress = Math.min((ts - start) / duration, 1);
+    // ease-out-cubic
+    var eased = 1 - Math.pow(1 - progress, 3);
+    var current = fromN + (toN - fromN) * eased;
+    el.textContent = (Number.isInteger(toN) ? Math.round(current) : current.toFixed(1)) + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = to + suffix;
+  }
+  requestAnimationFrame(step);
+}
+
+/* Override popStat to use counter animation for numeric values */
+var _origPopStat = popStat;
+popStat = function(el, val) {
+  if (!el) return;
+  var numMatch = String(val).match(/^([\d.]+)(.*)$/);
+  if (numMatch) {
+    var num    = numMatch[1];
+    var suffix = numMatch[2];
+    el.classList.remove('pop');
+    requestAnimationFrame(function(){ el.classList.add('pop'); });
+    animateCounter(el, 0, num, 600, suffix);
+  } else {
+    _origPopStat(el, val);
+  }
+};
+
+/* ── 6. Patch process() to use streaming + success animation ── */
+var _origProcess = process;
+process = async function(mode) {
+  if (S.busy) return;
+  var text = inputEl ? inputEl.value.trim() : '';
+  if (!text) { toast('Please enter some text first!','error'); return; }
+  if (text.split(/\s+/).filter(Boolean).length < 3) { toast('Please enter at least a few words.','error'); return; }
+  if (text.length > MAX_CH) { toast('Text too long. Max '+MAX_CH.toLocaleString()+' characters.','error'); return; }
+
+  S.lastMode  = mode;
+  S.lastInput = text;
+  setLoading(true, mode==='paraphrase'?'Paraphrasing your text…':'Humanizing your text…');
+  closeDiff();
+
+  var t0 = Date.now();
+  try {
+    var result = await callAPI(text, mode);
+    // Hide skeleton first
+    if (skeletonWrap) skeletonWrap.classList.remove('visible');
+    if (outputEl) outputEl.style.display = '';
+
+    // Stream the text in
+    streamText(outputEl, result, function() {
+      triggerOutputSuccess();
+      updateOutputUI();
+    });
+
+    S.lastOriginal = text;
+    S.lastOutput   = result;
+    updateStats(text, result, Date.now()-t0);
+    addHistory(text, result, S.style, mode);
+    toast('✓ '+(mode==='paraphrase'?'Paraphrased':'Humanized')+' successfully!','success');
+  } catch(err) {
+    console.error('Humanizer error:', err);
+    if (skeletonWrap) skeletonWrap.classList.remove('visible');
+    if (outputEl) outputEl.style.display = '';
+    if (err.status===429 && err.body && err.body.error==='RATE_LIMIT_ALL') {
+      if (limitBanner) { limitBanner.classList.add('visible'); limitBanner.scrollIntoView({behavior:'smooth',block:'center'}); }
+    } else {
+      var msg = err.status===401 ? 'API key error — check your Vercel environment variables.'
+              : err.status===429 ? 'Rate limit reached. Please wait a moment and try again.'
+              : (err.status===500||err.status===503) ? 'Server busy — try again in a few seconds.'
+              : err.message||'Something went wrong. Please try again.';
+      toast('⚠ '+msg,'error',5000);
+    }
+  } finally { setLoading(false); }
+};
+
+/* ── 7. SCROLL REVEAL via IntersectionObserver ── */
+(function(){
+  if (!('IntersectionObserver' in window)) {
+    // Fallback: just show everything
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in-view'); });
+    return;
+  }
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target); // only trigger once
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el){
+    observer.observe(el);
+  });
+})();
+
+/* ── 8. PILL ACTIVE animation re-trigger ── */
+document.querySelectorAll('[data-style],[data-strength]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    // Re-trigger spring pop
+    btn.classList.remove('active');
+    void btn.offsetWidth; // force reflow
+    btn.classList.add('active');
+  });
+});
+
+/* ── 9. THEME BUTTON — icon swap animation ── */
+if (themeBtn) {
+  themeBtn.addEventListener('click', function(){
+    themeBtn.style.transform = 'rotate(180deg) scale(0.8)';
+    setTimeout(function(){
+      themeBtn.style.transform = '';
+      themeBtn.style.transition = 'transform .4s var(--ease-spring)';
+    }, 50);
+  });
+}
 </script>
 </body>
 </html>
