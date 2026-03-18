@@ -1459,6 +1459,27 @@ textarea{font-family:var(--font-sans);}
 .btn-rehumanize:disabled { opacity:.5; cursor:not-allowed; }
 .btn-approve { font-size:11px; font-weight:700; padding:4px 10px; border-radius:var(--r-sm); border:1px solid var(--green-bd); background:var(--green-bg); color:var(--green); cursor:pointer; transition:all .14s; display:inline-flex; align-items:center; gap:4px; font-family:var(--font-sans); }
 .btn-approve:hover,.btn-approve.approved { background:var(--green); color:#fff; border-color:var(--green); }
+
+/* ── PREVIEW MODE — original-only single column layout ── */
+.preview-sec.preview-only .preview-cols {
+  grid-template-columns: 1fr;
+}
+.preview-sec.preview-only .preview-col-orig {
+  border-right: none;
+  background: var(--bg);
+  color: var(--ink-2);
+}
+.preview-sec.preview-only .preview-col-edit {
+  display: none;
+}
+.preview-sec.preview-only .preview-sec-head {
+  background: var(--bg-3);
+}
+/* Section type colour coding in preview */
+.preview-sec.preview-only.type-heading .preview-sec-head { background: var(--accent-bg); }
+.preview-sec.preview-only.type-heading .preview-col-orig  { border-left: 3px solid var(--accent); }
+/* Preview mode col label tweak */
+.preview-col-orig .preview-col-lbl.preview-lbl { display: none; }
 </style>
 </head>
 <body>
@@ -1539,7 +1560,6 @@ textarea{font-family:var(--font-sans);}
   <div class="testimonials-label">What users are saying</div>
   <div class="marquee-wrap">
     <div class="marquee-track" id="marqueeTrack">
-
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"I submitted my thesis chapter after using Your Humanizer and my adviser said it read very naturally. The Thesis mode is a game changer."</p><div class="t-footer"><div class="t-avatar">👩‍🎓</div><div class="t-info"><span class="t-name">Maria Santos</span><span class="t-role">Graduate Student, UP Manila</span></div><span class="t-badge">Thesis</span></div></div>
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"GPTZero used to flag everything I wrote with AI. After using Heavy mode, my score dropped to almost zero. Incredible tool."</p><div class="t-footer"><div class="t-avatar">👨‍💼</div><div class="t-info"><span class="t-name">James Rivera</span><span class="t-role">Content Writer, Freelance</span></div><span class="t-badge">Blog Post</span></div></div>
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"As a non-native English speaker, the Professional mode helps me write business emails that sound confident and natural. My clients are impressed."</p><div class="t-footer"><div class="t-avatar">👩‍💻</div><div class="t-info"><span class="t-name">Ana Reyes</span><span class="t-role">Virtual Assistant, Cebu</span></div><span class="t-badge">Email</span></div></div>
@@ -1901,6 +1921,10 @@ textarea{font-family:var(--font-sans);}
     <div class="doc-selected-info" id="docSelectedInfo">
       Select sections above to humanize
     </div>
+    <button class="btn-secondary" id="docPreviewBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="14" height="14"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      Preview Document
+    </button>
     <button class="btn-primary" id="docHumanizeBtn" disabled>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
       Humanize Document
@@ -1918,8 +1942,13 @@ textarea{font-family:var(--font-sans);}
       <div class="docx-modal-title">
         📄 <span id="docxModalFileName">Document Preview</span>
         <span class="docx-modal-title-sub" id="docxModalSub"></span>
+        <span id="docxModeBadge" style="font-family:var(--font-sans);font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--bg-3);color:var(--ink-4);text-transform:uppercase;letter-spacing:.6px;margin-left:4px;">Preview</span>
       </div>
       <div class="docx-modal-head-actions">
+        <button class="btn-secondary" id="docxStartHumanizeBtn" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="13" height="13"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+          Humanize Now
+        </button>
         <button class="btn-nano" id="docxRehumanizeAllBtn" style="display:none;">🔄 Re-humanize All</button>
         <button class="modal-close" id="docxModalClose" aria-label="Close">×</button>
       </div>
@@ -2608,6 +2637,44 @@ async function callAPI(text, mode) {
   if (!data.result) throw new Error('Empty response from AI. Please try again.');
   return data.result;
 }
+
+/* ── callDocAPI — for document section humanization
+   Sends docMode:true so the server uses a SHORT system prompt.
+   This avoids Groq TPM (tokens per minute) overflows when
+   processing many sections in sequence.
+══════════════════════════════════════════════════════════════════ */
+async function callDocAPI(text) {
+  var resp;
+  try {
+    resp = await fetch('/api/humanize', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        text:     text,
+        docMode:  true,        // tells server to use short prompt
+        style:    S.style,     // pass style so server builds correct short prompt
+        strength: S.strength,
+      }),
+    });
+  } catch(netErr) {
+    throw Object.assign(new Error('Network error — check connection.'),{status:0,body:{}});
+  }
+  if (resp.status===404||resp.status===405) {
+    throw Object.assign(new Error('Deploy to Vercel first.'),{status:resp.status,body:{}});
+  }
+  if (!resp.ok) {
+    var body={};
+    try { body=await resp.json(); } catch(e){}
+    var err=new Error(body.message||body.error||('Server error '+resp.status));
+    err.status=resp.status; err.body=body;
+    throw err;
+  }
+  var data=await resp.json();
+  if (!data.result) throw new Error('Empty response from AI.');
+  return data.result;
+}
+
+function sleep(ms){ return new Promise(function(r){ setTimeout(r,ms); }); }
 
 /* ══════════════════════════════════════════════════════════════════
    PROCESS — single consolidated function
@@ -3316,6 +3383,9 @@ var docxFootInfo      = document.getElementById('docxFootInfo');
 var docxDlDocxBtn     = document.getElementById('docxDlDocxBtn');
 var docxDlTxtBtn      = document.getElementById('docxDlTxtBtn');
 var docxRehumanizeAllBtn = document.getElementById('docxRehumanizeAllBtn');
+var docxStartHumanizeBtn = document.getElementById('docxStartHumanizeBtn');
+var docPreviewBtn        = document.getElementById('docPreviewBtn');
+var docxModeBadge        = document.getElementById('docxModeBadge');
 
 /* ── Drop zone events ── */
 if (dropZone) {
@@ -3533,14 +3603,44 @@ if (docHumanizeBtn) {
   });
 }
 
-/* ── Open / Close docx modal ── */
+/* ── Open modal in PREVIEW mode (original content, read-only) ── */
+function openDocxPreview() {
+  if (!docxModal || !DOC.sections.length) return;
+  if (docxModalFileName) docxModalFileName.textContent = DOC.fileName || 'Document';
+  if (docxModalSub) docxModalSub.textContent = '(' + DOC.sections.length + ' sections · read-only)';
+  if (docxModeBadge) {
+    docxModeBadge.textContent = 'Preview';
+    docxModeBadge.style.cssText = 'font-family:var(--font-sans);font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--bg-3);color:var(--ink-4);text-transform:uppercase;letter-spacing:.6px;margin-left:4px;';
+  }
+  if (docxStartHumanizeBtn) docxStartHumanizeBtn.style.display = '';
+  if (docxRehumanizeAllBtn) docxRehumanizeAllBtn.style.display = 'none';
+  if (docxProgWrap) docxProgWrap.classList.remove('visible');
+  if (docxDlDocxBtn) docxDlDocxBtn.disabled = true;
+  if (docxDlTxtBtn)  docxDlTxtBtn.disabled  = true;
+  if (docxFootInfo) docxFootInfo.innerHTML = 'Reviewing original document — click <strong>Humanize Now</strong> to process selected sections';
+  docxModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderPreviewOnly();
+}
+
+/* ── Open modal in HUMANIZE mode (side-by-side after processing) ── */
 function openDocxModal() {
   if (!docxModal) return;
   if (docxModalFileName) docxModalFileName.textContent = DOC.fileName || 'Document';
+  if (docxModalSub) docxModalSub.textContent = '';
+  if (docxModeBadge) {
+    docxModeBadge.textContent = 'Humanizing';
+    docxModeBadge.style.cssText = 'font-family:var(--font-sans);font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--accent-bg);color:var(--accent);text-transform:uppercase;letter-spacing:.6px;margin-left:4px;';
+  }
+  if (docxStartHumanizeBtn) docxStartHumanizeBtn.style.display = 'none';
+  if (docxDlDocxBtn) docxDlDocxBtn.disabled = true;
+  if (docxDlTxtBtn)  docxDlTxtBtn.disabled  = true;
+  if (docxFootInfo) docxFootInfo.textContent = 'Review and edit each section before downloading';
   docxModal.classList.add('open');
   document.body.style.overflow = 'hidden';
   renderPreviewSections();
 }
+
 function closeDocxModal() {
   if (!docxModal) return;
   docxModal.classList.remove('open');
@@ -3549,7 +3649,89 @@ function closeDocxModal() {
 if (docxModalClose) docxModalClose.addEventListener('click', closeDocxModal);
 docxModal && docxModal.addEventListener('click', function(e){ if (e.target === docxModal) closeDocxModal(); });
 
-/* ── Render preview sections in modal (before humanizing) ── */
+/* ── Preview Document button ── */
+if (docPreviewBtn) {
+  docPreviewBtn.addEventListener('click', function() {
+    if (!DOC.sections.length) { toast('Upload a document first.'); return; }
+    openDocxPreview();
+  });
+}
+
+/* ── "Humanize Now" button inside preview modal ── */
+if (docxStartHumanizeBtn) {
+  docxStartHumanizeBtn.addEventListener('click', function() {
+    var selected = DOC.sections.filter(function(s){ return s.selected; });
+    if (!selected.length) { toast('Select at least one section first.', 'error'); closeDocxModal(); return; }
+    // Switch modal to humanize mode
+    if (docxModalSub) docxModalSub.textContent = '';
+    if (docxModeBadge) {
+      docxModeBadge.textContent = 'Humanizing';
+      docxModeBadge.style.cssText = 'font-family:var(--font-sans);font-size:10px;font-weight:700;padding:2px 8px;border-radius:var(--r-full);background:var(--accent-bg);color:var(--accent);text-transform:uppercase;letter-spacing:.6px;margin-left:4px;';
+    }
+    if (docxStartHumanizeBtn) docxStartHumanizeBtn.style.display = 'none';
+    if (docxFootInfo) docxFootInfo.textContent = 'Review and edit each section before downloading';
+    renderPreviewSections();
+    humanizeAllSections();
+  });
+}
+
+/* ── Render PREVIEW ONLY mode — single column, original text, clean reading view ── */
+function renderPreviewOnly() {
+  if (!docxModalBody) return;
+  docxModalBody.innerHTML = '';
+
+  DOC.sections.forEach(function(sec) {
+    var wrap = document.createElement('div');
+    var isHeading = sec.type === 'heading';
+    wrap.className = 'preview-sec preview-only' + (isHeading ? ' type-heading' : '') + (sec.selected ? '' : ' is-skipped');
+    wrap.setAttribute('data-id', sec.id);
+
+    var typeLabel = isHeading ? ('H' + sec.level + ' Heading') : 'Paragraph';
+    var selLabel  = sec.selected ? 'Selected for humanizing' : 'Not selected (kept as-is)';
+    var selColor  = sec.selected ? 'color:var(--accent);' : 'color:var(--ink-4);';
+    var textClass = '';
+    if (isHeading) {
+      textClass = sec.level <= 1 ? 'pvh1' : sec.level === 2 ? 'pvh2' : sec.level === 3 ? 'pvh3' : 'pvh4';
+    }
+
+    wrap.innerHTML =
+      '<div class="preview-sec-head">' +
+        '<span class="preview-sec-label" style="' + selColor + '">' + typeLabel + ' · ' + selLabel + '</span>' +
+        '<button class="btn-nano ps-toggle-sel" data-id="' + sec.id + '" style="font-size:10.5px;">' +
+          (sec.selected ? '☑ Deselect' : '☐ Select') +
+        '</button>' +
+      '</div>' +
+      '<div class="preview-cols">' +
+        '<div class="preview-col preview-col-orig" style="background:var(--bg);color:var(--ink-2);border-right:none;">' +
+          '<div class="preview-col-text ' + textClass + '">' + escHtml(sec.text) + '</div>' +
+        '</div>' +
+      '</div>';
+
+    // Toggle selection from inside preview
+    var toggleBtn = wrap.querySelector('.ps-toggle-sel');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        sec.selected = !sec.selected;
+        toggleBtn.textContent = sec.selected ? '☑ Deselect' : '☐ Select';
+        wrap.className = 'preview-sec preview-only' + (isHeading ? ' type-heading' : '') + (sec.selected ? '' : ' is-skipped');
+        var lbl = wrap.querySelector('.preview-sec-label');
+        if (lbl) {
+          lbl.textContent = typeLabel + ' · ' + (sec.selected ? 'Selected for humanizing' : 'Not selected (kept as-is)');
+          lbl.style.color = sec.selected ? 'var(--accent)' : 'var(--ink-4)';
+        }
+        // Sync with the main section list
+        updateDocSelectionInfo();
+        var sItem = docSectionsList ? docSectionsList.querySelector('[data-id="' + sec.id + '"]') : null;
+        if (sItem) sItem.classList.toggle('selected', sec.selected);
+      });
+    }
+
+    docxModalBody.appendChild(wrap);
+  });
+}
+
+/* ── Render preview sections in modal (side-by-side, before humanizing) ── */
 function renderPreviewSections() {
   if (!docxModalBody) return;
   docxModalBody.innerHTML = '';
@@ -3630,15 +3812,35 @@ async function humanizeAllSections() {
     // Mark card as processing
     setCardState(sec.id, 'processing', 'Processing…');
 
+    // Small delay between sections to avoid Groq TPM rate limit
+    // (skip delay for the first section)
+    if (i > 0) await sleep(600);
+
     try {
-      var result = await callAPI(sec.text, 'humanize');
+      var result = await callDocAPI(sec.text);
       sec.humanized = result;
       done++;
       setCardHumanized(sec.id, result, sec);
     } catch(err) {
-      sec.humanized = sec.text; // fallback: keep original
-      setCardState(sec.id, 'error', 'Error — kept original');
-      console.warn('Section humanize failed:', err.message);
+      // If rate limited, wait longer and retry once
+      if (err.status === 429) {
+        if (docxProgText) docxProgText.textContent = 'Rate limit — waiting 12s before continuing…';
+        await sleep(12000);
+        try {
+          var retryResult = await callDocAPI(sec.text);
+          sec.humanized = retryResult;
+          done++;
+          setCardHumanized(sec.id, retryResult, sec);
+        } catch(retryErr) {
+          sec.humanized = sec.text;
+          setCardState(sec.id, 'error', 'Failed — kept original');
+          console.warn('Section retry failed:', retryErr.message);
+        }
+      } else {
+        sec.humanized = sec.text;
+        setCardState(sec.id, 'error', 'Failed — kept original');
+        console.warn('Section humanize failed:', err.message);
+      }
     }
   }
 
@@ -3722,14 +3924,17 @@ function setCardHumanized(id, text, sec) {
 async function rehumanizeSection(sec) {
   setCardState(sec.id, 'processing', 'Re-humanizing…');
   try {
-    var result = await callAPI(sec.text, 'humanize');
+    var result = await callDocAPI(sec.text);
     sec.humanized = result;
     sec.approved  = false;
     setCardHumanized(sec.id, result, sec);
     toast('Section re-humanized!', 'success');
   } catch(err) {
     setCardHumanized(sec.id, sec.humanized || sec.text, sec);
-    toast('Re-humanize failed. Please try again.', 'error');
+    var msg = err.status === 429
+      ? 'Rate limit reached. Wait a moment and try again.'
+      : 'Re-humanize failed. Please try again.';
+    toast(msg, 'error');
   }
 }
 
