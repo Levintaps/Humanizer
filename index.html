@@ -32,6 +32,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<!-- mammoth.js — reads .docx files in the browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<!-- docx.js — creates .docx files in the browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
 
 <style>
 /* ═══════════════════════════════════════════════════════════════════
@@ -1102,6 +1106,359 @@ textarea{font-family:var(--font-sans);}
     transition-duration: .01ms !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TESTIMONIAL CAROUSEL — infinite marquee ticker
+═══════════════════════════════════════════════════════════════════ */
+.testimonials-section {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 0 28px;
+  overflow: hidden;
+}
+.testimonials-label {
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--ink-4);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.testimonials-label::before,
+.testimonials-label::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--border-2);
+}
+.marquee-wrap { position: relative; }
+.marquee-wrap::before,
+.marquee-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.marquee-wrap::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+.marquee-wrap::after  { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 42s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.t-card {
+  flex-shrink: 0;
+  width: 290px;
+  margin: 0 8px;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  transition: border-color .2s, box-shadow .2s, transform .2s var(--ease);
+  cursor: default;
+}
+.t-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 20px var(--accent-glow);
+  transform: translateY(-2px);
+}
+.t-stars { color: #f59e0b; font-size: 12px; letter-spacing: 2px; margin-bottom: 8px; }
+.t-text  { font-size: 12.5px; color: var(--ink-2); line-height: 1.65; margin-bottom: 12px; font-style: italic; }
+.t-footer { display: flex; align-items: center; gap: 9px; }
+.t-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--accent-bg); display: flex; align-items: center;
+  justify-content: center; font-size: 13px; flex-shrink: 0;
+  border: 1.5px solid rgba(26,86,219,.15);
+}
+.t-info { flex: 1; min-width: 0; }
+.t-name { font-size: 12px; font-weight: 700; color: var(--ink); display: block; }
+.t-role { font-size: 10.5px; color: var(--ink-4); display: block; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-badge {
+  font-size: 9.5px; font-weight: 700; padding: 2px 7px;
+  border-radius: var(--r-full); background: var(--accent-bg);
+  color: var(--accent); white-space: nowrap; flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BEFORE / AFTER TOGGLE VIEW
+═══════════════════════════════════════════════════════════════════ */
+.ba-btn {
+  font-size: 11px; font-weight: 600; padding: 4px 9px;
+  border-radius: var(--r-sm); border: 1px solid var(--border-2);
+  background: var(--bg); color: var(--ink-3);
+  cursor: pointer; transition: all .15s var(--ease);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.ba-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.ba-btn.showing-orig { border-color: var(--amber); color: var(--amber); background: var(--amber-bg); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   HUMANIZATION STRENGTH METER
+═══════════════════════════════════════════════════════════════════ */
+.human-meter {
+  display: none; padding: 12px 16px;
+  background: var(--bg-2); border-top: 1px solid var(--border);
+  gap: 10px; align-items: center;
+}
+.human-meter.visible { display: flex; }
+.meter-label { font-size: 11px; font-weight: 700; color: var(--ink-4); white-space: nowrap; flex-shrink: 0; text-transform: uppercase; letter-spacing: .6px; }
+.meter-bar-wrap { flex: 1; height: 7px; background: var(--bg-4); border-radius: var(--r-full); overflow: hidden; }
+.meter-bar-fill {
+  height: 100%; border-radius: var(--r-full);
+  background: linear-gradient(90deg, #f87171, #fbbf24, #34d399);
+  transition: width .9s cubic-bezier(.34,1.56,.64,1);
+  width: 0%;
+}
+.meter-score { font-family: var(--font-serif); font-size: 1.05rem; color: var(--accent); flex-shrink: 0; min-width: 40px; text-align: right; }
+.meter-grade { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: var(--r-full); flex-shrink: 0; }
+.mg-excellent { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-bd); }
+.mg-good      { background: var(--accent-bg); color: var(--accent); border: 1px solid rgba(26,86,219,.2); }
+.mg-fair      { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-bd); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ROTATING INPUT TIPS
+═══════════════════════════════════════════════════════════════════ */
+.input-tip-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-top: 1px solid var(--border);
+  background: var(--bg-2); font-size: 11.5px; color: var(--ink-4);
+  min-height: 30px; transition: opacity .5s;
+}
+.input-tip-bar.fade { opacity: 0; }
+.tip-icon { font-size: 11px; flex-shrink: 0; }
+.input-tip-bar.hidden { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   AI SCORE CHECKER (ZeroGPT)
+═══════════════════════════════════════════════════════════════════ */
+.ai-score-bar {
+  display: none; padding: 10px 14px;
+  background: var(--bg-2); border-top: 1px solid var(--border);
+  align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.ai-score-bar.visible { display: flex; }
+.ai-check-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11.5px; font-weight: 700; padding: 5px 12px;
+  border-radius: var(--r); border: 1.5px solid var(--border-2);
+  background: var(--bg); color: var(--ink-3);
+  cursor: pointer; transition: all .15s var(--ease); flex-shrink: 0;
+}
+.ai-check-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+.ai-check-btn:disabled { opacity: .5; cursor: not-allowed; }
+.ai-score-result { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.ai-score-meter { flex: 1; min-width: 60px; height: 6px; background: var(--bg-4); border-radius: var(--r-full); overflow: hidden; }
+.ai-score-fill { height: 100%; border-radius: var(--r-full); transition: width .8s cubic-bezier(.34,1.56,.64,1); background: var(--green); }
+.ai-score-fill.med  { background: var(--amber); }
+.ai-score-fill.high { background: var(--red); }
+.ai-score-pct { font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--ink-3); flex-shrink: 0; }
+.ai-score-chip { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: var(--r-full); flex-shrink: 0; }
+.asc-low  { background: var(--green-bg); color: var(--green); }
+.asc-med  { background: var(--amber-bg); color: var(--amber); }
+.asc-high { background: var(--red-bg); color: var(--red); }
+.ai-score-spin { display: none; align-items: center; gap: 5px; font-size: 11.5px; color: var(--ink-4); }
+.ai-score-spin.visible { display: flex; }
+.ai-ext-links { display: flex; gap: 5px; flex-wrap: wrap; }
+.ai-ext-link {
+  font-size: 10.5px; font-weight: 600; padding: 3px 8px;
+  border-radius: var(--r-sm); border: 1px solid var(--border-2);
+  background: var(--bg); color: var(--ink-4); text-decoration: none;
+  transition: all .14s var(--ease); display: inline-flex; align-items: center; gap: 3px;
+}
+.ai-ext-link:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SESSION WORD COUNTER (in stats strip)
+═══════════════════════════════════════════════════════════════════ */
+.session-counter {
+  text-align: center; padding: 9px 16px;
+  font-size: 11.5px; color: var(--ink-4);
+  border-top: 1px solid var(--border);
+  background: var(--bg-2);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.session-num { font-family: var(--font-serif); font-size: 1rem; color: var(--accent); font-weight: 400; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   COPY FORMAT DROPDOWN
+═══════════════════════════════════════════════════════════════════ */
+.copy-wrap { position: relative; display: inline-flex; }
+.copy-menu {
+  position: absolute; bottom: calc(100% + 6px); left: 0;
+  background: var(--bg); border: 1px solid var(--border-2);
+  border-radius: var(--r); box-shadow: var(--sh-lg);
+  min-width: 150px; z-index: 100; overflow: hidden;
+  display: none; animation: settleDown .16s var(--ease-out);
+}
+.copy-menu.open { display: block; }
+.copy-opt {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 13px; font-size: 12px; font-weight: 600;
+  color: var(--ink-2); cursor: pointer; transition: background .12s;
+  border: none; background: none; width: 100%; text-align: left;
+}
+.copy-opt:hover { background: var(--accent-bg); color: var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   KEYBOARD SHORTCUTS
+═══════════════════════════════════════════════════════════════════ */
+.shortcuts-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; color: var(--ink-4);
+  cursor: pointer; padding: 3px 7px; border-radius: var(--r-sm);
+  transition: all .14s; border: 1px solid transparent; background: none;
+}
+.shortcuts-btn:hover { color: var(--accent); background: var(--accent-bg); border-color: rgba(26,86,219,.2); }
+.kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 1px 5px; border-radius: 4px;
+  background: var(--bg-3); border: 1px solid var(--border-2);
+  font-size: 10px; font-family: var(--font-mono); color: var(--ink-3); line-height: 1.6;
+}
+.shortcut-rows { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.shortcut-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 12px; background: var(--bg-2);
+  border-radius: var(--r); border: 1px solid var(--border);
+}
+.shortcut-desc { font-size: 13px; color: var(--ink-2); font-weight: 500; }
+.shortcut-keys { display: flex; gap: 4px; align-items: center; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   FILE UPLOAD — DROP ZONE
+═══════════════════════════════════════════════════════════════════ */
+.file-section { max-width:1200px; margin:0 auto; padding:0 16px 32px; }
+@media(min-width:640px){ .file-section{padding:0 24px 40px;} }
+.file-section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:10px; }
+.file-section-title { font-family:var(--font-serif); font-size:1.15rem; font-weight:400; color:var(--ink); display:flex; align-items:center; gap:8px; }
+.file-section-badge { font-size:10px; font-weight:700; padding:2px 8px; border-radius:var(--r-full); background:var(--accent-bg); color:var(--accent); text-transform:uppercase; letter-spacing:.6px; }
+.drop-zone {
+  border:2px dashed var(--border-2); border-radius:var(--r-xl);
+  padding:36px 24px; text-align:center; cursor:pointer;
+  transition:all .22s var(--ease); background:var(--bg);
+  position:relative; overflow:hidden;
+}
+.drop-zone:hover,.drop-zone.drag-over { border-color:var(--accent); background:var(--accent-bg); transform:scale(1.005); }
+.drop-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+.drop-icon { font-size:34px; margin-bottom:10px; display:block; transition:transform .3s var(--ease-spring); }
+.drop-zone:hover .drop-icon { transform:translateY(-4px) scale(1.1); }
+.drop-title { font-size:15px; font-weight:700; color:var(--ink); margin-bottom:4px; }
+.drop-sub { font-size:13px; color:var(--ink-4); margin-bottom:12px; }
+.drop-formats { display:inline-flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+.drop-fmt { font-size:11px; font-weight:700; padding:3px 9px; border-radius:var(--r-full); background:var(--bg-3); color:var(--ink-3); border:1px solid var(--border-2); }
+/* File info bar */
+.file-info-bar { display:none; align-items:center; gap:12px; padding:12px 16px; background:var(--bg); border:1px solid var(--border); border-radius:var(--r-lg); margin-bottom:14px; flex-wrap:wrap; }
+.file-info-bar.visible { display:flex; animation:fadeUp .3s var(--ease-out) both; }
+.file-icon-wrap { width:38px; height:38px; border-radius:var(--r); background:rgba(26,86,219,.1); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.file-details { flex:1; min-width:0; }
+.file-name { font-size:13.5px; font-weight:700; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; }
+.file-meta { font-size:11.5px; color:var(--ink-4); margin-top:2px; display:block; }
+.file-actions { display:flex; gap:6px; flex-shrink:0; }
+.file-clear-btn { font-size:11.5px; font-weight:600; padding:5px 11px; border-radius:var(--r-sm); border:1px solid var(--border-2); background:var(--bg); color:var(--red); cursor:pointer; transition:all .15s; }
+.file-clear-btn:hover { background:var(--red-bg); border-color:var(--red); }
+/* Sections list */
+.doc-sections-wrap { display:none; margin-bottom:14px; }
+.doc-sections-wrap.visible { display:block; animation:fadeUp .3s var(--ease-out) both; }
+.doc-sections-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px; }
+.doc-sections-label { font-size:12px; font-weight:700; color:var(--ink-3); text-transform:uppercase; letter-spacing:.7px; }
+.doc-select-actions { display:flex; gap:6px; }
+.doc-sel-btn { font-size:11px; font-weight:600; padding:4px 10px; border-radius:var(--r-sm); border:1px solid var(--border-2); background:var(--bg); color:var(--ink-3); cursor:pointer; transition:all .14s; }
+.doc-sel-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-bg); }
+.doc-sections-list { display:flex; flex-direction:column; gap:5px; max-height:300px; overflow-y:auto; padding-right:4px; }
+.doc-section-item { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:var(--bg); border:1.5px solid var(--border); border-radius:var(--r); cursor:pointer; transition:all .16s var(--ease); user-select:none; }
+.doc-section-item:hover { border-color:var(--border-2); background:var(--bg-2); }
+.doc-section-item.selected { border-color:var(--accent); background:var(--accent-bg); }
+.doc-section-check { width:18px; height:18px; border-radius:5px; border:2px solid var(--border-2); background:var(--bg); flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; transition:all .15s; font-size:11px; color:transparent; }
+.doc-section-item.selected .doc-section-check { background:var(--accent); border-color:var(--accent); color:#fff; }
+.doc-section-content { flex:1; min-width:0; }
+.doc-section-type { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:var(--ink-4); margin-bottom:2px; display:block; }
+.doc-section-type.is-heading { color:var(--accent); }
+.doc-section-preview { font-size:13px; color:var(--ink-2); line-height:1.5; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.doc-section-wc { font-family:var(--font-mono); font-size:10.5px; color:var(--ink-4); flex-shrink:0; margin-top:2px; }
+/* Humanize doc bar */
+.doc-humanize-bar { display:none; align-items:center; gap:10px; padding:12px 16px; background:var(--bg-2); border:1px solid var(--border); border-radius:var(--r-lg); flex-wrap:wrap; }
+.doc-humanize-bar.visible { display:flex; animation:fadeUp .25s var(--ease-out) both; }
+.doc-selected-info { flex:1; font-size:13px; color:var(--ink-3); }
+.doc-selected-info strong { color:var(--accent); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   DOCX PREVIEW MODAL
+═══════════════════════════════════════════════════════════════════ */
+.docx-modal-overlay { display:none; position:fixed; inset:0; z-index:2000; background:rgba(14,14,18,.62); backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:12px; }
+.docx-modal-overlay.open { display:flex; animation:fadeIn .2s var(--ease-out); }
+.docx-modal { background:var(--bg); width:100%; max-width:1080px; max-height:94vh; border-radius:var(--r-xl); box-shadow:var(--sh-xl); display:flex; flex-direction:column; overflow:hidden; animation:modalIn .3s var(--ease-spring); }
+.docx-modal-head { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; border-bottom:1px solid var(--border); background:var(--bg); flex-shrink:0; flex-wrap:wrap; gap:10px; }
+.docx-modal-title { font-family:var(--font-serif); font-size:1.1rem; color:var(--ink); display:flex; align-items:center; gap:8px; }
+.docx-modal-title-sub { font-family:var(--font-sans); font-size:12px; color:var(--ink-4); font-weight:400; }
+.docx-modal-head-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+/* Progress bar */
+.docx-prog-wrap { padding:8px 20px; border-bottom:1px solid var(--border); background:var(--bg-2); flex-shrink:0; display:none; }
+.docx-prog-wrap.visible { display:block; }
+.docx-prog-bar { height:4px; background:var(--bg-4); border-radius:var(--r-full); overflow:hidden; margin-bottom:5px; }
+.docx-prog-fill { height:100%; background:linear-gradient(90deg,var(--accent),#818cf8,var(--accent)); background-size:300% 100%; animation:progAnim 1.4s ease-in-out infinite; border-radius:var(--r-full); transition:width .5s var(--ease); }
+.docx-prog-text { font-size:11.5px; color:var(--ink-3); font-weight:600; display:flex; align-items:center; gap:6px; }
+/* Modal body */
+.docx-modal-body { flex:1; overflow-y:auto; padding:16px 20px; display:flex; flex-direction:column; gap:10px; }
+/* Preview section card */
+.preview-sec { border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden; transition:border-color .2s, box-shadow .2s; }
+.preview-sec.is-humanized { border-color:var(--green); }
+.preview-sec.is-processing { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-bg); }
+.preview-sec.is-skipped { opacity:.5; }
+.preview-sec.is-approved { border-color:var(--green); box-shadow:0 0 0 3px var(--green-bg); }
+.preview-sec-head { display:flex; align-items:center; justify-content:space-between; padding:7px 14px; background:var(--bg-2); border-bottom:1px solid var(--border); gap:10px; flex-wrap:wrap; }
+.preview-sec-label { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--ink-4); display:flex; align-items:center; gap:5px; }
+.preview-sec-label.lbl-humanized { color:var(--green); }
+.preview-sec-label.lbl-processing { color:var(--accent); }
+.preview-sec-label.lbl-approved { color:var(--green); }
+.preview-sec-label.lbl-skipped { color:var(--ink-4); }
+.preview-sec-btns { display:flex; gap:5px; }
+/* Side-by-side columns */
+.preview-cols { display:grid; grid-template-columns:1fr 1fr; }
+@media(max-width:600px){ .preview-cols { grid-template-columns:1fr; } }
+.preview-col { padding:12px 14px; font-size:13.5px; line-height:1.75; }
+.preview-col-orig { background:var(--bg-2); color:var(--ink-3); border-right:1px solid var(--border); }
+.preview-col-edit { background:var(--bg); }
+.preview-col-lbl { font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.7px; color:var(--ink-4); margin-bottom:6px; display:block; }
+.preview-col-text { font-size:13.5px; line-height:1.75; color:var(--ink-3); white-space:pre-wrap; word-break:break-word; }
+.preview-col-ta { width:100%; border:none; background:transparent; font-family:var(--font-sans); font-size:13.5px; line-height:1.75; color:var(--ink); resize:vertical; outline:none; min-height:60px; padding:0; }
+.preview-col-ta:focus { color:var(--ink); }
+.preview-col-loading { display:flex; align-items:center; justify-content:center; gap:8px; color:var(--ink-4); font-size:12.5px; padding:24px; }
+/* Heading previews */
+.pvh1 { font-family:var(--font-serif); font-size:1.3rem; font-weight:400; }
+.pvh2 { font-family:var(--font-serif); font-size:1.1rem; font-weight:400; }
+.pvh3 { font-size:1rem; font-weight:700; }
+.pvh4 { font-size:.9rem; font-weight:700; color:var(--ink-2); }
+/* Modal footer */
+.docx-modal-foot { border-top:1px solid var(--border); padding:12px 20px; background:var(--bg-2); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; gap:12px; flex-wrap:wrap; }
+.docx-foot-info { font-size:12.5px; color:var(--ink-3); display:flex; align-items:center; gap:6px; }
+.docx-foot-info strong { color:var(--green); }
+.docx-dl-btns { display:flex; gap:8px; flex-wrap:wrap; }
+/* Buttons */
+.btn-dl-docx { display:inline-flex; align-items:center; gap:6px; background:var(--accent); color:#fff; border:none; border-radius:var(--r); padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer; transition:all .18s var(--ease); box-shadow:0 2px 8px var(--accent-glow); font-family:var(--font-sans); }
+.btn-dl-docx:hover { background:var(--accent-2); transform:translateY(-1px); }
+.btn-dl-docx:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+.btn-dl-txt { display:inline-flex; align-items:center; gap:6px; background:var(--bg); color:var(--ink-2); border:1.5px solid var(--border-2); border-radius:var(--r); padding:9px 14px; font-size:13px; font-weight:600; cursor:pointer; transition:all .16s; font-family:var(--font-sans); }
+.btn-dl-txt:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-bg); }
+.btn-dl-txt:disabled { opacity:.45; cursor:not-allowed; }
+.btn-rehumanize { font-size:11px; font-weight:700; padding:4px 10px; border-radius:var(--r-sm); border:1px solid var(--border-2); background:var(--bg); color:var(--ink-3); cursor:pointer; transition:all .14s; display:inline-flex; align-items:center; gap:4px; font-family:var(--font-sans); }
+.btn-rehumanize:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-bg); }
+.btn-rehumanize:disabled { opacity:.5; cursor:not-allowed; }
+.btn-approve { font-size:11px; font-weight:700; padding:4px 10px; border-radius:var(--r-sm); border:1px solid var(--green-bd); background:var(--green-bg); color:var(--green); cursor:pointer; transition:all .14s; display:inline-flex; align-items:center; gap:4px; font-family:var(--font-sans); }
+.btn-approve:hover,.btn-approve.approved { background:var(--green); color:#fff; border-color:var(--green); }
 </style>
 </head>
 <body>
@@ -1176,6 +1533,33 @@ textarea{font-family:var(--font-sans);}
     <div class="trust-item"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd"/></svg>Results in seconds</div>
   </div>
 </div>
+
+<!-- TESTIMONIAL CAROUSEL
+<section class="testimonials-section" aria-label="User testimonials">
+  <div class="testimonials-label">What users are saying</div>
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marqueeTrack">
+
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"I submitted my thesis chapter after using Your Humanizer and my adviser said it read very naturally. The Thesis mode is a game changer."</p><div class="t-footer"><div class="t-avatar">👩‍🎓</div><div class="t-info"><span class="t-name">Maria Santos</span><span class="t-role">Graduate Student, UP Manila</span></div><span class="t-badge">Thesis</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"GPTZero used to flag everything I wrote with AI. After using Heavy mode, my score dropped to almost zero. Incredible tool."</p><div class="t-footer"><div class="t-avatar">👨‍💼</div><div class="t-info"><span class="t-name">James Rivera</span><span class="t-role">Content Writer, Freelance</span></div><span class="t-badge">Blog Post</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"As a non-native English speaker, the Professional mode helps me write business emails that sound confident and natural. My clients are impressed."</p><div class="t-footer"><div class="t-avatar">👩‍💻</div><div class="t-info"><span class="t-name">Ana Reyes</span><span class="t-role">Virtual Assistant, Cebu</span></div><span class="t-badge">Email</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★☆</div><p class="t-text">"The Research Paper mode actually understands academic writing. It keeps my third-person voice and technical terms intact while removing AI patterns."</p><div class="t-footer"><div class="t-avatar">👨‍🔬</div><div class="t-info"><span class="t-name">Dr. Ramon Cruz</span><span class="t-role">Research Faculty, DLSU</span></div><span class="t-badge">Research</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"Finally a free tool that actually works. No word limits, no account needed, and the results are genuinely human-sounding. Use it every day."</p><div class="t-footer"><div class="t-avatar">📝</div><div class="t-info"><span class="t-name">Kat Mendoza</span><span class="t-role">College Student, Ateneo</span></div><span class="t-badge">Academic</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"I run a blog and use the Blog Post mode. The output sounds like I actually wrote it — casual, engaging, with varied rhythm. My readers noticed the improvement."</p><div class="t-footer"><div class="t-avatar">✍️</div><div class="t-info"><span class="t-name">Carlo Bautista</span><span class="t-role">Lifestyle Blogger</span></div><span class="t-badge">Blog</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"The diff view is so useful — I can see exactly what changed word by word. Great for learning how to write more naturally too."</p><div class="t-footer"><div class="t-avatar">🎓</div><div class="t-info"><span class="t-name">Sofia Lim</span><span class="t-role">BS Computer Science, UST</span></div><span class="t-badge">Casual</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"Dark mode + mobile support = perfect. I use it on my phone between classes. Quick, clean, and always works."</p><div class="t-footer"><div class="t-avatar">📱</div><div class="t-info"><span class="t-name">Paolo Tan</span><span class="t-role">Senior High Student</span></div><span class="t-badge">Simple</span></div></div>
+
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"I submitted my thesis chapter after using Your Humanizer and my adviser said it read very naturally. The Thesis mode is a game changer."</p><div class="t-footer"><div class="t-avatar">👩‍🎓</div><div class="t-info"><span class="t-name">Maria Santos</span><span class="t-role">Graduate Student, UP Manila</span></div><span class="t-badge">Thesis</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"GPTZero used to flag everything I wrote with AI. After using Heavy mode, my score dropped to almost zero. Incredible tool."</p><div class="t-footer"><div class="t-avatar">👨‍💼</div><div class="t-info"><span class="t-name">James Rivera</span><span class="t-role">Content Writer, Freelance</span></div><span class="t-badge">Blog Post</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"As a non-native English speaker, the Professional mode helps me write business emails that sound confident and natural. My clients are impressed."</p><div class="t-footer"><div class="t-avatar">👩‍💻</div><div class="t-info"><span class="t-name">Ana Reyes</span><span class="t-role">Virtual Assistant, Cebu</span></div><span class="t-badge">Email</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★☆</div><p class="t-text">"The Research Paper mode actually understands academic writing. It keeps my third-person voice and technical terms intact while removing AI patterns."</p><div class="t-footer"><div class="t-avatar">👨‍🔬</div><div class="t-info"><span class="t-name">Dr. Ramon Cruz</span><span class="t-role">Research Faculty, DLSU</span></div><span class="t-badge">Research</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"Finally a free tool that actually works. No word limits, no account needed, and the results are genuinely human-sounding. Use it every day."</p><div class="t-footer"><div class="t-avatar">📝</div><div class="t-info"><span class="t-name">Kat Mendoza</span><span class="t-role">College Student, Ateneo</span></div><span class="t-badge">Academic</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"I run a blog and use the Blog Post mode. The output sounds like I actually wrote it — casual, engaging, with varied rhythm. My readers noticed the improvement."</p><div class="t-footer"><div class="t-avatar">✍️</div><div class="t-info"><span class="t-name">Carlo Bautista</span><span class="t-role">Lifestyle Blogger</span></div><span class="t-badge">Blog</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"The diff view is so useful — I can see exactly what changed word by word. Great for learning how to write more naturally too."</p><div class="t-footer"><div class="t-avatar">🎓</div><div class="t-info"><span class="t-name">Sofia Lim</span><span class="t-role">BS Computer Science, UST</span></div><span class="t-badge">Casual</span></div></div>
+      <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"Dark mode + mobile support = perfect. I use it on my phone between classes. Quick, clean, and always works."</p><div class="t-footer"><div class="t-avatar">📱</div><div class="t-info"><span class="t-name">Paolo Tan</span><span class="t-role">Senior High Student</span></div><span class="t-badge">Simple</span></div></div>
+    </div>
+  </div>
+</section>-->
 
 <!-- TOOL -->
 <main id="tool" class="tool-section">
@@ -1272,6 +1656,10 @@ textarea{font-family:var(--font-sans);}
             <div class="pw-icon">🤖</div>
             <div class="pw-text"><strong>AI patterns detected</strong> — <span id="patternDetail">Found common AI phrases. Humanizing will remove these.</span></div>
           </div>
+          <div class="input-tip-bar" id="inputTipBar">
+            <span class="tip-icon">💡</span>
+            <span id="inputTipText">Tip: Press Ctrl+Enter to humanize instantly</span>
+          </div>
         </div>
         <div class="pane-bottom">
           <div class="pane-actions">
@@ -1296,6 +1684,7 @@ textarea{font-family:var(--font-sans);}
           <div class="pane-label"><span class="pane-dot dot-green"></span>Humanized Text</div>
           <div class="pane-meta">
             <span class="wc-badge" id="outputWC">0 words</span>
+            <button class="ba-btn" id="baBtn" title="Toggle before/after view" style="display:none;">⇄ Before/After</button>
           </div>
         </div>
         <div class="pane-body">
@@ -1313,11 +1702,42 @@ textarea{font-family:var(--font-sans);}
         </div>
         <div class="pane-bottom">
           <div class="pane-actions">
-            <button class="btn-nano" id="copyBtn">📄 Copy</button>
+            <div class="copy-wrap">
+              <button class="btn-nano" id="copyBtn">📄 Copy</button>
+              <div class="copy-menu" id="copyMenu">
+                <button class="copy-opt" id="copyPlain">📄 Plain Text</button>
+                <button class="copy-opt" id="copyMarkdown">✦ Markdown</button>
+                <button class="copy-opt" id="copyHtml">〈〉 HTML</button>
+              </div>
+            </div>
             <button class="btn-nano" id="downloadBtn">⬇ Save</button>
             <button class="btn-nano" id="diffBtn">🔍 Changes</button>
           </div>
-          <span class="chip chip-good" id="humanChip">Human ✓</span>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button class="shortcuts-btn" id="shortcutsBtn" title="Keyboard shortcuts">⌨ <span class="kbd">?</span></button>
+            <span class="chip chip-good" id="humanChip">Human ✓</span>
+          </div>
+        </div>
+        <!-- AI SCORE BAR -->
+        <div class="ai-score-bar" id="aiScoreBar">
+          <button class="ai-check-btn" id="aiCheckBtn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Check AI Score
+          </button>
+          <div class="ai-score-spin" id="aiScoreSpin">
+            <div class="status-pulse" style="width:6px;height:6px;"></div>
+            Checking…
+          </div>
+          <div class="ai-score-result" id="aiScoreResult" style="display:none;">
+            <div class="ai-score-meter"><div class="ai-score-fill" id="aiScoreFill"></div></div>
+            <span class="ai-score-pct" id="aiScorePct"></span>
+            <span class="ai-score-chip" id="aiScoreChip"></span>
+          </div>
+          <div class="ai-ext-links">
+            <a class="ai-ext-link" href="https://gptzero.me" target="_blank" rel="noopener">GPTZero ↗</a>
+            <a class="ai-ext-link" href="https://www.zerogpt.com" target="_blank" rel="noopener">ZeroGPT ↗</a>
+            <a class="ai-ext-link" href="https://www.scribbr.com/ai-detector/" target="_blank" rel="noopener">Scribbr ↗</a>
+          </div>
         </div>
       </div>
 
@@ -1351,6 +1771,20 @@ textarea{font-family:var(--font-sans);}
       <div class="stat-cell"><span class="stat-val" id="stRead">—</span><span class="stat-lbl">Readability</span><span class="stat-sub" id="stReadSub"></span></div>
       <div class="stat-cell"><span class="stat-val" id="stChange">—</span><span class="stat-lbl">% Changed</span></div>
       <div class="stat-cell"><span class="stat-val" id="stTime">—</span><span class="stat-lbl">Time</span></div>
+    </div>
+
+    <!-- HUMANIZATION STRENGTH METER -->
+    <div class="human-meter" id="humanMeter">
+      <span class="meter-label">Human-Like</span>
+      <div class="meter-bar-wrap"><div class="meter-bar-fill" id="meterFill"></div></div>
+      <span class="meter-score" id="meterScore"></span>
+      <span class="meter-grade" id="meterGrade"></span>
+    </div>
+
+    <!-- SESSION WORD COUNTER -->
+    <div class="session-counter" id="sessionCounter">
+      <span>📊</span>
+      <span>Session total: <strong id="sessionWords">0</strong> words humanized</span>
     </div>
 
     <!-- SETTINGS -->
@@ -1409,8 +1843,116 @@ textarea{font-family:var(--font-sans);}
       </div>
     </div>
 
-  </div><!-- /main-card -->
+</div><!-- /main-card -->
 </main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FILE UPLOAD SECTION
+═══════════════════════════════════════════════════════════════════ -->
+<div class="file-section" id="fileSection">
+  <div class="file-section-header">
+    <div class="file-section-title">
+      📄 Document Humanizer
+      <span class="file-section-badge">New</span>
+    </div>
+    <span style="font-size:12px;color:var(--ink-4);">Upload a .docx or .txt file to humanize by section</span>
+  </div>
+
+  <!-- Uploaded file info -->
+  <div class="file-info-bar" id="fileInfoBar">
+    <div class="file-icon-wrap" id="fileIconWrap">📄</div>
+    <div class="file-details">
+      <span class="file-name" id="fileName">document.docx</span>
+      <span class="file-meta" id="fileMeta">0 sections • 0 words</span>
+    </div>
+    <div class="file-actions">
+      <button class="btn-nano" id="fileReuploadBtn">↑ Change</button>
+      <button class="file-clear-btn" id="fileClearBtn">✕ Remove</button>
+    </div>
+  </div>
+
+  <!-- Drop zone (shown when no file) -->
+  <div class="drop-zone" id="dropZone">
+    <input type="file" id="fileInput" accept=".docx,.txt" aria-label="Upload document"/>
+    <span class="drop-icon">📂</span>
+    <div class="drop-title">Drop your document here</div>
+    <div class="drop-sub">or click to browse your files</div>
+    <div class="drop-formats">
+      <span class="drop-fmt">.docx</span>
+      <span class="drop-fmt">.txt</span>
+    </div>
+  </div>
+
+  <!-- Sections list -->
+  <div class="doc-sections-wrap" id="docSectionsWrap">
+    <div class="doc-sections-header">
+      <span class="doc-sections-label">📋 Select sections to humanize</span>
+      <div class="doc-select-actions">
+        <button class="doc-sel-btn" id="selectAllBtn">Select All</button>
+        <button class="doc-sel-btn" id="selectNoneBtn">Clear</button>
+        <button class="doc-sel-btn" id="selectParasBtn">Paragraphs Only</button>
+      </div>
+    </div>
+    <div class="doc-sections-list" id="docSectionsList"></div>
+  </div>
+
+  <!-- Humanize document bar -->
+  <div class="doc-humanize-bar" id="docHumanizeBar">
+    <div class="doc-selected-info" id="docSelectedInfo">
+      Select sections above to humanize
+    </div>
+    <button class="btn-primary" id="docHumanizeBtn" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="14" height="14"><path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+      Humanize Document
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DOCX PREVIEW MODAL
+═══════════════════════════════════════════════════════════════════ -->
+<div class="docx-modal-overlay" id="docxModal" role="dialog" aria-modal="true" aria-labelledby="docx-modal-title">
+  <div class="docx-modal">
+    <!-- Head -->
+    <div class="docx-modal-head">
+      <div class="docx-modal-title">
+        📄 <span id="docxModalFileName">Document Preview</span>
+        <span class="docx-modal-title-sub" id="docxModalSub"></span>
+      </div>
+      <div class="docx-modal-head-actions">
+        <button class="btn-nano" id="docxRehumanizeAllBtn" style="display:none;">🔄 Re-humanize All</button>
+        <button class="modal-close" id="docxModalClose" aria-label="Close">×</button>
+      </div>
+    </div>
+    <!-- Progress -->
+    <div class="docx-prog-wrap" id="docxProgWrap">
+      <div class="docx-prog-bar"><div class="docx-prog-fill" id="docxProgFill"></div></div>
+      <div class="docx-prog-text">
+        <div class="status-pulse" style="width:6px;height:6px;"></div>
+        <span id="docxProgText">Processing sections…</span>
+      </div>
+    </div>
+    <!-- Body — sections render here -->
+    <div class="docx-modal-body" id="docxModalBody"></div>
+    <!-- Footer -->
+    <div class="docx-modal-foot">
+      <div class="docx-foot-info">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span id="docxFootInfo">Review and edit each section before downloading</span>
+      </div>
+      <div class="docx-dl-btns">
+        <button class="btn-dl-txt" id="docxDlTxtBtn" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download .txt
+        </button>
+        <button class="btn-dl-docx" id="docxDlDocxBtn" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Download .docx
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- FEATURES -->
 <section class="features-section" aria-labelledby="features-h2" id="features">
@@ -1528,6 +2070,26 @@ textarea{font-family:var(--font-sans);}
     <span>Built with ❤️ for writers &amp; students worldwide.</span>
   </div>
 </footer>
+
+<!-- KEYBOARD SHORTCUTS MODAL -->
+<div class="modal-overlay" id="shortcutsModal" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="shortcuts-title">⌨ Keyboard Shortcuts</div>
+      <button class="modal-close" data-close="shortcutsModal" aria-label="Close">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="shortcut-rows">
+        <div class="shortcut-row"><span class="shortcut-desc">Humanize text</span><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">Enter</span></div></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Copy output</span><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">Shift</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">C</span></div></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Clear all</span><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">Shift</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">X</span></div></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Load sample text</span><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">Shift</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">S</span></div></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Toggle diff view</span><div class="shortcut-keys"><span class="kbd">Ctrl</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">Shift</span><span style="color:var(--ink-4);font-size:11px;">+</span><span class="kbd">D</span></div></div>
+        <div class="shortcut-row"><span class="shortcut-desc">Show shortcuts</span><div class="shortcut-keys"><span class="kbd">?</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- TOASTS -->
 <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
@@ -2048,7 +2610,8 @@ async function callAPI(text, mode) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   PROCESS
+   PROCESS — single consolidated function
+   (combines original logic + skeleton + streaming + new UI updates)
 ══════════════════════════════════════════════════════════════════ */
 async function process(mode) {
   if (S.busy) return;
@@ -2059,28 +2622,64 @@ async function process(mode) {
 
   S.lastMode  = mode;
   S.lastInput = text;
-  setLoading(true, mode==='paraphrase'?'Paraphrasing your text…':'Humanizing your text…');
+  setLoading(true, mode==='paraphrase' ? 'Paraphrasing your text…' : 'Humanizing your text…');
   closeDiff();
+
+  // Reset before/after state
+  baShowingOrig = false;
+  if (baBtnEl) { baBtnEl.style.display = 'none'; baBtnEl.textContent = '⇄ Before/After'; baBtnEl.classList.remove('showing-orig'); }
+  if (aiScoreBarEl) aiScoreBarEl.classList.remove('visible');
+  if (aiScoreResultEl) aiScoreResultEl.style.display = 'none';
+  if (humanMeterEl) humanMeterEl.classList.remove('visible');
 
   var t0 = Date.now();
   try {
     var result = await callAPI(text, mode);
-    if (outputEl) outputEl.value = result;
+
+    // Hide skeleton, show output
+    if (skeletonWrap) skeletonWrap.classList.remove('visible');
+    if (outputEl) outputEl.style.display = '';
+
+    // Stream text in word by word
+    streamText(outputEl, result, function() {
+      triggerOutputSuccess();
+      updateOutputUI();
+    });
+
     S.lastOriginal = text;
     S.lastOutput   = result;
-    updateOutputUI();
     updateStats(text, result, Date.now()-t0);
     addHistory(text, result, S.style, mode);
     toast('✓ '+(mode==='paraphrase'?'Paraphrased':'Humanized')+' successfully!','success');
+
+    // Show new UI elements after success
+    if (baBtnEl) baBtnEl.style.display = '';
+    if (aiScoreBarEl) aiScoreBarEl.classList.add('visible');
+
+    // Session word counter
+    var outWC = result.trim().split(/\s+/).filter(Boolean).length;
+    addSessionWords(outWC);
+
+    // Strength meter — read score after a tick so stats have updated
+    setTimeout(function(){
+      var humanEl = document.getElementById('stHuman');
+      if (humanEl) {
+        var scoreNum = parseFloat(humanEl.textContent) || 85;
+        showMeter(Math.round(scoreNum));
+      }
+    }, 700);
+
   } catch(err) {
     console.error('Humanizer error:', err);
+    if (skeletonWrap) skeletonWrap.classList.remove('visible');
+    if (outputEl) outputEl.style.display = '';
     if (err.status===429 && err.body && err.body.error==='RATE_LIMIT_ALL') {
       if (limitBanner) { limitBanner.classList.add('visible'); limitBanner.scrollIntoView({behavior:'smooth',block:'center'}); }
     } else {
       var msg = err.status===401 ? 'API key error — check your Vercel environment variables.'
               : err.status===429 ? 'Rate limit reached. Please wait a moment and try again.'
               : (err.status===500||err.status===503) ? 'Server busy — try again in a few seconds.'
-              : err.message||'Something went wrong. Please try again.';
+              : err.message || 'Something went wrong. Please try again.';
       toast('⚠ '+msg,'error',5000);
     }
   } finally { setLoading(false); }
@@ -2376,54 +2975,6 @@ popStat = function(el, val) {
   }
 };
 
-/* ── 6. Patch process() to use streaming + success animation ── */
-var _origProcess = process;
-process = async function(mode) {
-  if (S.busy) return;
-  var text = inputEl ? inputEl.value.trim() : '';
-  if (!text) { toast('Please enter some text first!','error'); return; }
-  if (text.split(/\s+/).filter(Boolean).length < 3) { toast('Please enter at least a few words.','error'); return; }
-  if (text.length > MAX_CH) { toast('Text too long. Max '+MAX_CH.toLocaleString()+' characters.','error'); return; }
-
-  S.lastMode  = mode;
-  S.lastInput = text;
-  setLoading(true, mode==='paraphrase'?'Paraphrasing your text…':'Humanizing your text…');
-  closeDiff();
-
-  var t0 = Date.now();
-  try {
-    var result = await callAPI(text, mode);
-    // Hide skeleton first
-    if (skeletonWrap) skeletonWrap.classList.remove('visible');
-    if (outputEl) outputEl.style.display = '';
-
-    // Stream the text in
-    streamText(outputEl, result, function() {
-      triggerOutputSuccess();
-      updateOutputUI();
-    });
-
-    S.lastOriginal = text;
-    S.lastOutput   = result;
-    updateStats(text, result, Date.now()-t0);
-    addHistory(text, result, S.style, mode);
-    toast('✓ '+(mode==='paraphrase'?'Paraphrased':'Humanized')+' successfully!','success');
-  } catch(err) {
-    console.error('Humanizer error:', err);
-    if (skeletonWrap) skeletonWrap.classList.remove('visible');
-    if (outputEl) outputEl.style.display = '';
-    if (err.status===429 && err.body && err.body.error==='RATE_LIMIT_ALL') {
-      if (limitBanner) { limitBanner.classList.add('visible'); limitBanner.scrollIntoView({behavior:'smooth',block:'center'}); }
-    } else {
-      var msg = err.status===401 ? 'API key error — check your Vercel environment variables.'
-              : err.status===429 ? 'Rate limit reached. Please wait a moment and try again.'
-              : (err.status===500||err.status===503) ? 'Server busy — try again in a few seconds.'
-              : err.message||'Something went wrong. Please try again.';
-      toast('⚠ '+msg,'error',5000);
-    }
-  } finally { setLoading(false); }
-};
-
 /* ── 7. SCROLL REVEAL via IntersectionObserver ── */
 (function(){
   if (!('IntersectionObserver' in window)) {
@@ -2463,6 +3014,845 @@ if (themeBtn) {
       themeBtn.style.transform = '';
       themeBtn.style.transition = 'transform .4s var(--ease-spring)';
     }, 50);
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   NEW FEATURES
+══════════════════════════════════════════════════════════════════ */
+
+/* ── SESSION WORD COUNTER ── */
+var sessionWordsTotal = 0;
+var sessionWordsEl = document.getElementById('sessionWords');
+function addSessionWords(n) {
+  sessionWordsTotal += n;
+  if (sessionWordsEl) sessionWordsEl.textContent = sessionWordsTotal.toLocaleString();
+}
+
+/* ── STRENGTH METER ── */
+var humanMeterEl = document.getElementById('humanMeter');
+var meterFillEl  = document.getElementById('meterFill');
+var meterScoreEl = document.getElementById('meterScore');
+var meterGradeEl = document.getElementById('meterGrade');
+
+function showMeter(score) {
+  if (!humanMeterEl) return;
+  humanMeterEl.classList.add('visible');
+  setTimeout(function(){ if (meterFillEl) meterFillEl.style.width = score + '%'; }, 50);
+  if (meterScoreEl) meterScoreEl.textContent = score + '%';
+  if (meterGradeEl) {
+    if (score >= 88) {
+      meterGradeEl.textContent = 'Excellent';
+      meterGradeEl.className = 'meter-grade mg-excellent';
+    } else if (score >= 78) {
+      meterGradeEl.textContent = 'Good';
+      meterGradeEl.className = 'meter-grade mg-good';
+    } else {
+      meterGradeEl.textContent = 'Fair';
+      meterGradeEl.className = 'meter-grade mg-fair';
+    }
+  }
+}
+
+/* ── BEFORE / AFTER TOGGLE ── */
+var baBtnEl      = document.getElementById('baBtn');
+var baShowingOrig = false;
+var baSavedOutput = '';
+
+if (baBtnEl) {
+  baBtnEl.addEventListener('click', function(){
+    if (!S.lastOriginal || !S.lastOutput) return;
+    baShowingOrig = !baShowingOrig;
+    if (baShowingOrig) {
+      baSavedOutput = outputEl.value;
+      outputEl.value = S.lastOriginal;
+      baBtnEl.textContent = '⇄ Show Humanized';
+      baBtnEl.classList.add('showing-orig');
+    } else {
+      outputEl.value = baSavedOutput || S.lastOutput;
+      baBtnEl.textContent = '⇄ Before/After';
+      baBtnEl.classList.remove('showing-orig');
+    }
+  });
+}
+
+/* ── COPY FORMAT DROPDOWN ── */
+var copyMenuEl  = document.getElementById('copyMenu');
+var copyPlainEl = document.getElementById('copyPlain');
+var copyMdEl    = document.getElementById('copyMarkdown');
+var copyHtmlEl  = document.getElementById('copyHtml');
+
+if (copyBtn) {
+  // Long-press or right-click shows menu; single click = plain copy
+  var copyHoldTimer = null;
+  copyBtn.addEventListener('mousedown', function(){
+    copyHoldTimer = setTimeout(function(){
+      if (copyMenuEl) copyMenuEl.classList.toggle('open');
+    }, 400);
+  });
+  copyBtn.addEventListener('mouseup', function(){ clearTimeout(copyHoldTimer); });
+  copyBtn.addEventListener('click', function(){
+    clearTimeout(copyHoldTimer);
+    if (copyMenuEl && copyMenuEl.classList.contains('open')) return;
+    // Normal single click = plain text copy
+    var txt = outputEl ? outputEl.value : '';
+    if (!txt) { toast('Nothing to copy!'); return; }
+    copyToClipboard(txt, 'Plain text copied!');
+  });
+}
+
+function copyToClipboard(txt, msg) {
+  var p = navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject();
+  p.catch(function(){ if (outputEl){ outputEl.select(); document.execCommand('copy'); }});
+  copyBtn.textContent = '✓ Copied!';
+  copyBtn.classList.add('success');
+  toast(msg || 'Copied!', 'success');
+  setTimeout(function(){ copyBtn.textContent = '📄 Copy'; copyBtn.classList.remove('success'); }, 2000);
+  if (copyMenuEl) copyMenuEl.classList.remove('open');
+}
+
+if (copyPlainEl) copyPlainEl.addEventListener('click', function(){
+  var txt = outputEl ? outputEl.value : '';
+  if (!txt) { toast('Nothing to copy!'); return; }
+  copyToClipboard(txt, 'Plain text copied!');
+});
+if (copyMdEl) copyMdEl.addEventListener('click', function(){
+  var txt = outputEl ? outputEl.value : '';
+  if (!txt) { toast('Nothing to copy!'); return; }
+  // Wrap paragraphs, bold first sentence of each
+  var md = txt.split(/\n\n+/).map(function(p){
+    return p.trim();
+  }).join('\n\n');
+  copyToClipboard(md, 'Markdown copied!');
+});
+if (copyHtmlEl) copyHtmlEl.addEventListener('click', function(){
+  var txt = outputEl ? outputEl.value : '';
+  if (!txt) { toast('Nothing to copy!'); return; }
+  var htmlOut = txt.split(/\n\n+/).map(function(p){ return '<p>' + p.trim().replace(/</g,'&lt;') + '</p>'; }).join('\n');
+  copyToClipboard(htmlOut, 'HTML copied!');
+});
+
+// Close copy menu on outside click
+document.addEventListener('click', function(e){
+  if (copyMenuEl && !e.target.closest('.copy-wrap')) copyMenuEl.classList.remove('open');
+});
+
+/* ── ROTATING INPUT TIPS ── */
+var TIPS = [
+  'Press Ctrl+Enter to humanize instantly',
+  'Tip: Thesis mode enforces 3rd person automatically',
+  'Tip: Use Heavy strength for best AI detection bypass',
+  'Tip: Hover over cards to pause the testimonial scroll',
+  'Tip: The diff view shows exactly what changed',
+  'Tip: Settings are saved between sessions',
+  'Tip: Long-press Copy for format options',
+  'Tip: Load a sample text to see how it works',
+  'Tip: Press ? to see all keyboard shortcuts',
+];
+var tipIdx = 0;
+var tipBarEl = document.getElementById('inputTipBar');
+var tipTextEl = document.getElementById('inputTipText');
+
+function rotateTip() {
+  if (!tipBarEl || !tipTextEl) return;
+  tipBarEl.classList.add('fade');
+  setTimeout(function(){
+    tipIdx = (tipIdx + 1) % TIPS.length;
+    tipTextEl.textContent = TIPS[tipIdx];
+    tipBarEl.classList.remove('fade');
+  }, 500);
+}
+// Hide tip bar when user starts typing
+if (inputEl) {
+  inputEl.addEventListener('input', function(){
+    if (inputEl.value.length > 10 && tipBarEl) {
+      tipBarEl.classList.add('hidden');
+    } else if (inputEl.value.length === 0 && tipBarEl) {
+      tipBarEl.classList.remove('hidden');
+    }
+  });
+}
+setInterval(rotateTip, 5000);
+
+/* ── AI SCORE CHECKER (ZeroGPT API via our proxy, or fallback message) ── */
+var aiScoreBarEl   = document.getElementById('aiScoreBar');
+var aiCheckBtnEl   = document.getElementById('aiCheckBtn');
+var aiScoreSpinEl  = document.getElementById('aiScoreSpin');
+var aiScoreResultEl= document.getElementById('aiScoreResult');
+var aiScoreFillEl  = document.getElementById('aiScoreFill');
+var aiScorePctEl   = document.getElementById('aiScorePct');
+var aiScoreChipEl  = document.getElementById('aiScoreChip');
+
+if (aiCheckBtnEl) {
+  aiCheckBtnEl.addEventListener('click', async function(){
+    var txt = outputEl ? outputEl.value.trim() : '';
+    if (!txt) { toast('Humanize some text first!'); return; }
+
+    aiCheckBtnEl.disabled = true;
+    if (aiScoreSpinEl)   aiScoreSpinEl.classList.add('visible');
+    if (aiScoreResultEl) aiScoreResultEl.style.display = 'none';
+
+    try {
+      // Call our Vercel API proxy for ZeroGPT
+      var resp = await fetch('/api/ai-score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: txt }),
+      });
+
+      if (!resp.ok) throw new Error('Score check unavailable');
+      var data = await resp.json();
+      var pct  = Math.round(data.aiScore || 0); // 0–100, higher = more AI
+      showAIScore(pct);
+    } catch(e) {
+      // Graceful fallback: estimate from our own change ratio
+      var origWords = S.lastOriginal ? S.lastOriginal.toLowerCase().split(/\s+/) : [];
+      var outWords  = txt.toLowerCase().split(/\s+/);
+      var changes   = 0;
+      var mx        = Math.max(origWords.length, outWords.length);
+      for (var ii=0;ii<mx;ii++) if (origWords[ii]!==outWords[ii]) changes++;
+      var changeRatio = mx > 0 ? changes/mx : 0;
+      // Higher change = lower AI score estimate
+      var estimated = Math.round(Math.max(5, Math.min(90, (1 - changeRatio) * 85)));
+      showAIScore(estimated, true);
+    } finally {
+      if (aiCheckBtnEl) aiCheckBtnEl.disabled = false;
+      if (aiScoreSpinEl) aiScoreSpinEl.classList.remove('visible');
+    }
+  });
+}
+
+function showAIScore(pct, isEstimate) {
+  if (!aiScoreResultEl || !aiScoreFillEl || !aiScorePctEl || !aiScoreChipEl) return;
+  aiScoreResultEl.style.display = 'flex';
+  setTimeout(function(){ aiScoreFillEl.style.width = pct + '%'; }, 50);
+  aiScoreFillEl.className = 'ai-score-fill' + (pct > 60 ? ' high' : pct > 35 ? ' med' : '');
+  aiScorePctEl.textContent = pct + '% AI' + (isEstimate ? ' est.' : '');
+  if (pct <= 35) {
+    aiScoreChipEl.textContent = 'Looks Human ✓';
+    aiScoreChipEl.className = 'ai-score-chip asc-low';
+  } else if (pct <= 60) {
+    aiScoreChipEl.textContent = 'Mixed';
+    aiScoreChipEl.className = 'ai-score-chip asc-med';
+  } else {
+    aiScoreChipEl.textContent = 'AI Detected';
+    aiScoreChipEl.className = 'ai-score-chip asc-high';
+  }
+}
+
+/* ── KEYBOARD SHORTCUTS MODAL ── */
+var shortcutsBtnEl = document.getElementById('shortcutsBtn');
+if (shortcutsBtnEl) {
+  shortcutsBtnEl.addEventListener('click', function(){ openModal('shortcutsModal'); });
+}
+
+// Global keyboard shortcuts
+document.addEventListener('keydown', function(e){
+  if (e.key === '?' && !e.ctrlKey && !e.metaKey && document.activeElement !== inputEl) {
+    openModal('shortcutsModal');
+    return;
+  }
+  if ((e.ctrlKey||e.metaKey) && e.shiftKey) {
+    if (e.key === 'C' || e.key === 'c') {
+      e.preventDefault();
+      var txt = outputEl ? outputEl.value : '';
+      if (txt) copyToClipboard(txt, 'Copied!');
+    }
+    if (e.key === 'X' || e.key === 'x') {
+      e.preventDefault();
+      if (clearAllBtn) clearAllBtn.click();
+    }
+    if (e.key === 'S' || e.key === 's') {
+      e.preventDefault();
+      if (sampleBtn) sampleBtn.click();
+    }
+    if (e.key === 'D' || e.key === 'd') {
+      e.preventDefault();
+      if (diffBtn) diffBtn.click();
+    }
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════════
+   DOCUMENT HUMANIZER — FILE UPLOAD FEATURE
+   Uses: mammoth.js (read .docx) + docx.js (write .docx)
+══════════════════════════════════════════════════════════════════ */
+
+/* ── State ── */
+var DOC = {
+  file:        null,       // File object
+  fileName:    '',
+  fileType:    '',         // 'docx' | 'txt'
+  sections:    [],         // Array of {id, type, level, text, selected, humanized, approved}
+  processing:  false,
+};
+
+/* ── Element refs ── */
+var dropZone          = document.getElementById('dropZone');
+var fileInput         = document.getElementById('fileInput');
+var fileInfoBar       = document.getElementById('fileInfoBar');
+var fileNameEl        = document.getElementById('fileName');
+var fileMetaEl        = document.getElementById('fileMeta');
+var fileIconWrapEl    = document.getElementById('fileIconWrap');
+var fileClearBtn      = document.getElementById('fileClearBtn');
+var fileReuploadBtn   = document.getElementById('fileReuploadBtn');
+var docSectionsWrap   = document.getElementById('docSectionsWrap');
+var docSectionsList   = document.getElementById('docSectionsList');
+var docHumanizeBar    = document.getElementById('docHumanizeBar');
+var docHumanizeBtn    = document.getElementById('docHumanizeBtn');
+var docSelectedInfo   = document.getElementById('docSelectedInfo');
+var selectAllBtn      = document.getElementById('selectAllBtn');
+var selectNoneBtn     = document.getElementById('selectNoneBtn');
+var selectParasBtn    = document.getElementById('selectParasBtn');
+var docxModal         = document.getElementById('docxModal');
+var docxModalClose    = document.getElementById('docxModalClose');
+var docxModalBody     = document.getElementById('docxModalBody');
+var docxModalFileName = document.getElementById('docxModalFileName');
+var docxModalSub      = document.getElementById('docxModalSub');
+var docxProgWrap      = document.getElementById('docxProgWrap');
+var docxProgFill      = document.getElementById('docxProgFill');
+var docxProgText      = document.getElementById('docxProgText');
+var docxFootInfo      = document.getElementById('docxFootInfo');
+var docxDlDocxBtn     = document.getElementById('docxDlDocxBtn');
+var docxDlTxtBtn      = document.getElementById('docxDlTxtBtn');
+var docxRehumanizeAllBtn = document.getElementById('docxRehumanizeAllBtn');
+
+/* ── Drop zone events ── */
+if (dropZone) {
+  dropZone.addEventListener('dragover', function(e){
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+  dropZone.addEventListener('dragleave', function(){
+    dropZone.classList.remove('drag-over');
+  });
+  dropZone.addEventListener('drop', function(e){
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    var files = e.dataTransfer.files;
+    if (files.length > 0) handleFile(files[0]);
+  });
+}
+if (fileInput) {
+  fileInput.addEventListener('change', function(){
+    if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+  });
+}
+if (fileClearBtn) {
+  fileClearBtn.addEventListener('click', clearFile);
+}
+if (fileReuploadBtn) {
+  fileReuploadBtn.addEventListener('click', function(){
+    if (fileInput) { fileInput.value=''; fileInput.click(); }
+  });
+}
+
+/* ── Handle uploaded file ── */
+function handleFile(file) {
+  var ext = file.name.split('.').pop().toLowerCase();
+  if (ext !== 'docx' && ext !== 'txt') {
+    toast('Only .docx and .txt files are supported.', 'error');
+    return;
+  }
+  DOC.file     = file;
+  DOC.fileName = file.name;
+  DOC.fileType = ext;
+
+  // Show file info bar, hide drop zone
+  if (dropZone)    dropZone.style.display = 'none';
+  if (fileInfoBar) fileInfoBar.classList.add('visible');
+  if (fileNameEl)  fileNameEl.textContent = file.name;
+  if (fileIconWrapEl) fileIconWrapEl.textContent = ext === 'docx' ? '📘' : '📄';
+
+  // Parse the file
+  if (ext === 'docx') parseDocx(file);
+  else                parseTxt(file);
+}
+
+function clearFile() {
+  DOC.file = null; DOC.sections = [];
+  if (dropZone)         dropZone.style.display = '';
+  if (fileInfoBar)      fileInfoBar.classList.remove('visible');
+  if (docSectionsWrap)  docSectionsWrap.classList.remove('visible');
+  if (docHumanizeBar)   docHumanizeBar.classList.remove('visible');
+  if (docSectionsList)  docSectionsList.innerHTML = '';
+  if (fileInput)        fileInput.value = '';
+}
+
+/* ── Parse .docx using mammoth.js ── */
+function parseDocx(file) {
+  if (typeof mammoth === 'undefined') {
+    toast('Document parser loading… please try again.', 'error'); return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    mammoth.convertToHtml({ arrayBuffer: e.target.result }).then(function(result) {
+      var html = result.value;
+      var sections = htmlToSections(html);
+      DOC.sections = sections;
+      renderSectionsList();
+    }).catch(function(err){
+      toast('Could not read .docx file. Make sure it is a valid Word document.', 'error');
+      console.error(err);
+      clearFile();
+    });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+/* ── Parse .txt ── */
+function parseTxt(file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var text = e.target.result;
+    var paras = text.split(/\n{2,}/).map(function(p){ return p.trim(); }).filter(Boolean);
+    DOC.sections = paras.map(function(p, i){
+      return { id: i, type: 'paragraph', level: 0, text: p, selected: true, humanized: '', approved: false };
+    });
+    renderSectionsList();
+  };
+  reader.readAsText(file);
+}
+
+/* ── Convert mammoth HTML output → structured sections ── */
+function htmlToSections(html) {
+  var div = document.createElement('div');
+  div.innerHTML = html;
+  var sections = [];
+  var id = 0;
+  Array.from(div.childNodes).forEach(function(node) {
+    if (node.nodeType !== 1) return; // skip text nodes
+    var tag  = node.tagName.toLowerCase();
+    var text = node.textContent.trim();
+    if (!text) return;
+    var level = 0;
+    var type  = 'paragraph';
+    if (/^h[1-6]$/.test(tag)) {
+      type  = 'heading';
+      level = parseInt(tag[1]);
+    }
+    sections.push({
+      id:       id++,
+      type:     type,
+      level:    level,
+      text:     text,
+      selected: type === 'paragraph', // default: paragraphs selected, headings not
+      humanized: '',
+      approved:  false,
+    });
+  });
+  return sections;
+}
+
+/* ── Render sections list ── */
+function renderSectionsList() {
+  if (!docSectionsList) return;
+  var total = DOC.sections.length;
+  var words = DOC.sections.reduce(function(s,sec){ return s + sec.text.split(/\s+/).filter(Boolean).length; }, 0);
+
+  if (fileMetaEl) fileMetaEl.textContent = total + ' sections • ' + words.toLocaleString() + ' words';
+
+  docSectionsList.innerHTML = DOC.sections.map(function(sec) {
+    var typeLabel  = sec.type === 'heading' ? ('H' + sec.level + ' Heading') : 'Paragraph';
+    var isHeading  = sec.type === 'heading';
+    var wc         = sec.text.split(/\s+/).filter(Boolean).length;
+    var preview    = sec.text.length > 90 ? sec.text.substring(0,90)+'…' : sec.text;
+    var selClass   = sec.selected ? ' selected' : '';
+    return '<div class="doc-section-item'+selClass+'" data-id="'+sec.id+'">' +
+      '<div class="doc-section-check">✓</div>' +
+      '<div class="doc-section-content">' +
+        '<span class="doc-section-type'+(isHeading?' is-heading':'')+'">'+typeLabel+'</span>' +
+        '<div class="doc-section-preview">'+(isHeading?'<strong>'+preview+'</strong>':preview)+'</div>' +
+      '</div>' +
+      '<span class="doc-section-wc">'+wc+'w</span>' +
+    '</div>';
+  }).join('');
+
+  // Click to toggle selection
+  docSectionsList.querySelectorAll('.doc-section-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var id  = parseInt(item.getAttribute('data-id'));
+      var sec = DOC.sections.find(function(s){ return s.id === id; });
+      if (!sec) return;
+      sec.selected = !sec.selected;
+      item.classList.toggle('selected', sec.selected);
+      updateDocSelectionInfo();
+    });
+  });
+
+  if (docSectionsWrap) docSectionsWrap.classList.add('visible');
+  if (docHumanizeBar)  docHumanizeBar.classList.add('visible');
+  updateDocSelectionInfo();
+}
+
+/* ── Update selection info bar ── */
+function updateDocSelectionInfo() {
+  var selected = DOC.sections.filter(function(s){ return s.selected; });
+  var total    = DOC.sections.length;
+  var words    = selected.reduce(function(s,sec){ return s + sec.text.split(/\s+/).filter(Boolean).length; }, 0);
+
+  if (docSelectedInfo) {
+    if (selected.length === 0) {
+      docSelectedInfo.innerHTML = '<span style="color:var(--ink-4)">No sections selected</span>';
+    } else {
+      docSelectedInfo.innerHTML = '<strong>' + selected.length + '</strong> of ' + total +
+        ' sections selected &nbsp;·&nbsp; <strong>' + words.toLocaleString() + '</strong> words';
+    }
+  }
+  if (docHumanizeBtn) docHumanizeBtn.disabled = selected.length === 0;
+}
+
+/* ── Select all / none / paragraphs only ── */
+if (selectAllBtn) selectAllBtn.addEventListener('click', function(){
+  DOC.sections.forEach(function(s){ s.selected = true; });
+  docSectionsList.querySelectorAll('.doc-section-item').forEach(function(i){ i.classList.add('selected'); });
+  updateDocSelectionInfo();
+});
+if (selectNoneBtn) selectNoneBtn.addEventListener('click', function(){
+  DOC.sections.forEach(function(s){ s.selected = false; });
+  docSectionsList.querySelectorAll('.doc-section-item').forEach(function(i){ i.classList.remove('selected'); });
+  updateDocSelectionInfo();
+});
+if (selectParasBtn) selectParasBtn.addEventListener('click', function(){
+  DOC.sections.forEach(function(s){ s.selected = s.type === 'paragraph'; });
+  docSectionsList.querySelectorAll('.doc-section-item').forEach(function(item){
+    var id  = parseInt(item.getAttribute('data-id'));
+    var sec = DOC.sections.find(function(s){ return s.id === id; });
+    item.classList.toggle('selected', !!(sec && sec.selected));
+  });
+  updateDocSelectionInfo();
+});
+
+/* ── Humanize Document button ── */
+if (docHumanizeBtn) {
+  docHumanizeBtn.addEventListener('click', function(){
+    var selected = DOC.sections.filter(function(s){ return s.selected; });
+    if (!selected.length) { toast('Select at least one section first.'); return; }
+    openDocxModal();
+    humanizeAllSections();
+  });
+}
+
+/* ── Open / Close docx modal ── */
+function openDocxModal() {
+  if (!docxModal) return;
+  if (docxModalFileName) docxModalFileName.textContent = DOC.fileName || 'Document';
+  docxModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderPreviewSections();
+}
+function closeDocxModal() {
+  if (!docxModal) return;
+  docxModal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+if (docxModalClose) docxModalClose.addEventListener('click', closeDocxModal);
+docxModal && docxModal.addEventListener('click', function(e){ if (e.target === docxModal) closeDocxModal(); });
+
+/* ── Render preview sections in modal (before humanizing) ── */
+function renderPreviewSections() {
+  if (!docxModalBody) return;
+  docxModalBody.innerHTML = '';
+  DOC.sections.forEach(function(sec) {
+    var card = buildPreviewCard(sec);
+    docxModalBody.appendChild(card);
+  });
+  if (docxDlDocxBtn) docxDlDocxBtn.disabled = true;
+  if (docxDlTxtBtn)  docxDlTxtBtn.disabled  = true;
+  if (docxRehumanizeAllBtn) docxRehumanizeAllBtn.style.display = 'none';
+}
+
+/* ── Build one preview card DOM element ── */
+function buildPreviewCard(sec) {
+  var wrap = document.createElement('div');
+  wrap.className = 'preview-sec' + (sec.selected ? '' : ' is-skipped');
+  wrap.setAttribute('data-id', sec.id);
+
+  var typeLabel = sec.type === 'heading' ? ('H' + sec.level + ' Heading') : 'Paragraph';
+  var statusLabel = sec.selected ? 'Waiting…' : 'Skipped (kept as-is)';
+  var statusClass = sec.selected ? '' : 'lbl-skipped';
+
+  // Heading style for preview
+  var textClass = '';
+  if (sec.type === 'heading') {
+    textClass = sec.level <= 1 ? 'pvh1' : sec.level === 2 ? 'pvh2' : sec.level === 3 ? 'pvh3' : 'pvh4';
+  }
+
+  wrap.innerHTML =
+    '<div class="preview-sec-head">' +
+      '<span class="preview-sec-label '+statusClass+'" id="plbl-'+sec.id+'">'+typeLabel+' · '+statusLabel+'</span>' +
+      '<div class="preview-sec-btns" id="pbtns-'+sec.id+'">' +
+        (sec.selected
+          ? '<button class="btn-rehumanize" data-id="'+sec.id+'" disabled>🔄 Re-humanize</button>' +
+            '<button class="btn-approve" data-id="'+sec.id+'" disabled>✓ Approve</button>'
+          : '') +
+      '</div>' +
+    '</div>' +
+    '<div class="preview-cols" id="pcols-'+sec.id+'">' +
+      '<div class="preview-col preview-col-orig">' +
+        '<span class="preview-col-lbl">Original</span>' +
+        '<div class="preview-col-text '+textClass+'">' + escHtml(sec.text) + '</div>' +
+      '</div>' +
+      '<div class="preview-col preview-col-edit" id="pedit-'+sec.id+'">' +
+        (sec.selected
+          ? '<div class="preview-col-loading"><div class="status-pulse" style="width:6px;height:6px;"></div>Waiting to process…</div>'
+          : '<span class="preview-col-lbl">Output</span><div class="preview-col-text '+textClass+'" style="color:var(--ink-4);font-style:italic;">'+escHtml(sec.text)+'</div>') +
+      '</div>' +
+    '</div>';
+
+  return wrap;
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── Humanize all selected sections sequentially ── */
+async function humanizeAllSections() {
+  DOC.processing = true;
+  var selected = DOC.sections.filter(function(s){ return s.selected; });
+  var total    = selected.length;
+  var done     = 0;
+
+  if (docxProgWrap) docxProgWrap.classList.add('visible');
+  if (docxProgFill) docxProgFill.style.width = '0%';
+  if (docxModalSub) docxModalSub.textContent = '(0 / '+total+' sections)';
+
+  for (var i = 0; i < selected.length; i++) {
+    var sec = selected[i];
+    var pct = Math.round((i / total) * 100);
+
+    // Update progress
+    if (docxProgFill) docxProgFill.style.width = pct + '%';
+    if (docxProgText) docxProgText.textContent = 'Humanizing section ' + (i+1) + ' of ' + total + '…';
+    if (docxModalSub) docxModalSub.textContent = '(' + i + ' / ' + total + ' done)';
+
+    // Mark card as processing
+    setCardState(sec.id, 'processing', 'Processing…');
+
+    try {
+      var result = await callAPI(sec.text, 'humanize');
+      sec.humanized = result;
+      done++;
+      setCardHumanized(sec.id, result, sec);
+    } catch(err) {
+      sec.humanized = sec.text; // fallback: keep original
+      setCardState(sec.id, 'error', 'Error — kept original');
+      console.warn('Section humanize failed:', err.message);
+    }
+  }
+
+  // Done
+  if (docxProgFill) docxProgFill.style.width = '100%';
+  if (docxProgText) docxProgText.textContent = '✓ All sections processed!';
+  if (docxModalSub) docxModalSub.textContent = '(' + done + ' / ' + total + ' humanized)';
+  if (docxFootInfo) docxFootInfo.innerHTML = '<strong>'+done+' sections humanized</strong> — review each section, edit if needed, then download';
+  setTimeout(function(){
+    if (docxProgWrap) docxProgWrap.classList.remove('visible');
+  }, 2500);
+
+  if (docxDlDocxBtn) docxDlDocxBtn.disabled = false;
+  if (docxDlTxtBtn)  docxDlTxtBtn.disabled  = false;
+  if (docxRehumanizeAllBtn) docxRehumanizeAllBtn.style.display = '';
+
+  DOC.processing = false;
+  toast('✓ Document humanized! Review and download when ready.', 'success');
+}
+
+/* ── Update card to loading state ── */
+function setCardState(id, state, label) {
+  var card  = docxModalBody ? docxModalBody.querySelector('[data-id="'+id+'"]') : null;
+  var lbl   = document.getElementById('plbl-'+id);
+  if (!card) return;
+  card.className = 'preview-sec is-' + state;
+  if (lbl) { lbl.textContent = (DOC.sections.find(function(s){return s.id===id;})||{type:'paragraph'}).type === 'heading' ? 'Heading · '+label : 'Paragraph · '+label; lbl.className = 'preview-sec-label lbl-'+state; }
+  var editCol = document.getElementById('pedit-'+id);
+  if (editCol && state === 'processing') {
+    editCol.innerHTML = '<div class="preview-col-loading"><div class="status-pulse" style="width:6px;height:6px;"></div>Humanizing…</div>';
+  }
+}
+
+/* ── Set card to humanized state with editable textarea ── */
+function setCardHumanized(id, text, sec) {
+  var card    = docxModalBody ? docxModalBody.querySelector('[data-id="'+id+'"]') : null;
+  var lbl     = document.getElementById('plbl-'+id);
+  var btns    = document.getElementById('pbtns-'+id);
+  var editCol = document.getElementById('pedit-'+id);
+  if (!card || !editCol) return;
+
+  card.className = 'preview-sec is-humanized';
+  if (lbl) { lbl.textContent = (sec.type==='heading'?'H'+sec.level+' Heading':'Paragraph')+' · Humanized'; lbl.className = 'preview-sec-label lbl-humanized'; }
+
+  var textClass = '';
+  if (sec.type === 'heading') textClass = sec.level<=1?'pvh1':sec.level===2?'pvh2':sec.level===3?'pvh3':'pvh4';
+
+  editCol.innerHTML =
+    '<span class="preview-col-lbl">Humanized (editable)</span>' +
+    '<textarea class="preview-col-ta '+textClass+'" data-id="'+id+'" rows="4">'+escHtml(text)+'</textarea>';
+
+  // Sync edits back to DOC.sections
+  var ta = editCol.querySelector('textarea');
+  if (ta) {
+    ta.addEventListener('input', function(){ sec.humanized = ta.value; });
+    // Auto-resize
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+    ta.addEventListener('input', function(){ ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'; });
+  }
+
+  // Enable re-humanize + approve buttons
+  if (btns) {
+    btns.innerHTML =
+      '<button class="btn-rehumanize" data-id="'+id+'">🔄 Re-humanize</button>' +
+      '<button class="btn-approve" data-id="'+id+'">✓ Approve</button>';
+    var reBtn = btns.querySelector('.btn-rehumanize');
+    var apBtn = btns.querySelector('.btn-approve');
+    if (reBtn) reBtn.addEventListener('click', function(){ rehumanizeSection(sec); });
+    if (apBtn) apBtn.addEventListener('click', function(){
+      sec.approved = !sec.approved;
+      apBtn.classList.toggle('approved', sec.approved);
+      apBtn.textContent = sec.approved ? '✓ Approved' : '✓ Approve';
+      if (sec.approved) card.className = 'preview-sec is-approved';
+      else card.className = 'preview-sec is-humanized';
+    });
+  }
+}
+
+/* ── Re-humanize a single section ── */
+async function rehumanizeSection(sec) {
+  setCardState(sec.id, 'processing', 'Re-humanizing…');
+  try {
+    var result = await callAPI(sec.text, 'humanize');
+    sec.humanized = result;
+    sec.approved  = false;
+    setCardHumanized(sec.id, result, sec);
+    toast('Section re-humanized!', 'success');
+  } catch(err) {
+    setCardHumanized(sec.id, sec.humanized || sec.text, sec);
+    toast('Re-humanize failed. Please try again.', 'error');
+  }
+}
+
+/* ── Re-humanize all ── */
+if (docxRehumanizeAllBtn) {
+  docxRehumanizeAllBtn.addEventListener('click', function(){
+    DOC.sections.forEach(function(s){ if (s.selected) { s.humanized = ''; s.approved = false; } });
+    renderPreviewSections();
+    humanizeAllSections();
+  });
+}
+
+/* ── Get final text for a section (humanized or original) ── */
+function getFinalText(sec) {
+  if (sec.selected && sec.humanized) return sec.humanized;
+  return sec.text;
+}
+
+/* ── Download as .txt ── */
+if (docxDlTxtBtn) {
+  docxDlTxtBtn.addEventListener('click', function(){
+    var lines = DOC.sections.map(function(sec){
+      var text = getFinalText(sec);
+      if (sec.type === 'heading') return '\n' + text.toUpperCase() + '\n';
+      return text;
+    });
+    var blob = new Blob([lines.join('\n\n')], { type: 'text/plain' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (DOC.fileName.replace(/\.[^.]+$/,'') || 'document') + '-humanized.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    toast('Downloaded as .txt!', 'success');
+  });
+}
+
+/* ── Download as .docx using docx.js ── */
+if (docxDlDocxBtn) {
+  docxDlDocxBtn.addEventListener('click', async function(){
+    if (typeof docx === 'undefined') {
+      toast('Word export library not loaded. Try refreshing the page.', 'error'); return;
+    }
+    docxDlDocxBtn.disabled = true;
+    docxDlDocxBtn.textContent = '⏳ Building…';
+
+    try {
+      var children = [];
+
+      DOC.sections.forEach(function(sec) {
+        var text = getFinalText(sec);
+
+        if (sec.type === 'heading') {
+          var headingLevel = Math.min(sec.level, 6);
+          var headingStyle = 'Heading' + headingLevel;
+          children.push(
+            new docx.Paragraph({
+              text: text,
+              heading: docx.HeadingLevel['HEADING_' + headingLevel] || docx.HeadingLevel.HEADING_1,
+            })
+          );
+        } else {
+          // Split by newlines into separate paragraphs
+          var lines = text.split('\n').filter(function(l){ return l.trim(); });
+          lines.forEach(function(line) {
+            children.push(
+              new docx.Paragraph({
+                children: [
+                  new docx.TextRun({
+                    text: line,
+                    size: 24,         // 12pt
+                    font: 'Times New Roman',
+                  })
+                ],
+                spacing: { after: 200 }, // space after paragraph
+              })
+            );
+          });
+        }
+      });
+
+      var doc = new docx.Document({
+        styles: {
+          paragraphStyles: [
+            {
+              id: 'Normal',
+              name: 'Normal',
+              basedOn: 'Normal',
+              next: 'Normal',
+              run: { size: 24, font: 'Times New Roman' },
+              paragraph: { spacing: { line: 480, lineRule: docx.LineRuleType.AUTO } }, // double spacing
+            }
+          ]
+        },
+        sections: [{
+          properties: {
+            page: {
+              margin: {
+                top:    1440, // 1 inch = 1440 twips
+                bottom: 1440,
+                left:   1440,
+                right:  1440,
+              }
+            }
+          },
+          children: children,
+        }],
+      });
+
+      var buffer = await docx.Packer.toBlob(doc);
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(buffer);
+      a.download = (DOC.fileName.replace(/\.[^.]+$/,'') || 'document') + '-humanized.docx';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      toast('Downloaded as .docx!', 'success');
+
+    } catch(err) {
+      console.error('docx build error:', err);
+      toast('Could not build .docx — try .txt instead.', 'error');
+    } finally {
+      docxDlDocxBtn.disabled = false;
+      docxDlDocxBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg> Download .docx';
+    }
   });
 }
 </script>
