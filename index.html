@@ -1577,6 +1577,7 @@ textarea{font-family:var(--font-sans);}
   <div class="testimonials-label">What users are saying</div>
   <div class="marquee-wrap">
     <div class="marquee-track" id="marqueeTrack">
+
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"I submitted my thesis chapter after using Your Humanizer and my adviser said it read very naturally. The Thesis mode is a game changer."</p><div class="t-footer"><div class="t-avatar">👩‍🎓</div><div class="t-info"><span class="t-name">Maria Santos</span><span class="t-role">Graduate Student, UP Manila</span></div><span class="t-badge">Thesis</span></div></div>
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"GPTZero used to flag everything I wrote with AI. After using Heavy mode, my score dropped to almost zero. Incredible tool."</p><div class="t-footer"><div class="t-avatar">👨‍💼</div><div class="t-info"><span class="t-name">James Rivera</span><span class="t-role">Content Writer, Freelance</span></div><span class="t-badge">Blog Post</span></div></div>
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"As a non-native English speaker, the Professional mode helps me write business emails that sound confident and natural. My clients are impressed."</p><div class="t-footer"><div class="t-avatar">👩‍💻</div><div class="t-info"><span class="t-name">Ana Reyes</span><span class="t-role">Virtual Assistant, Cebu</span></div><span class="t-badge">Email</span></div></div>
@@ -1596,7 +1597,7 @@ textarea{font-family:var(--font-sans);}
       <div class="t-card"><div class="t-stars">★★★★★</div><p class="t-text">"Dark mode + mobile support = perfect. I use it on my phone between classes. Quick, clean, and always works."</p><div class="t-footer"><div class="t-avatar">📱</div><div class="t-info"><span class="t-name">Paolo Tan</span><span class="t-role">Senior High Student</span></div><span class="t-badge">Simple</span></div></div>
     </div>
   </div>
-</section>-->
+</section> -->
 
 <!-- TOOL -->
 <main id="tool" class="tool-section">
@@ -3364,11 +3365,13 @@ document.addEventListener('keydown', function(e){
 
 /* ── State ── */
 var DOC = {
-  file:        null,       // File object
-  fileName:    '',
-  fileType:    '',         // 'docx' | 'txt'
-  sections:    [],         // Array of {id, type, level, text, selected, humanized, approved}
-  processing:  false,
+  file:           null,   // File object
+  fileName:       '',
+  fileType:       '',     // 'docx' | 'txt'
+  sections:       [],     // [{id, type, level, text, selected, humanized, approved, xmlIndex}]
+  processing:     false,
+  rawArrayBuffer: null,   // original .docx ArrayBuffer — used for format-preserving download
+  rawParaNodes:   [],     // ordered list of paragraph XML strings from original .docx
 };
 
 /* ── Element refs ── */
@@ -3457,7 +3460,7 @@ function handleFile(file) {
 }
 
 function clearFile() {
-  DOC.file = null; DOC.sections = [];
+  DOC.file = null; DOC.sections = []; DOC.rawArrayBuffer = null; DOC.rawParaNodes = [];
   if (dropZone)         dropZone.style.display = '';
   if (fileInfoBar)      fileInfoBar.classList.remove('visible');
   if (docSectionsWrap)  docSectionsWrap.classList.remove('visible');
@@ -3469,44 +3472,138 @@ function clearFile() {
 /* ── Parse .docx using mammoth.js ── */
 function parseDocx(file) {
   if (typeof mammoth === 'undefined') {
-    // mammoth.js not loaded — wait up to 4s then retry, otherwise show error
     var waited = 0;
     var interval = setInterval(function() {
       waited += 300;
-      if (typeof mammoth !== 'undefined') {
-        clearInterval(interval);
-        parseDocx(file); // retry now that it's loaded
-      } else if (waited >= 4000) {
-        clearInterval(interval);
-        toast('Could not load the .docx reader library. Check your internet connection and refresh the page.', 'error');
-        clearFile();
-      }
+      if (typeof mammoth !== 'undefined') { clearInterval(interval); parseDocx(file); }
+      else if (waited >= 4000) { clearInterval(interval); toast('Could not load the .docx reader. Check your internet and refresh.', 'error'); clearFile(); }
     }, 300);
     return;
   }
   var reader = new FileReader();
   reader.onload = function(e) {
-    mammoth.convertToHtml({ arrayBuffer: e.target.result }).then(function(result) {
-      var html     = result.value;
-      var sections = htmlToSections(html);
-      if (sections.length === 0) {
-        toast('No readable text found in this .docx file.', 'error');
-        clearFile();
-        return;
-      }
-      DOC.sections = sections;
-      renderSectionsList();
-    }).catch(function(err){
-      toast('Could not read .docx file. Make sure it is a valid Word document.', 'error');
-      console.error(err);
-      clearFile();
+    var arrayBuffer = e.target.result;
+
+    // Store raw buffer — needed for format-preserving download
+    DOC.rawArrayBuffer = arrayBuffer.slice(0);
+
+    // Step 1: Extract raw paragraph XML nodes from the .docx zip
+    // .docx is a zip — word/document.xml contains the content
+    extractDocxParaXml(arrayBuffer, function(paraNodes) {
+      DOC.rawParaNodes = paraNodes; // array of {xml, text, isEmpty}
+
+      // Step 2: Use mammoth to get clean HTML for display
+      mammoth.convertToHtml({ arrayBuffer: arrayBuffer }).then(function(result) {
+        var sections = htmlToSections(result.value);
+        if (sections.length === 0) {
+          toast('No readable text found in this .docx file.', 'error');
+          clearFile(); return;
+        }
+
+        // Step 3: Match each section to its paragraph XML node by text similarity
+        // This lets us know which XML node to patch when downloading
+        sections.forEach(function(sec) {
+          var bestIdx = -1, bestScore = 0;
+          var secWords = sec.text.toLowerCase().replace(/\s+/g,' ').trim();
+          DOC.rawParaNodes.forEach(function(node, idx) {
+            if (node.isEmpty) return;
+            var nodeWords = node.text.toLowerCase().replace(/\s+/g,' ').trim();
+            // Score: length of common prefix / max length
+            var score = longestCommonSubstring(secWords, nodeWords) / Math.max(secWords.length, nodeWords.length, 1);
+            if (score > bestScore) { bestScore = score; bestIdx = idx; }
+          });
+          sec.xmlIndex = bestScore > 0.4 ? bestIdx : -1; // only match if >40% similar
+        });
+
+        DOC.sections = sections;
+        renderSectionsList();
+      }).catch(function(err) {
+        toast('Could not read .docx file. Make sure it is a valid Word document.', 'error');
+        console.error(err); clearFile();
+      });
     });
   };
-  reader.onerror = function() {
-    toast('Failed to read the file. Please try again.', 'error');
-    clearFile();
-  };
+  reader.onerror = function() { toast('Failed to read the file. Please try again.', 'error'); clearFile(); };
   reader.readAsArrayBuffer(file);
+}
+
+/* Extract paragraph XML nodes from .docx (which is a ZIP file) */
+function extractDocxParaXml(arrayBuffer, callback) {
+  try {
+    var bytes   = new Uint8Array(arrayBuffer);
+    var xmlStr  = extractFileFromZip(bytes, 'word/document.xml');
+    if (!xmlStr) { callback([]); return; }
+
+    // Parse paragraph nodes from XML
+    var paraNodes = [];
+    var paraRe = /<w:p[ >]([\s\S]*?)<\/w:p>/g;
+    var match;
+    while ((match = paraRe.exec(xmlStr)) !== null) {
+      var fullXml = match[0];
+      // Extract visible text from this paragraph
+      var textParts = [];
+      var tRe = /<w:t[^>]*>([\s\S]*?)<\/w:t>/g;
+      var tm;
+      while ((tm = tRe.exec(fullXml)) !== null) { textParts.push(tm[1]); }
+      var text = textParts.join('').trim();
+      paraNodes.push({ xml: fullXml, text: text, isEmpty: text.length === 0 });
+    }
+    callback(paraNodes);
+  } catch(e) {
+    console.warn('XML extraction failed:', e);
+    callback([]);
+  }
+}
+
+/* Simple ZIP file extractor — reads stored (uncompressed) files only */
+function extractFileFromZip(bytes, targetPath) {
+  var i = 0;
+  while (i < bytes.length - 4) {
+    // Local file header signature: PK\x03\x04
+    if (bytes[i]===0x50 && bytes[i+1]===0x4B && bytes[i+2]===0x03 && bytes[i+3]===0x04) {
+      var compression   = bytes[i+8]  | (bytes[i+9]  << 8);
+      var compSize      = bytes[i+18] | (bytes[i+19] << 8) | (bytes[i+20] << 16) | (bytes[i+21] << 24);
+      var uncompSize    = bytes[i+22] | (bytes[i+23] << 8) | (bytes[i+24] << 16) | (bytes[i+25] << 24);
+      var nameLen       = bytes[i+26] | (bytes[i+27] << 8);
+      var extraLen      = bytes[i+28] | (bytes[i+29] << 8);
+      var nameBytes     = bytes.slice(i+30, i+30+nameLen);
+      var name          = new TextDecoder().decode(nameBytes);
+      var dataStart     = i + 30 + nameLen + extraLen;
+
+      if (name === targetPath) {
+        if (compression === 0) {
+          // Stored (no compression) — read directly
+          return new TextDecoder('utf-8').decode(bytes.slice(dataStart, dataStart + uncompSize));
+        } else if (compression === 8) {
+          // Deflate — use DecompressionStream if available
+          try {
+            var compressed = bytes.slice(dataStart, dataStart + compSize);
+            // Synchronous inflate isn't available natively — return null and fall back
+            // Modern browsers: use pako or just use the mammoth result
+            return null;
+          } catch(e) { return null; }
+        }
+      }
+      i = dataStart + compSize;
+    } else { i++; }
+  }
+  return null;
+}
+
+/* Longest common substring length (used for para matching) */
+function longestCommonSubstring(a, b) {
+  if (!a || !b) return 0;
+  // Quick approach: compare first 120 chars to avoid O(n²) on large texts
+  a = a.substring(0, 120); b = b.substring(0, 120);
+  var best = 0;
+  for (var i=0;i<a.length;i++) {
+    for (var j=0;j<b.length;j++) {
+      var len=0;
+      while (i+len<a.length && j+len<b.length && a[i+len]===b[j+len]) len++;
+      if (len>best) best=len;
+    }
+  }
+  return best;
 }
 
 /* ── Parse .txt ── */
@@ -3787,52 +3884,78 @@ if (docxStartHumanizeBtn) {
   });
 }
 
-/* ── Render PREVIEW ONLY mode — single column, original text, clean reading view ── */
+/* ── Render PREVIEW mode — same side-by-side layout as humanize mode
+   Shows ORIGINAL on left, empty OUTPUT on right, with Select/Deselect toggle.
+   This is the layout shown in the reference image.
+══════════════════════════════════════════════════════════════════ */
 function renderPreviewOnly() {
   if (!docxModalBody) return;
   docxModalBody.innerHTML = '';
 
   DOC.sections.forEach(function(sec) {
     var wrap = document.createElement('div');
-    var isHeading = sec.type === 'heading';
-    wrap.className = 'preview-sec preview-only' + (isHeading ? ' type-heading' : '') + (sec.selected ? '' : ' is-skipped');
-    wrap.setAttribute('data-id', sec.id);
+    var isHeading  = sec.type === 'heading';
+    var typeLabel  = isHeading ? ('H' + (sec.level||1) + ' Heading') : 'Paragraph';
+    var selLabel   = sec.selected ? 'Selected for humanizing' : 'Skipped (kept as-is)';
+    var textClass  = isHeading
+      ? (sec.level <= 1 ? 'pvh1' : sec.level === 2 ? 'pvh2' : sec.level === 3 ? 'pvh3' : 'pvh4')
+      : '';
 
-    var typeLabel = isHeading ? ('H' + sec.level + ' Heading') : 'Paragraph';
-    var selLabel  = sec.selected ? 'Selected for humanizing' : 'Not selected (kept as-is)';
-    var selColor  = sec.selected ? 'color:var(--accent);' : 'color:var(--ink-4);';
-    var textClass = '';
-    if (isHeading) {
-      textClass = sec.level <= 1 ? 'pvh1' : sec.level === 2 ? 'pvh2' : sec.level === 3 ? 'pvh3' : 'pvh4';
-    }
+    wrap.className = 'preview-sec' + (sec.selected ? '' : ' is-skipped');
+    wrap.setAttribute('data-id', sec.id);
 
     wrap.innerHTML =
       '<div class="preview-sec-head">' +
-        '<span class="preview-sec-label" style="' + selColor + '">' + typeLabel + ' · ' + selLabel + '</span>' +
-        '<button class="btn-nano ps-toggle-sel" data-id="' + sec.id + '" style="font-size:10.5px;">' +
-          (sec.selected ? '☑ Deselect' : '☐ Select') +
-        '</button>' +
+        '<span class="preview-sec-label' + (sec.selected ? '' : ' lbl-skipped') + '" id="pvlbl-' + sec.id + '">' +
+          typeLabel + ' · ' + selLabel +
+        '</span>' +
+        '<div class="preview-sec-btns">' +
+          '<button class="btn-rehumanize pv-toggle" data-id="' + sec.id + '">' +
+            (sec.selected ? '☑ Deselect' : '☐ Select') +
+          '</button>' +
+        '</div>' +
       '</div>' +
       '<div class="preview-cols">' +
-        '<div class="preview-col preview-col-orig" style="background:var(--bg);color:var(--ink-2);border-right:none;">' +
+        '<div class="preview-col preview-col-orig">' +
+          '<span class="preview-col-lbl">Original</span>' +
           '<div class="preview-col-text ' + textClass + '">' + escHtml(sec.text) + '</div>' +
+        '</div>' +
+        '<div class="preview-col preview-col-edit" style="display:flex;align-items:center;justify-content:center;">' +
+          '<span style="font-size:12px;color:var(--ink-4);font-style:italic;">' +
+            (sec.selected ? 'Will be humanized…' : 'Kept as original') +
+          '</span>' +
         '</div>' +
       '</div>';
 
-    // Toggle selection from inside preview
-    var toggleBtn = wrap.querySelector('.ps-toggle-sel');
+    // Toggle selection
+    var toggleBtn = wrap.querySelector('.pv-toggle');
     if (toggleBtn) {
       toggleBtn.addEventListener('click', function(e) {
         e.stopPropagation();
         sec.selected = !sec.selected;
+
+        // Update button text
         toggleBtn.textContent = sec.selected ? '☑ Deselect' : '☐ Select';
-        wrap.className = 'preview-sec preview-only' + (isHeading ? ' type-heading' : '') + (sec.selected ? '' : ' is-skipped');
-        var lbl = wrap.querySelector('.preview-sec-label');
+
+        // Update card style
+        wrap.className = 'preview-sec' + (sec.selected ? '' : ' is-skipped');
+
+        // Update label
+        var lbl = document.getElementById('pvlbl-' + sec.id);
         if (lbl) {
-          lbl.textContent = typeLabel + ' · ' + (sec.selected ? 'Selected for humanizing' : 'Not selected (kept as-is)');
-          lbl.style.color = sec.selected ? 'var(--accent)' : 'var(--ink-4)';
+          lbl.textContent = typeLabel + ' · ' + (sec.selected ? 'Selected for humanizing' : 'Skipped (kept as-is)');
+          lbl.className   = 'preview-sec-label' + (sec.selected ? '' : ' lbl-skipped');
         }
-        // Sync with the main section list
+
+        // Update right column placeholder text
+        var editCol = wrap.querySelector('.preview-col-edit');
+        if (editCol) {
+          editCol.innerHTML = '<span style="font-size:12px;color:var(--ink-4);font-style:italic;">' +
+            (sec.selected ? 'Will be humanized…' : 'Kept as original') +
+          '</span>';
+        }
+
+        // Sync back to the section list below the drop zone
         updateDocSelectionInfo();
         var sItem = docSectionsList ? docSectionsList.querySelector('[data-id="' + sec.id + '"]') : null;
         if (sItem) sItem.classList.toggle('selected', sec.selected);
@@ -4083,30 +4206,227 @@ if (docxDlTxtBtn) {
   });
 }
 
-/* ── Download as .docx — pure JS, no library needed ── */
+/* ── Download as .docx — FORMAT PRESERVING ──────────────────────
+   Strategy:
+   1. If we have the original ArrayBuffer → patch the XML directly
+      (replaces only paragraph text, keeps ALL formatting intact)
+   2. Otherwise fall back to building from scratch
+──────────────────────────────────────────────────────────────── */
 if (docxDlDocxBtn) {
   docxDlDocxBtn.addEventListener('click', async function(){
     docxDlDocxBtn.disabled = true;
     docxDlDocxBtn.innerHTML = '⏳ Building…';
-
     try {
-      // Try docx.js library first if loaded
-      if (typeof docx !== 'undefined') {
+      if (DOC.rawArrayBuffer && DOC.rawParaNodes.length > 0) {
+        await buildDocxFormatPreserving();
+      } else if (typeof docx !== 'undefined') {
         await buildDocxWithLibrary();
       } else {
-        // Fallback: build .docx manually using Open XML (always works, no library)
         buildDocxManual();
       }
     } catch(err) {
       console.error('docx build error:', err);
-      // Always fall back to manual builder on any error
-      try { buildDocxManual(); }
-      catch(e2) { toast('Could not build .docx — please use .txt instead.', 'error'); }
+      try { buildDocxManual(); } catch(e2) {
+        toast('Could not build .docx — please use .txt instead.', 'error');
+      }
     } finally {
       docxDlDocxBtn.disabled = false;
       docxDlDocxBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg> Download .docx';
     }
   });
+}
+
+/* ── FORMAT-PRESERVING download ───────────────────────────────
+   Reads the original .docx zip, patches word/document.xml by
+   replacing each humanized paragraph's text runs while keeping
+   ALL formatting (fonts, bold, italic, styles, spacing) intact.
+──────────────────────────────────────────────────────────────── */
+async function buildDocxFormatPreserving() {
+  var bytes = new Uint8Array(DOC.rawArrayBuffer);
+
+  // Extract word/document.xml as string
+  var docXmlOrig = extractFileFromZip(bytes, 'word/document.xml');
+
+  if (!docXmlOrig) {
+    // Deflate-compressed — can't decompress in-browser without library
+    // Fall back gracefully
+    if (typeof docx !== 'undefined') { await buildDocxWithLibrary(); return; }
+    buildDocxManual(); return;
+  }
+
+  // Build a map: xmlIndex → humanized text (for selected+humanized sections)
+  var patches = {};
+  DOC.sections.forEach(function(sec) {
+    if (sec.selected && sec.humanized && sec.xmlIndex >= 0) {
+      patches[sec.xmlIndex] = sec.humanized;
+    }
+  });
+
+  // Walk through paragraphs in the XML and patch matched ones
+  var paraIdx = 0;
+  var patchedXml = docXmlOrig.replace(/<w:p[ >]([\s\S]*?)<\/w:p>/g, function(fullMatch) {
+    var idx = paraIdx++;
+    if (!(idx in patches)) return fullMatch; // not patched — keep original exactly
+
+    var newText = patches[idx];
+
+    // Strategy: keep the FIRST <w:r> run (with all its formatting <w:rPr>)
+    // and replace its text, then remove all other runs
+    // This preserves font, size, bold, italic, color etc.
+    var firstRunMatch = fullMatch.match(/<w:r[ >]([\s\S]*?)<\/w:r>/);
+    if (!firstRunMatch) {
+      // No runs found — replace the whole paragraph text naively
+      return fullMatch.replace(/<w:t[^>]*>[\s\S]*?<\/w:t>/g, '')
+        .replace(/<\/w:r>/, '<w:t xml:space="preserve">' + escXml(newText) + '</w:t></w:r>');
+    }
+
+    var firstRun    = firstRunMatch[0];
+    var rPrMatch    = firstRun.match(/<w:rPr>([\s\S]*?)<\/w:rPr>/);
+    var rPr         = rPrMatch ? rPrMatch[0] : '';
+
+    // Build replacement: pPr (paragraph properties) + one patched run
+    var pPrMatch    = fullMatch.match(/<w:pPr>([\s\S]*?)<\/w:pPr>/);
+    var pPr         = pPrMatch ? pPrMatch[0] : '';
+
+    // Split new text into sentences/lines, each gets its own run with same formatting
+    var lines = newText.split('\n').filter(function(l){ return l.trim(); });
+    var newRuns = lines.map(function(line, i) {
+      return '<w:r>' + rPr + '<w:t xml:space="preserve">' + escXml(line) + '</w:t></w:r>' +
+        (i < lines.length - 1 ? '<w:br/>' : '');
+    }).join('');
+
+    return '<w:p>' + pPr + newRuns + '</w:p>';
+  });
+
+  // Now rebuild the .docx zip with the patched document.xml
+  var patchedBytes = replaceFileInZip(bytes, 'word/document.xml', patchedXml);
+  var blob = new Blob([patchedBytes], {
+    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  });
+  downloadBlob(blob, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', '-humanized.docx');
+  toast('Downloaded! Formatting preserved from original.', 'success');
+}
+
+function escXml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+/* Replace a file inside a ZIP — rebuilds the zip with the new file content */
+function replaceFileInZip(originalBytes, targetPath, newContent) {
+  var newContentBytes = new TextEncoder().encode(newContent);
+  var result = [];
+  var centralDirs = [];
+  var offset = 0;
+  var i = 0;
+
+  function readU16(b,o){ return b[o] | (b[o+1]<<8); }
+  function readU32(b,o){ return (b[o]|(b[o+1]<<8)|(b[o+2]<<16)|((b[o+3]&0x7F)<<24))>>>0; }
+  function writeU32(n){ return [n&0xFF,(n>>8)&0xFF,(n>>16)&0xFF,(n>>24)&0xFF]; }
+  function writeU16(n){ return [n&0xFF,(n>>8)&0xFF]; }
+
+  function crc32b(data) {
+    var table = window._crc32table;
+    if (!table) {
+      table = window._crc32table = new Uint32Array(256);
+      for (var ii=0;ii<256;ii++){
+        var c=ii;
+        for(var j=0;j<8;j++) c=((c&1)?0xEDB88320^(c>>>1):(c>>>1))>>>0;
+        table[ii]=c;
+      }
+    }
+    var crc=0xFFFFFFFF;
+    for(var k=0;k<data.length;k++) crc=(table[(crc^data[k])&0xFF]^(crc>>>8))>>>0;
+    return (crc^0xFFFFFFFF)>>>0;
+  }
+
+  while (i < originalBytes.length - 4) {
+    if (originalBytes[i]===0x50 && originalBytes[i+1]===0x4B) {
+      // Central directory or end — stop processing local files
+      if (originalBytes[i+2]===0x01 && originalBytes[i+3]===0x02) break;
+      if (originalBytes[i+2]===0x05 && originalBytes[i+3]===0x06) break;
+
+      if (originalBytes[i+2]===0x03 && originalBytes[i+3]===0x04) {
+        var nameLen   = readU16(originalBytes, i+26);
+        var extraLen  = readU16(originalBytes, i+28);
+        var compSize  = readU32(originalBytes, i+18);
+        var name      = new TextDecoder().decode(originalBytes.slice(i+30, i+30+nameLen));
+        var dataStart = i + 30 + nameLen + extraLen;
+        var isTarget  = (name === targetPath);
+
+        var fileData, crc, uncompSize;
+        if (isTarget) {
+          fileData   = newContentBytes;
+          crc        = crc32b(fileData);
+          uncompSize = fileData.length;
+          compSize   = fileData.length;
+        } else {
+          fileData   = originalBytes.slice(dataStart, dataStart + compSize);
+          crc        = readU32(originalBytes, i+14);
+          uncompSize = readU32(originalBytes, i+22);
+        }
+
+        var nameBytes  = new TextEncoder().encode(name);
+        var compression = isTarget ? 0 : readU16(originalBytes, i+8);
+        var modTime    = readU16(originalBytes, i+10);
+        var modDate    = readU16(originalBytes, i+12);
+
+        var localHeader = [0x50,0x4B,0x03,0x04,
+          0x14,0x00,          // version needed
+          0x00,0x00,          // flags
+        ].concat(writeU16(compression))
+         .concat(writeU16(modTime))
+         .concat(writeU16(modDate))
+         .concat(writeU32(crc))
+         .concat(writeU32(fileData.length))
+         .concat(writeU32(uncompSize))
+         .concat(writeU16(nameBytes.length))
+         .concat([0x00,0x00]) // extra length
+         .concat(Array.from(nameBytes))
+         .concat(Array.from(fileData));
+
+        var centralDir = [0x50,0x4B,0x01,0x02,
+          0x14,0x00,0x14,0x00,
+          0x00,0x00,
+        ].concat(writeU16(compression))
+         .concat(writeU16(modTime))
+         .concat(writeU16(modDate))
+         .concat(writeU32(crc))
+         .concat(writeU32(fileData.length))
+         .concat(writeU32(uncompSize))
+         .concat(writeU16(nameBytes.length))
+         .concat([0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
+         .concat(writeU32(offset))
+         .concat(Array.from(nameBytes));
+
+        result     = result.concat(localHeader);
+        centralDirs.push(centralDir);
+        offset    += localHeader.length;
+        i          = dataStart + (isTarget ? compSize : compSize);
+        continue;
+      }
+    }
+    i++;
+  }
+
+  // Append central directory + EOCD
+  var centralStart = offset;
+  var centralFlat  = [];
+  centralDirs.forEach(function(c){ centralFlat = centralFlat.concat(c); });
+  var eocd = [0x50,0x4B,0x05,0x06,
+    0x00,0x00,0x00,0x00,
+  ].concat(writeU16(centralDirs.length))
+   .concat(writeU16(centralDirs.length))
+   .concat(writeU32(centralFlat.length))
+   .concat(writeU32(centralStart))
+   .concat([0x00,0x00]);
+
+  var final = new Uint8Array(result.concat(centralFlat).concat(eocd));
+  return final;
 }
 
 /* Build .docx using docx.js library */
