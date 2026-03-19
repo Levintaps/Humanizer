@@ -32,10 +32,27 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<!-- mammoth.js — reads .docx files in the browser -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-<!-- docx.js — creates .docx files in the browser -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+<!-- mammoth.js — reads .docx in browser (primary CDN) -->
+<script src="https://unpkg.com/mammoth@1.6.0/mammoth.browser.min.js"></script>
+<!-- docx.js — writes .docx in browser (primary CDN) -->
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<script>
+// Fallback: if primary CDN fails, load from cdnjs
+(function(){
+  function loadScript(src, cb) {
+    var s = document.createElement('script');
+    s.src = src; s.onload = cb;
+    s.onerror = function(){ console.warn('CDN failed:', src); if(cb) cb(new Error('fail')); };
+    document.head.appendChild(s);
+  }
+  if (typeof mammoth === 'undefined') {
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js', null);
+  }
+  if (typeof docx === 'undefined') {
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js', null);
+  }
+})();
+</script>
 
 <style>
 /* ═══════════════════════════════════════════════════════════════════
@@ -3452,13 +3469,31 @@ function clearFile() {
 /* ── Parse .docx using mammoth.js ── */
 function parseDocx(file) {
   if (typeof mammoth === 'undefined') {
-    toast('Document parser loading… please try again.', 'error'); return;
+    // mammoth.js not loaded — wait up to 4s then retry, otherwise show error
+    var waited = 0;
+    var interval = setInterval(function() {
+      waited += 300;
+      if (typeof mammoth !== 'undefined') {
+        clearInterval(interval);
+        parseDocx(file); // retry now that it's loaded
+      } else if (waited >= 4000) {
+        clearInterval(interval);
+        toast('Could not load the .docx reader library. Check your internet connection and refresh the page.', 'error');
+        clearFile();
+      }
+    }, 300);
+    return;
   }
   var reader = new FileReader();
   reader.onload = function(e) {
     mammoth.convertToHtml({ arrayBuffer: e.target.result }).then(function(result) {
-      var html = result.value;
+      var html     = result.value;
       var sections = htmlToSections(html);
+      if (sections.length === 0) {
+        toast('No readable text found in this .docx file.', 'error');
+        clearFile();
+        return;
+      }
       DOC.sections = sections;
       renderSectionsList();
     }).catch(function(err){
@@ -3466,6 +3501,10 @@ function parseDocx(file) {
       console.error(err);
       clearFile();
     });
+  };
+  reader.onerror = function() {
+    toast('Failed to read the file. Please try again.', 'error');
+    clearFile();
   };
   reader.readAsArrayBuffer(file);
 }
@@ -4044,94 +4083,219 @@ if (docxDlTxtBtn) {
   });
 }
 
-/* ── Download as .docx using docx.js ── */
+/* ── Download as .docx — pure JS, no library needed ── */
 if (docxDlDocxBtn) {
   docxDlDocxBtn.addEventListener('click', async function(){
-    if (typeof docx === 'undefined') {
-      toast('Word export library not loaded. Try refreshing the page.', 'error'); return;
-    }
     docxDlDocxBtn.disabled = true;
-    docxDlDocxBtn.textContent = '⏳ Building…';
+    docxDlDocxBtn.innerHTML = '⏳ Building…';
 
     try {
-      var children = [];
-
-      DOC.sections.forEach(function(sec) {
-        var text = getFinalText(sec);
-
-        if (sec.type === 'heading') {
-          var headingLevel = Math.min(sec.level, 6);
-          var headingStyle = 'Heading' + headingLevel;
-          children.push(
-            new docx.Paragraph({
-              text: text,
-              heading: docx.HeadingLevel['HEADING_' + headingLevel] || docx.HeadingLevel.HEADING_1,
-            })
-          );
-        } else {
-          // Split by newlines into separate paragraphs
-          var lines = text.split('\n').filter(function(l){ return l.trim(); });
-          lines.forEach(function(line) {
-            children.push(
-              new docx.Paragraph({
-                children: [
-                  new docx.TextRun({
-                    text: line,
-                    size: 24,         // 12pt
-                    font: 'Times New Roman',
-                  })
-                ],
-                spacing: { after: 200 }, // space after paragraph
-              })
-            );
-          });
-        }
-      });
-
-      var doc = new docx.Document({
-        styles: {
-          paragraphStyles: [
-            {
-              id: 'Normal',
-              name: 'Normal',
-              basedOn: 'Normal',
-              next: 'Normal',
-              run: { size: 24, font: 'Times New Roman' },
-              paragraph: { spacing: { line: 480, lineRule: docx.LineRuleType.AUTO } }, // double spacing
-            }
-          ]
-        },
-        sections: [{
-          properties: {
-            page: {
-              margin: {
-                top:    1440, // 1 inch = 1440 twips
-                bottom: 1440,
-                left:   1440,
-                right:  1440,
-              }
-            }
-          },
-          children: children,
-        }],
-      });
-
-      var buffer = await docx.Packer.toBlob(doc);
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(buffer);
-      a.download = (DOC.fileName.replace(/\.[^.]+$/,'') || 'document') + '-humanized.docx';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      URL.revokeObjectURL(a.href);
-      toast('Downloaded as .docx!', 'success');
-
+      // Try docx.js library first if loaded
+      if (typeof docx !== 'undefined') {
+        await buildDocxWithLibrary();
+      } else {
+        // Fallback: build .docx manually using Open XML (always works, no library)
+        buildDocxManual();
+      }
     } catch(err) {
       console.error('docx build error:', err);
-      toast('Could not build .docx — try .txt instead.', 'error');
+      // Always fall back to manual builder on any error
+      try { buildDocxManual(); }
+      catch(e2) { toast('Could not build .docx — please use .txt instead.', 'error'); }
     } finally {
       docxDlDocxBtn.disabled = false;
       docxDlDocxBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg> Download .docx';
     }
   });
+}
+
+/* Build .docx using docx.js library */
+async function buildDocxWithLibrary() {
+  var children = [];
+  DOC.sections.forEach(function(sec) {
+    var text = getFinalText(sec);
+    if (sec.type === 'heading') {
+      var lvl = Math.min(sec.level || 1, 6);
+      children.push(new docx.Paragraph({
+        text: text,
+        heading: docx.HeadingLevel['HEADING_' + lvl] || docx.HeadingLevel.HEADING_1,
+      }));
+    } else {
+      text.split('\n').filter(function(l){ return l.trim(); }).forEach(function(line) {
+        children.push(new docx.Paragraph({
+          children: [new docx.TextRun({ text: line, size: 24, font: 'Times New Roman' })],
+          spacing: { line: 480, lineRule: 'auto', after: 0 },
+        }));
+      });
+    }
+  });
+  var document = new docx.Document({
+    sections: [{
+      properties: { page: { margin: { top:1440, bottom:1440, left:1440, right:1440 } } },
+      children: children,
+    }],
+  });
+  var blob = await docx.Packer.toBlob(document);
+  downloadBlob(blob, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', '-humanized.docx');
+  toast('Downloaded as .docx!', 'success');
+}
+
+/* Build .docx manually using Open XML — no library, always works */
+function buildDocxManual() {
+  // Build paragraphs XML
+  var parasXml = '';
+  DOC.sections.forEach(function(sec) {
+    var text = getFinalText(sec);
+    var lines = text.split('\n').filter(function(l){ return l.trim(); });
+    lines.forEach(function(line) {
+      var escaped = line
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+      var isHeading = sec.type === 'heading';
+      var styleId   = isHeading ? 'Heading' + (sec.level || 1) : 'Normal';
+      parasXml +=
+        '<w:p>' +
+          '<w:pPr>' +
+            '<w:pStyle w:val="' + styleId + '"/>' +
+            (!isHeading ? '<w:spacing w:line="480" w:lineRule="auto"/>' : '') +
+          '</w:pPr>' +
+          '<w:r>' +
+            '<w:rPr>' +
+              (!isHeading ? '<w:rFonts w:ascii="Times New Roman" w:hAnsi="Times New Roman"/><w:sz w:val="24"/>' : '') +
+            '</w:rPr>' +
+            '<w:t xml:space="preserve">' + escaped + '</w:t>' +
+          '</w:r>' +
+        '</w:p>';
+    });
+  });
+
+  // Minimal Open XML document.xml
+  var docXml =
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+      '<w:body>' +
+        parasXml +
+        '<w:sectPr>' +
+          '<w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/>' +
+        '</w:sectPr>' +
+      '</w:body>' +
+    '</w:document>';
+
+  // Content types
+  var contentTypes =
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+      '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+      '<Default Extension="xml" ContentType="application/xml"/>' +
+      '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
+    '</Types>';
+
+  // Relationships
+  var rels =
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
+    '</Relationships>';
+
+  var wordRels =
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '</Relationships>';
+
+  // Build zip using JSZip-free approach: use a minimal zip builder
+  var zip = buildZip([
+    { name: '[Content_Types].xml',  data: contentTypes },
+    { name: '_rels/.rels',          data: rels },
+    { name: 'word/document.xml',    data: docXml },
+    { name: 'word/_rels/document.xml.rels', data: wordRels },
+  ]);
+
+  downloadBlob(zip, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', '-humanized.docx');
+  toast('Downloaded as .docx!', 'success');
+}
+
+/* Minimal ZIP builder — no library needed */
+function buildZip(files) {
+  // Use a simple CRC32 + ZIP local file header approach
+  function crc32(str) {
+    var table = [];
+    for (var i=0;i<256;i++){
+      var c=i;
+      for(var j=0;j<8;j++) c=((c&1)?0xEDB88320^(c>>>1):(c>>>1));
+      table[i]=c;
+    }
+    var crc=0xFFFFFFFF;
+    var bytes=new TextEncoder().encode(str);
+    for(var k=0;k<bytes.length;k++) crc=table[(crc^bytes[k])&0xFF]^(crc>>>8);
+    return (crc^0xFFFFFFFF)>>>0;
+  }
+  function ui8(n,b){ var a=[];for(var i=0;i<b;i++){a.push(n&0xFF);n>>=8;} return a; }
+  function strBytes(s){ return Array.from(new TextEncoder().encode(s)); }
+
+  var localParts  = [];
+  var centralDirs = [];
+  var offset      = 0;
+
+  files.forEach(function(f) {
+    var nameBytes = strBytes(f.name);
+    var dataBytes = strBytes(f.data);
+    var crc       = crc32(f.data);
+    var header    = [0x50,0x4B,0x03,0x04,  // signature
+      0x14,0x00,               // version needed
+      0x00,0x00,               // flags
+      0x00,0x00,               // compression (stored)
+      0x00,0x00,0x00,0x00,     // mod time/date
+    ].concat(ui8(crc,4))
+     .concat(ui8(dataBytes.length,4))
+     .concat(ui8(dataBytes.length,4))
+     .concat(ui8(nameBytes.length,2))
+     .concat([0x00,0x00])      // extra length
+     .concat(nameBytes)
+     .concat(dataBytes);
+
+    var central = [0x50,0x4B,0x01,0x02,
+      0x14,0x00,0x14,0x00,
+      0x00,0x00,0x00,0x00,
+      0x00,0x00,0x00,0x00,
+    ].concat(ui8(crc,4))
+     .concat(ui8(dataBytes.length,4))
+     .concat(ui8(dataBytes.length,4))
+     .concat(ui8(nameBytes.length,2))
+     .concat([0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00])
+     .concat(ui8(offset,4))
+     .concat(nameBytes);
+
+    localParts.push(header);
+    centralDirs.push(central);
+    offset += header.length;
+  });
+
+  var centralStart = offset;
+  var centralSize  = centralDirs.reduce(function(s,c){return s+c.length;},0);
+  var eocd = [0x50,0x4B,0x05,0x06,
+    0x00,0x00,0x00,0x00,
+  ].concat(ui8(files.length,2))
+   .concat(ui8(files.length,2))
+   .concat(ui8(centralSize,4))
+   .concat(ui8(centralStart,4))
+   .concat([0x00,0x00]);
+
+  var all = [];
+  localParts.forEach(function(p){  all = all.concat(p); });
+  centralDirs.forEach(function(p){ all = all.concat(p); });
+  all = all.concat(eocd);
+
+  return new Blob([new Uint8Array(all)], { type: 'application/zip' });
+}
+
+function downloadBlob(blob, mime, suffix) {
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (DOC.fileName.replace(/\.[^.]+$/, '') || 'document') + suffix;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
 }
 </script>
 </body>
